@@ -33,6 +33,27 @@ public class MD5 {
 	       return signature;
 	    }
 
+	public static String SHA1 (String key) {
+
+		String[] arr = new String[]{key};
+		Arrays.sort(arr);
+		StringBuilder content = new StringBuilder();
+		for (int i = 0; i < arr.length; i++) {
+			content.append(arr[i]);
+		}
+		String signature = null;
+		try {
+			MessageDigest md = MessageDigest.getInstance("SHA-1");
+			byte[] digest = md.digest(content.toString().getBytes("utf-8"));
+			signature =toHexString(digest);
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		return signature;
+	}
+
 	    public static final char HEX_DIGITS[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
 	                'a', 'b', 'c', 'd', 'e', 'f'};
 	    public static String toHexString(byte[] bytes) {

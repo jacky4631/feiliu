@@ -8,43 +8,44 @@ import com.jiam365.flow.sdk.response.ResponseData;
 import com.jiam365.flow.sdk.response.XMLDataReader;
 import com.jiam365.flow.sdk.support.TradeReportServiceProxy;
 import com.jiam365.modules.mapper.JsonMapper;
-import com.jiam365.modules.utils.StringIdGenerator;
 import org.apache.http.client.methods.HttpGet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class ShenJiHandler extends AbstractHandler {
 
 	private String MARK = "ShenJi";
 	private static Logger logger = LoggerFactory.getLogger(ShenJiHandler.class);
-	private static int DEFAULT_TIMEOUT = 1000 * 60;
-	private String ec_code;
-	private String key;
+	private String password;
 	private String rechargeUrl;
-	private String queryUrl;
+	private String username;
+	private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
 
 	@Override
 	public ResponseData recharge(RechargeRequest request) throws ChannelConnectionException {
 		// TODO Auto-generated method stub
-		return createOrders(ec_code, key, request);
+		return createOrders(request);
 	}
 
-	private ResponseData createOrders(String ec_code, String key, RechargeRequest request) {
+	private ResponseData createOrders(RechargeRequest request) {
 		OrderCreateRequestDTO dto = new OrderCreateRequestDTO();
-		dto.setEc_code(ec_code);
-		String orderId = StringIdGenerator.get();
-		dto.setOrder_number(orderId);
-		dto.setMobile(request.getMobile());
-		dto.setProduct_code(request.getOrigiProductId());
-		dto.generateSignature(key);
+		dto.setUsername(username);
+		dto.setPhone(request.getMobile());
+		dto.setTimestamp(dateFormat.format(new Date()));
+		dto.setArea("0");
+		dto.setCapacity(String.valueOf(request.getSize()));
+		dto.generateSignature(password);
 		String url="";
-		url=rechargeUrl+"?ec_code="+dto.getEc_code()+
-				"&order_number="+dto.getOrder_number()+
-				"&mobile="+dto.getMobile()+
-				"&product_code="+dto.getProduct_code()+
-				"&sign="+dto.getSign();
+		url=rechargeUrl+"?area="+dto.getArea()+
+				"&username="+dto.getUsername()+
+				"&phone="+dto.getPhone()+
+				"&capacity="+dto.getCapacity()+
+				"&timestamp="+dto.getTimestamp()
+				+"&sign="+dto.getSign();
 				
 		HttpGet method = ClientUtils.getGetMethod(url);
 		logger.debug(MARK + "_recharge_url:" + url);
@@ -58,14 +59,14 @@ public class ShenJiHandler extends AbstractHandler {
 		logger.debug(MARK + "_recharge_xml:" + o);
 		XMLDataReader reader = new XMLDataReader();
 		reader.init(o);
-		String ret_code=reader.read("ret_code");
-		String ret_msg=reader.read("ret_msg");
-		String req_order_number=reader.read("req_order_number");
+		String ret_code=reader.read("success");
+		String ret_msg=reader.read("message");
+		String req_order_number=reader.read("partner_order_no");
 		ResponseData data = new ResponseData();
 		data.setSuccessValue("0");
 		data.setResult(ret_code);
 		data.setMessage(ret_msg);
-		data.setRequestNo(orderId);
+		data.setRequestNo(req_order_number);
 		return data;
 	}
 
@@ -86,9 +87,9 @@ public class ShenJiHandler extends AbstractHandler {
 		data.setRequestNo(reqNo);
 		if (json != null) {
 			ShenJiReport rechargeReport = mapper.fromJson(json, ShenJiReport.class);
-			logger.debug(MARK + "_report_bean:" + rechargeReport.getRet_code()+"|"+rechargeReport.getRet_msg());
-			String ret_code=rechargeReport.getRet_code();
-			String ret_msg=rechargeReport.getRet_msg();
+			logger.debug(MARK + "_report_bean:" + rechargeReport.getSuccess()+"|"+rechargeReport.getMessage());
+			String ret_code=String.valueOf(rechargeReport.getSuccess());
+			String ret_msg=rechargeReport.getMessage();
 			data.setMessage(ret_msg);
 			data.setResult(ret_code);
 		} else {
@@ -107,10 +108,9 @@ public class ShenJiHandler extends AbstractHandler {
 		// TODO Auto-generated method stub
 		JSONDataReader reader = new JSONDataReader();
 		reader.init(paramJson);
-		ec_code = reader.read("ec_code");
-		key = reader.read("key");
+		password = reader.read("password");
 		rechargeUrl = reader.read("rechargeUrl");
-		queryUrl = reader.read("queryUrl");
+		username = reader.read("username");
 		reader.release();
 	}
 
@@ -129,8 +129,7 @@ public class ShenJiHandler extends AbstractHandler {
 	@Override
 	public String getParamTemplate() {
 		// TODO Auto-generated method stub
-		return "{" + "\"rechargeUrl\":\"充值地址\"," + "\"queryUrl\":\"订购结果批查询地址\"," + "\"ec_code\":\"商户号\","
-				+ "\"key\":\"秘钥\"" + "}";
+		return "{" + "\"rechargeUrl\":\"充值地址\"," + "\"username\":\"账号\"," + "\"password\":\"密码\"" + "}";
 	}
 
 	@Override

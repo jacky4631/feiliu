@@ -2,65 +2,58 @@ package com.jiam365.flow.plugins.shenji;
 
 public class ShenJiReport {
 	
-	private String action;
-	private String ret_code;
-	private String ret_msg;
-	private String req_order_number;
-	private String ec_code;
-	private String order_number;
-	private String mobile;
-	private String sign;
-	public String getAction() {
-		return action;
+	private int success;
+	private String message;
+	private int group;
+	private int code;
+	private String reason;
+	private String partner_order_no;
+
+	public int getSuccess() {
+		return success;
 	}
-	public void setAction(String action) {
-		this.action = action;
+
+	public void setSuccess(int success) {
+		this.success = success;
 	}
-	public String getRet_code() {
-		return ret_code;
+
+	public String getMessage() {
+		return message;
 	}
-	public void setRet_code(String ret_code) {
-		this.ret_code = ret_code;
+
+	public void setMessage(String message) {
+		this.message = message;
 	}
-	public String getRet_msg() {
-		return ret_msg;
+
+	public int getGroup() {
+		return group;
 	}
-	public void setRet_msg(String ret_msg) {
-		this.ret_msg = ret_msg;
+
+	public void setGroup(int group) {
+		this.group = group;
 	}
-	public String getReq_order_number() {
-		return req_order_number;
+
+	public int getCode() {
+		return code;
 	}
-	public void setReq_order_number(String req_order_number) {
-		this.req_order_number = req_order_number;
+
+	public void setCode(int code) {
+		this.code = code;
 	}
-	public String getEc_code() {
-		return ec_code;
+
+	public String getReason() {
+		return reason;
 	}
-	public void setEc_code(String ec_code) {
-		this.ec_code = ec_code;
+
+	public void setReason(String reason) {
+		this.reason = reason;
 	}
-	public String getOrder_number() {
-		return order_number;
+
+	public String getPartner_order_no() {
+		return partner_order_no;
 	}
-	public void setOrder_number(String order_number) {
-		this.order_number = order_number;
+
+	public void setPartner_order_no(String partner_order_no) {
+		this.partner_order_no = partner_order_no;
 	}
-	public String getMobile() {
-		return mobile;
-	}
-	public void setMobile(String mobile) {
-		this.mobile = mobile;
-	}
-	public String getSign() {
-		return sign;
-	}
-	public void setSign(String sign) {
-		this.sign = sign;
-	}
-	
-	
-	
-	
-	
 }
