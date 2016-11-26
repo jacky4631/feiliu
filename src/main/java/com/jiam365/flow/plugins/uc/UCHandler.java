@@ -1,4 +1,4 @@
-package com.jiam365.flow.plugins.shenji;
+package com.jiam365.flow.plugins.uc;
 
 import com.jiam365.flow.sdk.AbstractHandler;
 import com.jiam365.flow.sdk.ChannelConnectionException;
@@ -16,14 +16,13 @@ import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class ShenJiHandler extends AbstractHandler {
+public class UCHandler extends AbstractHandler {
 
 	private String MARK = "ShenJi";
-	private static Logger logger = LoggerFactory.getLogger(ShenJiHandler.class);
+	private static Logger logger = LoggerFactory.getLogger(UCHandler.class);
 	private String password;
 	private String rechargeUrl;
 	private String username;
-	private String area;
 	private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
 
 	@Override
@@ -31,13 +30,22 @@ public class ShenJiHandler extends AbstractHandler {
 		// TODO Auto-generated method stub
 		return createOrders(request);
 	}
+	public String getArea(String productId) {
+		if(productId.startsWith("NA")) {
+			return "0";
+		} else if(productId.endsWith("$")) {
+			return "2";
+		} else {
+			return "1";
+		}
+	}
 
 	private ResponseData createOrders(RechargeRequest request) {
 		OrderCreateRequestDTO dto = new OrderCreateRequestDTO();
 		dto.setUsername(username);
 		dto.setPhone(request.getMobile());
 		dto.setTimestamp(dateFormat.format(new Date()));
-		dto.setArea(area);
+		dto.setArea(getArea(request.getProductId()));
 		dto.setCapacity(String.valueOf(request.getSize()));
 		dto.generateSignature(password);
 		String url="";
@@ -87,7 +95,7 @@ public class ShenJiHandler extends AbstractHandler {
 		data.setRetryValues(new String[] { "-2"});
 		data.setRequestNo(reqNo);
 		if (json != null) {
-			ShenJiReport rechargeReport = mapper.fromJson(json, ShenJiReport.class);
+			UCReport rechargeReport = mapper.fromJson(json, UCReport.class);
 			logger.debug(MARK + "_report_bean:" + rechargeReport.getSuccess()+"|"+rechargeReport.getMessage());
 			String ret_code=String.valueOf(rechargeReport.getSuccess());
 			String ret_msg=rechargeReport.getMessage();
@@ -112,7 +120,6 @@ public class ShenJiHandler extends AbstractHandler {
 		password = reader.read("password");
 		rechargeUrl = reader.read("rechargeUrl");
 		username = reader.read("username");
-		area = reader.read("area");
 		reader.release();
 	}
 
@@ -131,8 +138,7 @@ public class ShenJiHandler extends AbstractHandler {
 	@Override
 	public String getParamTemplate() {
 		// TODO Auto-generated method stub
-		return "{" + "\"rechargeUrl\":\"充值地址\"," + "\"username\":\"账号\"," + "\"password\":\"密码\"" +
-                "\"area\":\"流量范围(0:全国包 1:省漫游包 2:省内包)\"" + "}";
+		return "{" + "\"rechargeUrl\":\"充值地址\"," + "\"username\":\"账号\"," + "\"password\":\"密码\"" + "}";
 	}
 
 	@Override

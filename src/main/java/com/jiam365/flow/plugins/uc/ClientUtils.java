@@ -1,4 +1,4 @@
-package com.jiam365.flow.plugins.shenji;
+package com.jiam365.flow.plugins.uc;
 
 
 import org.apache.http.HttpEntity;

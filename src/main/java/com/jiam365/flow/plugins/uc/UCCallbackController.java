@@ -1,4 +1,4 @@
-package com.jiam365.flow.plugins.shenji;
+package com.jiam365.flow.plugins.uc;
 
 import com.jiam365.flow.sdk.support.TradeReportServiceProxy;
 import com.jiam365.modules.mapper.JsonMapper;
@@ -10,13 +10,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @RequestMapping(value = "/report")
-public class ShenJiCallbackController {
+public class UCCallbackController {
 	
-	private static Logger logger = LoggerFactory.getLogger(ShenJiCallbackController.class);
+	private static Logger logger = LoggerFactory.getLogger(UCCallbackController.class);
 	
 	@RequestMapping(value="shenji")
 	@ResponseBody
-	public String callback(ShenJiReport report) {
+	public String callback(UCReport report) {
 		logger.debug("收到同意公司回调报文 success {}", report.getSuccess());
 		if (report.getSuccess() == 1) {
 			JsonMapper mapper = JsonMapper.nonDefaultMapper();

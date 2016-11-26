@@ -1,4 +1,4 @@
-package com.jiam365.flow.plugins.shenji;
+package com.jiam365.flow.plugins.uc;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;

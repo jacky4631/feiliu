@@ -1,6 +1,6 @@
-package com.jiam365.flow.plugins.shenji;
+package com.jiam365.flow.plugins.uc;
 
-public class ShenJiReport {
+public class UCReport {
 	
 	private int success;
 	private String message;

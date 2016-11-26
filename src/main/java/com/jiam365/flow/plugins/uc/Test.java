@@ -1,4 +1,4 @@
-package com.jiam365.flow.plugins.shenji;
+package com.jiam365.flow.plugins.uc;
 
 import com.jiam365.flow.sdk.response.ResponseData;
 import com.jiam365.flow.sdk.response.XMLDataReader;
@@ -7,21 +7,25 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class Test {
 	private static Logger logger = LoggerFactory.getLogger(Test.class);
 	private static String MARK = "tongyi";
 	private static String rechargeUrl = "https://www.51liuliang.cc/api/accounts/chargeSingleNumber";
 	private static String password = "12345678";
+	private static String username = "13151176880";
+	private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
 
 	public static void main(String[] args) {
-//		createOrders();
+		createOrders("13402565476", dateFormat.format(new Date()), "0", "10");
 
-		String sign = MD5.SHA1("aaaaa,15939393939|13878787878,10,20,20160223120445,7b21848ac9af35be0ddb2d6b9fc3851934db8420");
-		logger.info(MARK, sign);
+//		String sign = MD5.SHA1("aaaaa,15939393939|13878787878,10,20,20160223120445,7b21848ac9af35be0ddb2d6b9fc3851934db8420");
+//		logger.info(MARK, sign);
 	}
 
-	private static ResponseData createOrders(String username,String phone, String timestamp,String area, String capacity) {
+	private static ResponseData createOrders(String phone, String timestamp,String area, String capacity) {
 		OrderCreateRequestDTO dto = new OrderCreateRequestDTO();
 		dto.setUsername(username);
 		dto.setPhone(phone);
