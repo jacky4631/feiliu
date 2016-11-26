@@ -3,16 +3,13 @@ package com.jiam365.flow.plugins.uc;
 import com.jiam365.flow.sdk.response.ResponseData;
 import com.jiam365.flow.sdk.response.XMLDataReader;
 import org.apache.http.client.methods.HttpGet;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Test {
-	private static Logger logger = LoggerFactory.getLogger(Test.class);
-	private static String MARK = "tongyi";
+	private static String MARK = "UC";
 	private static String rechargeUrl = "https://www.51liuliang.cc/api/accounts/chargeSingleNumber";
 	private static String password = "12345678";
 	private static String username = "13151176880";

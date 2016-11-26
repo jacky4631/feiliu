@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
  */
 public class OrderCreateRequestDTO {
 	
-	private String MARK = "ShenJi";
+	private String MARK = "UC";
 	private static Logger logger = LoggerFactory.getLogger(OrderCreateRequestDTO.class);
 	
 	private String username;

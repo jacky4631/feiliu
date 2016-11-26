@@ -18,7 +18,7 @@ import java.util.Date;
 
 public class UCHandler extends AbstractHandler {
 
-	private String MARK = "ShenJi";
+	private String MARK = "UC";
 	private static Logger logger = LoggerFactory.getLogger(UCHandler.class);
 	private String password;
 	private String rechargeUrl;
