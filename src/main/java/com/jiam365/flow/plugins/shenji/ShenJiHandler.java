@@ -23,6 +23,7 @@ public class ShenJiHandler extends AbstractHandler {
 	private String password;
 	private String rechargeUrl;
 	private String username;
+	private String area;
 	private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
 
 	@Override
@@ -36,7 +37,7 @@ public class ShenJiHandler extends AbstractHandler {
 		dto.setUsername(username);
 		dto.setPhone(request.getMobile());
 		dto.setTimestamp(dateFormat.format(new Date()));
-		dto.setArea("0");
+		dto.setArea(area);
 		dto.setCapacity(String.valueOf(request.getSize()));
 		dto.generateSignature(password);
 		String url="";
@@ -111,6 +112,7 @@ public class ShenJiHandler extends AbstractHandler {
 		password = reader.read("password");
 		rechargeUrl = reader.read("rechargeUrl");
 		username = reader.read("username");
+		area = reader.read("area");
 		reader.release();
 	}
 
@@ -129,7 +131,8 @@ public class ShenJiHandler extends AbstractHandler {
 	@Override
 	public String getParamTemplate() {
 		// TODO Auto-generated method stub
-		return "{" + "\"rechargeUrl\":\"充值地址\"," + "\"username\":\"账号\"," + "\"password\":\"密码\"" + "}";
+		return "{" + "\"rechargeUrl\":\"充值地址\"," + "\"username\":\"账号\"," + "\"password\":\"密码\"" +
+                "\"area\":\"流量范围(0:全国包 1:省漫游包 2:省内包)\"" + "}";
 	}
 
 	@Override
