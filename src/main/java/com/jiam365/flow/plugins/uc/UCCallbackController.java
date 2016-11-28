@@ -17,8 +17,8 @@ public class UCCallbackController {
 	@RequestMapping(value="chargesn")
 	@ResponseBody
 	public String callback(UCReport report) {
-		logger.debug("收到统一通信公司回调报文 success {}", report.getSuccess());
-		if (report.getSuccess() == 1) {
+		logger.debug("收到统一通信公司回调报文 {}", report.toString());
+		if (report.getResult() == 1) {
 			JsonMapper mapper = JsonMapper.nonDefaultMapper();
 			TradeReportServiceProxy.save(report.getPartner_order_no(), mapper.toJson(report));
 			return "OK";

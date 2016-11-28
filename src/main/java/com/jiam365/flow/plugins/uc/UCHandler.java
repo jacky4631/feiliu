@@ -1,13 +1,15 @@
 package com.jiam365.flow.plugins.uc;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.jiam365.flow.sdk.AbstractHandler;
 import com.jiam365.flow.sdk.ChannelConnectionException;
 import com.jiam365.flow.sdk.RechargeRequest;
 import com.jiam365.flow.sdk.response.JSONDataReader;
 import com.jiam365.flow.sdk.response.ResponseData;
-import com.jiam365.flow.sdk.response.XMLDataReader;
 import com.jiam365.flow.sdk.support.TradeReportServiceProxy;
 import com.jiam365.modules.mapper.JsonMapper;
+import com.jiam365.modules.utils.StringIdGenerator;
 import org.apache.http.client.methods.HttpGet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,6 +50,8 @@ public class UCHandler extends AbstractHandler {
 		dto.setArea(getArea(request.getProductId()));
 		dto.setCapacity(String.valueOf(request.getSize()));
 		dto.generateSignature(password);
+		String orderId = StringIdGenerator.get();
+		dto.setPartner_order_no(orderId);
 		String url="";
 		url=rechargeUrl+"?area="+dto.getArea()+
 				"&username="+dto.getUsername()+
@@ -58,6 +62,7 @@ public class UCHandler extends AbstractHandler {
 				
 		HttpGet method = ClientUtils.getGetMethod(url);
 		logger.debug(MARK + "_recharge_url:" + url);
+
 		String o = ClientUtils.getJson(method);
 		try {
 			o = new String(o.getBytes("ISO-8859-1"), "utf8");
@@ -65,17 +70,23 @@ public class UCHandler extends AbstractHandler {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		logger.debug(MARK + "_recharge_xml:" + o);
-		XMLDataReader reader = new XMLDataReader();
-		reader.init(o);
-		String ret_code=reader.read("success");
-		String ret_msg=reader.read("message");
-		String req_order_number=reader.read("partner_order_no");
+		logger.debug(MARK + "_recharge_url ret:" + o);
+		JSONObject object = JSON.parseObject(o);
+		int success = object.getIntValue("success");
+		String message = null;
+		String code = null;
+		if(success == 1) {
+			code = String.valueOf(success);
+			message = object.getString("message");
+		} else {
+			code = object.getString("code");
+			message =object.getString("reason");
+		}
 		ResponseData data = new ResponseData();
-		data.setSuccessValue("0");
-		data.setResult(ret_code);
-		data.setMessage(ret_msg);
-		data.setRequestNo(req_order_number);
+		data.setSuccessValue(String.valueOf(success));
+		data.setResult(code);
+		data.setMessage(message);
+		data.setRequestNo(orderId);
 		return data;
 	}
 
@@ -96,9 +107,9 @@ public class UCHandler extends AbstractHandler {
 		data.setRequestNo(reqNo);
 		if (json != null) {
 			UCReport rechargeReport = mapper.fromJson(json, UCReport.class);
-			logger.debug(MARK + "_report_bean:" + rechargeReport.getSuccess()+"|"+rechargeReport.getMessage());
-			String ret_code=String.valueOf(rechargeReport.getSuccess());
-			String ret_msg=rechargeReport.getMessage();
+			logger.debug(MARK + "_report_bean:" + rechargeReport.getResult()+"|"+rechargeReport.getRemark());
+			String ret_msg=rechargeReport.getRemark();
+			String ret_code=String.valueOf(rechargeReport.getResult());
 			data.setMessage(ret_msg);
 			data.setResult(ret_code);
 		} else {
