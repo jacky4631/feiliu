@@ -57,8 +57,9 @@ public class UCHandler extends AbstractHandler {
 				"&username="+dto.getUsername()+
 				"&phone="+dto.getPhone()+
 				"&capacity="+dto.getCapacity()+
-				"&timestamp="+dto.getTimestamp()
-				+"&sign="+dto.getSign();
+				"&timestamp="+dto.getTimestamp()+
+                "&sign="+dto.getSign()+
+                "&partner_order_no="+dto.getPartner_order_no();
 				
 		HttpGet method = ClientUtils.getGetMethod(url);
 		logger.debug(MARK + "_recharge_url:" + url);
