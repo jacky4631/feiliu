@@ -124,6 +124,8 @@ public class OrderCreateRequestDTO {
 				.append(",")
 				.append(getTimestamp())
 				.append(",")
+				.append(getPartner_order_no())
+				.append(",")
 				.append(MD5.SHA1(key));
 		String _signature= MD5.SHA1(sb.toString());
 		this.setSign(_signature);

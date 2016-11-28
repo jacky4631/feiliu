@@ -2,6 +2,7 @@ package com.jiam365.flow.plugins.uc;
 
 import com.jiam365.flow.sdk.response.ResponseData;
 import com.jiam365.flow.sdk.response.XMLDataReader;
+import com.jiam365.modules.utils.StringIdGenerator;
 import org.apache.http.client.methods.HttpGet;
 
 import java.io.UnsupportedEncodingException;
@@ -30,13 +31,16 @@ public class Test {
 		dto.setArea(area);
 		dto.setCapacity(capacity);
 		dto.generateSignature(password);
+		String orderId = StringIdGenerator.get();
+		dto.setPartner_order_no(orderId);
 		String url="";
 		url=rechargeUrl+"?area="+dto.getArea()+
 				"&username="+dto.getUsername()+
 				"&phone="+dto.getPhone()+
 				"&capacity="+dto.getCapacity()+
 				"&timestamp="+dto.getTimestamp()
-				+"&sign="+dto.getSign();
+				+"&sign="+dto.getSign()
+				+"&partner_order_no="+dto.getPartner_order_no();
 
 		HttpGet method = ClientUtils.getGetMethod(url);
 		System.out.println(MARK + "_recharge_url:" + url);
