@@ -7,7 +7,6 @@ import org.apache.http.client.methods.HttpGet;
 
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class Test {
 	private static String MARK = "UC";
@@ -17,10 +16,10 @@ public class Test {
 	private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
 
 	public static void main(String[] args) {
-		createOrders("13402565476", dateFormat.format(new Date()), "0", "10");
+//		createOrders("13402565476", dateFormat.format(new Date()), "0", "10");
 
 //		String sign = MD5.SHA1("aaaaa,15939393939|13878787878,10,20,20160223120445,7b21848ac9af35be0ddb2d6b9fc3851934db8420");
-//		logger.info(MARK, sign);
+//		sign.toString();
 	}
 
 	private static ResponseData createOrders(String phone, String timestamp,String area, String capacity) {
@@ -30,9 +29,9 @@ public class Test {
 		dto.setTimestamp(timestamp);
 		dto.setArea(area);
 		dto.setCapacity(capacity);
-		dto.generateSignature(password);
 		String orderId = StringIdGenerator.get();
 		dto.setPartner_order_no(orderId);
+		dto.generateSignature(password);
 		String url="";
 		url=rechargeUrl+"?area="+dto.getArea()+
 				"&username="+dto.getUsername()+

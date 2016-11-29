@@ -49,17 +49,17 @@ public class UCHandler extends AbstractHandler {
 		dto.setTimestamp(dateFormat.format(new Date()));
 		dto.setArea(getArea(request.getProductId()));
 		dto.setCapacity(String.valueOf(request.getSize()));
-		dto.generateSignature(password);
 		String orderId = StringIdGenerator.get();
 		dto.setPartner_order_no(orderId);
+		dto.generateSignature(password);
 		String url="";
 		url=rechargeUrl+"?area="+dto.getArea()+
 				"&username="+dto.getUsername()+
 				"&phone="+dto.getPhone()+
 				"&capacity="+dto.getCapacity()+
 				"&timestamp="+dto.getTimestamp()+
-                "&sign="+dto.getSign()+
-				"&partner_order_no="+dto.getPartner_order_no();
+				"&partner_order_no="+dto.getPartner_order_no()+
+                "&sign="+dto.getSign();
 				
 		HttpGet method = ClientUtils.getGetMethod(url);
 		logger.debug(MARK + "_recharge_url:" + url);
@@ -112,7 +112,7 @@ public class UCHandler extends AbstractHandler {
 			String ret_code=String.valueOf(rechargeReport.getResult());
 			data.setMessage(ret_msg);
 			data.setResult(ret_code);
-			data.setSuccessValue("1");
+			data.setSuccessValue(ret_code);
 		} else {
 			data.setSuccessValue("0");
 			data.setResult("-2");
