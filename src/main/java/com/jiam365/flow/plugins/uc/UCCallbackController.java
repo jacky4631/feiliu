@@ -32,16 +32,16 @@ public class UCCallbackController {
 			/* report an error */
 		}
 
-		String json=jb.toString();
-		JSONObject object = JSON.parseObject(json);
-		logger.debug("收到统一通信公司回调报文 {}", object.toString());
-		UCReport report = new UCReport();
-		report.setPhone(object.getIntValue("phone"));
-		report.setGroup(object.getIntValue("group"));
-		report.setResult(object.getIntValue("result"));
-		report.setRemark(object.getString("remark"));
-		report.setPartner_order_no(object.getString("partner_order_no"));
-		if (report.getResult() == 1) {
+		String json=jb.toString().trim();
+		if(json != null && !json.equals("")) {
+			JSONObject object = JSON.parseObject(json);
+			logger.debug("收到统一通信公司回调报文 {}", object.toString());
+			UCReport report = new UCReport();
+			report.setPhone(object.getIntValue("phone"));
+			report.setGroup(object.getIntValue("group"));
+			report.setResult(object.getIntValue("result"));
+			report.setRemark(object.getString("remark"));
+			report.setPartner_order_no(object.getString("partner_order_no"));
 			JsonMapper mapper = JsonMapper.nonDefaultMapper();
 			TradeReportServiceProxy.save(report.getPartner_order_no(), mapper.toJson(report));
 			return "OK";
