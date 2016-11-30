@@ -1,4 +1,4 @@
-package com.jiam365.flow.plugins.uc;
+package com.jiam365.flow.plugins.yuanju;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -15,11 +15,11 @@ import java.io.BufferedReader;
 
 @Controller
 @RequestMapping(value = "/report")
-public class UCCallbackController {
+public class YuanJuCallbackController {
 	
-	private static Logger logger = LoggerFactory.getLogger(UCCallbackController.class);
+	private static Logger logger = LoggerFactory.getLogger(YuanJuCallbackController.class);
 	
-	@RequestMapping(value="chargesn")
+	@RequestMapping(value="charge")
 	@ResponseBody
 	public String callback(HttpServletRequest request) {
 		StringBuffer jb = new StringBuffer();
@@ -33,17 +33,15 @@ public class UCCallbackController {
 		}
 
 		String json=jb.toString().trim();
-		logger.debug("收到统一通信公司回调报文 {}", json);
+		logger.debug("收到缘聚公司回调报文 {}", json);
 		if(json != null && !json.equals("")) {
 			JSONObject object = JSON.parseObject(json);
-			UCReport report = new UCReport();
-			report.setPhone(object.getIntValue("phone"));
-			report.setGroup(object.getIntValue("group"));
-			report.setResult(object.getIntValue("result"));
-			report.setRemark(object.getString("remark"));
-			report.setPartner_order_no(object.getString("partner_order_no"));
+			YuanJuReport report = new YuanJuReport();
+			report.setRes(object.getString("res"));
+			report.setResmsg(object.getString("resmsg"));
+			report.setResdata(object.getString("resdata"));
 			JsonMapper mapper = JsonMapper.nonDefaultMapper();
-			TradeReportServiceProxy.save(report.getPartner_order_no(), mapper.toJson(report));
+			TradeReportServiceProxy.save(report.getResdata(), mapper.toJson(report));
 			return "OK";
 		} else {
 			return "ERR";

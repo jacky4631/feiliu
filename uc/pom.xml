@@ -2,9 +2,9 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>flow</groupId>
-  <artifactId>flow-plugin-uc</artifactId>
+  <artifactId>flow-plugin-yuanju</artifactId>
   <packaging>jar</packaging>
-  <name>flow-plugin-uc Maven Webapp</name>
+  <name>flow-plugin-yuanju Maven Webapp</name>
   <url>http://maven.apache.org</url>
   
   <parent>

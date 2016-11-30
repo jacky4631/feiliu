@@ -1,4 +1,4 @@
-package com.jiam365.flow.plugins.uc;
+package com.jiam365.flow.plugins.yuanju;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -18,13 +18,14 @@ import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class UCHandler extends AbstractHandler {
+public class YuanJuHandler extends AbstractHandler {
 
-	private String MARK = "UC";
-	private static Logger logger = LoggerFactory.getLogger(UCHandler.class);
-	private String password;
+	private String MARK = "YUANJU";
+	private static Logger logger = LoggerFactory.getLogger(YuanJuHandler.class);
 	private String rechargeUrl;
 	private String username;
+	private String key;
+	private String secret;
 	private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
 
 	@Override
@@ -33,9 +34,7 @@ public class UCHandler extends AbstractHandler {
 		return createOrders(request);
 	}
 	public String getArea(String productId) {
-		if(productId.startsWith("NA")) {
-			return "0";
-		} else if(productId.endsWith("$")) {
+		if(productId.endsWith("$")) {
 			return "2";
 		} else {
 			return "1";
@@ -45,21 +44,23 @@ public class UCHandler extends AbstractHandler {
 	private ResponseData createOrders(RechargeRequest request) {
 		OrderCreateRequestDTO dto = new OrderCreateRequestDTO();
 		dto.setUsername(username);
-		dto.setPhone(request.getMobile());
-		dto.setTimestamp(dateFormat.format(new Date()));
-		dto.setArea(getArea(request.getProductId()));
-		dto.setCapacity(String.valueOf(request.getSize()));
+		dto.setKey(key);
 		String orderId = StringIdGenerator.get();
-		dto.setPartner_order_no(orderId);
-		dto.generateSignature(password);
+		dto.setClientid(orderId);
+		dto.setProductids(request.getProductId());
+		dto.setMobile(request.getMobile());
+		dto.generateSignature(secret);
+		dto.setNotifyurl("http://120.55.71.93/report/charge");
+		dto.setFlowtype(getArea(request.getProductId()));
 		String url="";
-		url=rechargeUrl+"?area="+dto.getArea()+
-				"&username="+dto.getUsername()+
-				"&phone="+dto.getPhone()+
-				"&capacity="+dto.getCapacity()+
-				"&timestamp="+dto.getTimestamp()+
-				"&partner_order_no="+dto.getPartner_order_no()+
-                "&sign="+dto.getSign();
+		url=rechargeUrl+"?username="+dto.getUsername()+
+				"&key="+dto.getKey()+
+				"&clientid="+dto.getClientid()+
+				"&productids="+dto.getProductids()+
+				"&mobile="+dto.getMobile()+
+				"&sign="+dto.getSign()+
+                "&notifyurl="+dto.getNotifyurl()+
+				"&flowtype="+dto.getNotifyurl();
 				
 		HttpGet method = ClientUtils.getGetMethod(url);
 		logger.debug(MARK + "_recharge_url:" + url);
@@ -73,20 +74,10 @@ public class UCHandler extends AbstractHandler {
 		}
 		logger.debug(MARK + "_recharge_url ret:" + o);
 		JSONObject object = JSON.parseObject(o);
-		int success = object.getIntValue("success");
-		String message = null;
-		String code = null;
-		if(success == 1) {
-			code = String.valueOf(success);
-			message = object.getString("message");
-		} else {
-			code = object.getString("code");
-			message =object.getString("reason");
-		}
 		ResponseData data = new ResponseData();
 		data.setSuccessValue("1");
-		data.setResult(code);
-		data.setMessage(message);
+		data.setResult(object.getString("res"));
+		data.setMessage(object.getString("resmsg"));
 		data.setRequestNo(orderId);
 		return data;
 	}
@@ -106,13 +97,13 @@ public class UCHandler extends AbstractHandler {
 		data.setRetryValues(new String[] { "-2"});
 		data.setRequestNo(reqNo);
 		if (json != null) {
-			UCReport rechargeReport = mapper.fromJson(json, UCReport.class);
-			logger.debug(MARK + "_report_bean:" + rechargeReport.getResult()+"|"+rechargeReport.getRemark());
-			String ret_msg=rechargeReport.getRemark();
-			String ret_code=String.valueOf(rechargeReport.getResult());
+			YuanJuReport rechargeReport = mapper.fromJson(json, YuanJuReport.class);
+			logger.debug(MARK + "_report_bean:" + rechargeReport.toString());
+			String ret_msg=rechargeReport.getResmsg();
+			String ret_code=String.valueOf(rechargeReport.getRes());
 			data.setMessage(ret_msg);
 			data.setResult(ret_code);
-			data.setSuccessValue("1");
+			data.setSuccessValue("2");
 		} else {
 			data.setSuccessValue("0");
 			data.setResult("-2");
@@ -130,9 +121,10 @@ public class UCHandler extends AbstractHandler {
 		// TODO Auto-generated method stub
 		JSONDataReader reader = new JSONDataReader();
 		reader.init(paramJson);
-		password = reader.read("password");
 		rechargeUrl = reader.read("rechargeUrl");
 		username = reader.read("username");
+		key = reader.read("key");
+		secret = reader.read("secret");
 		reader.release();
 	}
 
@@ -151,7 +143,7 @@ public class UCHandler extends AbstractHandler {
 	@Override
 	public String getParamTemplate() {
 		// TODO Auto-generated method stub
-		return "{" + "\"rechargeUrl\":\"充值地址\"," + "\"username\":\"账号\"," + "\"password\":\"密码\"" + "}";
+		return "{" + "\"rechargeUrl\":\"充值地址\"," + "\"username\":\"账号\"," + "\"key\":\"密钥\"," + "\"secret\":\"密码\"," + "}";
 	}
 
 	@Override
