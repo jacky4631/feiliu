@@ -33,9 +33,9 @@ public class UCCallbackController {
 		}
 
 		String json=jb.toString().trim();
+		logger.debug("收到统一通信公司回调报文 {}", json);
 		if(json != null && !json.equals("")) {
 			JSONObject object = JSON.parseObject(json);
-			logger.debug("收到统一通信公司回调报文 {}", object.toString());
 			UCReport report = new UCReport();
 			report.setPhone(object.getIntValue("phone"));
 			report.setGroup(object.getIntValue("group"));

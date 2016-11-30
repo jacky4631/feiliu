@@ -84,7 +84,7 @@ public class UCHandler extends AbstractHandler {
 			message =object.getString("reason");
 		}
 		ResponseData data = new ResponseData();
-		data.setSuccessValue(String.valueOf(success));
+		data.setSuccessValue("1");
 		data.setResult(code);
 		data.setMessage(message);
 		data.setRequestNo(orderId);
@@ -112,7 +112,7 @@ public class UCHandler extends AbstractHandler {
 			String ret_code=String.valueOf(rechargeReport.getResult());
 			data.setMessage(ret_msg);
 			data.setResult(ret_code);
-			data.setSuccessValue(ret_code);
+			data.setSuccessValue("1");
 		} else {
 			data.setSuccessValue("0");
 			data.setResult("-2");
