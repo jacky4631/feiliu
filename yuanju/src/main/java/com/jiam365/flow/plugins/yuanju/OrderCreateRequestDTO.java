@@ -11,8 +11,7 @@ import org.slf4j.LoggerFactory;
 public class OrderCreateRequestDTO {
 	
 	private String MARK = "YUANJU";
-	private static Logger logger = LoggerFactory.getLogger(OrderCreateRequestDTO.class);
-	
+
 	private String username;
 	private String key;
 	private String clientid;

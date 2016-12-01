@@ -7,6 +7,7 @@ import com.jiam365.modules.mapper.JsonMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -34,7 +35,8 @@ public class YuanJuCallbackController {
 
 		String json=jb.toString().trim();
 		logger.debug("收到缘聚公司回调报文 {}", json);
-		if(json != null && !json.equals("")) {
+
+		if(!StringUtils.isEmpty(json)) {
 			JSONObject object = JSON.parseObject(json);
 			YuanJuReport report = new YuanJuReport();
 			report.setRes(object.getString("res"));
@@ -42,9 +44,9 @@ public class YuanJuCallbackController {
 			report.setResdata(object.getString("resdata"));
 			JsonMapper mapper = JsonMapper.nonDefaultMapper();
 			TradeReportServiceProxy.save(report.getResdata(), mapper.toJson(report));
-			return "OK";
+			return "1";
 		} else {
-			return "ERR";
+			return "0";
 		}
 	}
 }

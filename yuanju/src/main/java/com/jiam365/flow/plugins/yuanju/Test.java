@@ -10,9 +10,10 @@
 //
 //public class Test {
 //	private static String MARK = "UC";
-//	private static String rechargeUrl = "https://www.51liuliang.cc/api/accounts/chargeSingleNumber";
-//	private static String password = "12345678";
-//	private static String username = "13151176880";
+//	private static String rechargeUrl = "http://120.55.88.183:6001/datapay/api/yuanju/charge";
+//	private static String key = "c1e192d298f745d4b2f4352735f9e61e";
+//	private static String username = "szhh";
+//    private static String secret = "9ed411c5ae70413aaf7ed547bf5a410a";
 //	private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
 //
 //	public static void main(String[] args) {

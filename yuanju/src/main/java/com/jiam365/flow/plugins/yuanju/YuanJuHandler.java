@@ -15,8 +15,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.UnsupportedEncodingException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class YuanJuHandler extends AbstractHandler {
 
@@ -26,28 +24,16 @@ public class YuanJuHandler extends AbstractHandler {
 	private String username;
 	private String key;
 	private String secret;
-	private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
 
 	@Override
 	public ResponseData recharge(RechargeRequest request) throws ChannelConnectionException {
-		// TODO Auto-generated method stub
-		return createOrders(request);
-	}
-	public String getArea(String productId) {
-		if(productId.endsWith("$")) {
-			return "2";
-		} else {
-			return "1";
-		}
-	}
-
-	private ResponseData createOrders(RechargeRequest request) {
+//		logger.debug(MARK + "_recharge_url:" + "productName:"+request.getProductName()+",origiProductId:"+request.getOrigiProductId()+",executeProductId"+request.getExecuteProductId());
 		OrderCreateRequestDTO dto = new OrderCreateRequestDTO();
 		dto.setUsername(username);
 		dto.setKey(key);
 		String orderId = StringIdGenerator.get();
 		dto.setClientid(orderId);
-		dto.setProductids(request.getProductId());
+		dto.setProductids(request.getOrigiProductId());
 		dto.setMobile(request.getMobile());
 		dto.generateSignature(secret);
 		dto.setNotifyurl("http://120.55.71.93/report/charge");
@@ -59,19 +45,13 @@ public class YuanJuHandler extends AbstractHandler {
 				"&productids="+dto.getProductids()+
 				"&mobile="+dto.getMobile()+
 				"&sign="+dto.getSign()+
-                "&notifyurl="+dto.getNotifyurl()+
-				"&flowtype="+dto.getNotifyurl();
-				
+				"&notifyurl="+dto.getNotifyurl()+
+				"&flowtype="+dto.getFlowtype();
+
 		HttpGet method = ClientUtils.getGetMethod(url);
 		logger.debug(MARK + "_recharge_url:" + url);
 
 		String o = ClientUtils.getJson(method);
-		try {
-			o = new String(o.getBytes("ISO-8859-1"), "utf8");
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		logger.debug(MARK + "_recharge_url ret:" + o);
 		JSONObject object = JSON.parseObject(o);
 		ResponseData data = new ResponseData();
@@ -84,12 +64,6 @@ public class YuanJuHandler extends AbstractHandler {
 
 	@Override
 	public ResponseData queryReport(RechargeRequest rechargeRequest, String reqNo) throws ChannelConnectionException {
-		// TODO Auto-generated method stub
-		return callback(reqNo);
-	}
-	
-	
-	private ResponseData callback(String reqNo){
 		String json = TradeReportServiceProxy.fetch(reqNo);
 		logger.debug(MARK + "_report_json:" + json);
 		JsonMapper mapper = JsonMapper.nonEmptyMapper();
@@ -111,10 +85,6 @@ public class YuanJuHandler extends AbstractHandler {
 		}
 		return data;
 	}
-	
-	
-	
-	
 
 	@Override
 	public void loadParams(String paramJson) {
@@ -129,27 +99,17 @@ public class YuanJuHandler extends AbstractHandler {
 	}
 
 	@Override
-	public void init() {
-		// TODO Auto-generated method stub
-		super.init();
-	}
-
-	@Override
-	public void release() {
-		// TODO Auto-generated method stub
-		super.release();
-	}
-
-	@Override
 	public String getParamTemplate() {
 		// TODO Auto-generated method stub
-		return "{" + "\"rechargeUrl\":\"充值地址\"," + "\"username\":\"账号\"," + "\"key\":\"密钥\"," + "\"secret\":\"密码\"," + "}";
+		return "{" + "\"rechargeUrl\":\"充值地址\"," + "\"username\":\"账号\"," + "\"key\":\"密钥\"," + "\"secret\":\"密码\"" + "}";
 	}
 
-	@Override
-	protected void loadJsonParams(String paramJson, String... paramNames) {
-		// TODO Auto-generated method stub
-		super.loadJsonParams(paramJson, paramNames);
+	public String getArea(String productId) {
+		if(productId.endsWith("$")) {
+			return "2";
+		} else {
+			return "1";
+		}
 	}
 
 }
