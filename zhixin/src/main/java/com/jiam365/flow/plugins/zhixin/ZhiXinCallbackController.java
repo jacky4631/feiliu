@@ -1,9 +1,6 @@
 package com.jiam365.flow.plugins.zhixin;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.jiam365.flow.sdk.support.TradeReportServiceProxy;
-import com.jiam365.modules.mapper.JsonMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -19,7 +16,6 @@ import java.io.BufferedReader;
 public class ZhiXinCallbackController {
 
     private static Logger logger = LoggerFactory.getLogger(ZhiXinCallbackController.class);
-    private JsonMapper mapper = JsonMapper.nonEmptyMapper();
 
     @RequestMapping(value = "charge")
     @ResponseBody
@@ -43,7 +39,7 @@ public class ZhiXinCallbackController {
 
         if (!StringUtils.isEmpty(json)) {
             try {
-                ZhiXinReport report = mapper.fromJson(json, ZhiXinReport.class);
+                ZhiXinReport report = ClientUtils.getJsonMapper().fromJson(json, ZhiXinReport.class);
                 if(report.getData() != null) {
                     TradeReportServiceProxy.save(report.getData().messageid, json);
                     return "ok";

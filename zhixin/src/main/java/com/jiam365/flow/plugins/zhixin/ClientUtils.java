@@ -1,6 +1,7 @@
 package com.jiam365.flow.plugins.zhixin;
 
 
+import com.jiam365.modules.mapper.JsonMapper;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -18,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ClientUtils {
+    private static JsonMapper mapper;
 
     public static HttpPost getPostMethod(String rechargeUrl) {
         HttpPost httppost = new HttpPost(rechargeUrl);
@@ -93,5 +95,12 @@ public class ClientUtils {
     public static CloseableHttpClient buildHttpClient() {
         CloseableHttpClient httpclient = HttpClients.createDefault();
         return httpclient;
+    }
+
+    public static JsonMapper getJsonMapper(){
+        if(mapper == null) {
+            mapper = JsonMapper.nonEmptyMapper();
+        }
+        return mapper;
     }
 }

@@ -8,7 +8,6 @@ import com.jiam365.flow.sdk.RechargeRequest;
 import com.jiam365.flow.sdk.response.JSONDataReader;
 import com.jiam365.flow.sdk.response.ResponseData;
 import com.jiam365.flow.sdk.support.TradeReportServiceProxy;
-import com.jiam365.modules.mapper.JsonMapper;
 import com.jiam365.modules.utils.StringIdGenerator;
 import org.apache.http.client.methods.HttpGet;
 import org.slf4j.Logger;
@@ -69,12 +68,11 @@ public class ZhiXinHandler extends AbstractHandler {
 	public ResponseData queryReport(RechargeRequest rechargeRequest, String reqNo) throws ChannelConnectionException {
 		String json = TradeReportServiceProxy.fetch(reqNo);
 		logger.debug(MARK + "_report_json:" + json);
-		JsonMapper mapper = JsonMapper.nonEmptyMapper();
 		ResponseData data = new ResponseData();
 		data.setRetryValues(new String[] { "-2"});
 		data.setRequestNo(reqNo);
 		if (json != null) {
-			ZhiXinReport rechargeReport = mapper.fromJson(json, ZhiXinReport.class);
+			ZhiXinReport rechargeReport = ClientUtils.getJsonMapper().fromJson(json, ZhiXinReport.class);
 			logger.debug(MARK + "_report_bean:" + rechargeReport.toString());
 			if(rechargeReport.getData() != null) {
 				String ret_msg=rechargeReport.getData().message;
