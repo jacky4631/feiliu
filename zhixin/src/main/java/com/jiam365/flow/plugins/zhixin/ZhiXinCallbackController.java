@@ -19,6 +19,7 @@ import java.io.BufferedReader;
 public class ZhiXinCallbackController {
 
     private static Logger logger = LoggerFactory.getLogger(ZhiXinCallbackController.class);
+    private JsonMapper mapper = JsonMapper.nonEmptyMapper();
 
     @RequestMapping(value = "charge")
     @ResponseBody
@@ -42,22 +43,12 @@ public class ZhiXinCallbackController {
 
         if (!StringUtils.isEmpty(json)) {
             try {
-                JSONObject object = JSON.parseObject(json);
-                ZhiXinReport report = new ZhiXinReport();
-                report.setAppkey(object.getString("appkey"));
-                report.setTimestamp(object.getString("timestamp"));
-                report.setSign(object.getString("sign"));
-                JSONObject dataObject = object.getJSONObject("data");
-                ZhiXinReport.DataReport dataReport = report.new DataReport();
-                dataReport.orderid = dataObject.getString("orderid");
-                dataReport.message = dataObject.getString("message");
-                dataReport.code = dataObject.getString("code");
-                dataReport.mobile = dataObject.getString("mobile");
-                dataReport.messageid = dataObject.getString("messageid");
-                report.setData(dataReport);
-                JsonMapper mapper = JsonMapper.nonDefaultMapper();
-                TradeReportServiceProxy.save(dataReport.messageid, mapper.toJson(report));
-                return "ok";
+                ZhiXinReport report = mapper.fromJson(json, ZhiXinReport.class);
+                if(report.getData() != null) {
+                    TradeReportServiceProxy.save(report.getData().messageid, json);
+                    return "ok";
+                }
+               return "fail";
             } catch (Exception e) {
                 return "fail";
             }
