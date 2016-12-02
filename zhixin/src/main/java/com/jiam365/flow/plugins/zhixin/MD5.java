@@ -1,4 +1,4 @@
-package com.jiam365.flow.plugins.yuanju;
+package com.jiam365.flow.plugins.zhixin;
 
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;

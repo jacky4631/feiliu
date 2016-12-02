@@ -1,4 +1,4 @@
-package com.jiam365.flow.plugins.yuanju;
+package com.jiam365.flow.plugins.zhixin;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -15,49 +15,52 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
-public class YuanJuHandler extends AbstractHandler {
+public class ZhiXinHandler extends AbstractHandler {
 
-	private String MARK = "YUANJU";
-	private static Logger logger = LoggerFactory.getLogger(YuanJuHandler.class);
+	private String MARK = "ZHIXIN";
+	private static Logger logger = LoggerFactory.getLogger(ZhiXinHandler.class);
 	private String rechargeUrl;
-	private String username;
-	private String key;
-	private String secret;
+	private String appKey;
+	private String appSecret;
+	private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
 
 	@Override
 	public ResponseData recharge(RechargeRequest request) throws ChannelConnectionException {
 //		logger.debug(MARK + "_recharge_url:" + "productName:"+request.getProductName()+",origiProductId:"+request.getOrigiProductId()+",executeProductId"+request.getExecuteProductId());
 		OrderCreateRequestDTO dto = new OrderCreateRequestDTO();
-		dto.setUsername(username);
-		dto.setKey(key);
+		dto.setAppkey(appKey);
+		dto.setTimestamp(dateFormat.format(new Date()));
+		dto.setPackageid(request.getProductId());
+		dto.setMobiles(request.getMobile());
 		String orderId = StringIdGenerator.get();
-		dto.setClientid(orderId);
-		dto.setProductids(request.getOrigiProductId());
-		dto.setMobile(request.getMobile());
-		dto.generateSignature(secret);
-		dto.setNotifyurl("http://120.55.71.93/report/charge");
-		dto.setFlowtype(getArea(request.getProductId()));
+		dto.setMessageid(orderId);
+		dto.generateSignature(appSecret);
 		String url="";
-		url=rechargeUrl+"?username="+dto.getUsername()+
-				"&key="+dto.getKey()+
-				"&clientid="+dto.getClientid()+
-				"&productids="+dto.getProductids()+
-				"&mobile="+dto.getMobile()+
-				"&sign="+dto.getSign()+
-				"&notifyurl="+dto.getNotifyurl()+
-				"&flowtype="+dto.getFlowtype();
+		url=rechargeUrl+"?appkey="+dto.getAppkey()+
+				"&timestamp="+dto.getTimestamp()+
+				"&packageid="+dto.getPackageid()+
+				"&mobiles="+dto.getMobiles()+
+				"&messageid="+dto.getMessageid()+
+				"&sign="+dto.getSign();
 
 		HttpGet method = ClientUtils.getGetMethod(url);
 		logger.debug(MARK + "_recharge_url:" + url);
 
 		String o = ClientUtils.getJson(method);
 		logger.debug(MARK + "_recharge_url ret:" + o);
+		try {
+			o = new String(o.getBytes("ISO-8859-1"), "utf8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
 		JSONObject object = JSON.parseObject(o);
 		ResponseData data = new ResponseData();
-		data.setSuccessValue("1");
-		data.setResult(object.getString("res"));
-		data.setMessage(object.getString("resmsg"));
+		data.setSuccessValue("0");
+		data.setResult(object.getString("code"));
+		data.setMessage(object.getString("message"));
 		data.setRequestNo(orderId);
 		return data;
 	}
@@ -71,13 +74,18 @@ public class YuanJuHandler extends AbstractHandler {
 		data.setRetryValues(new String[] { "-2"});
 		data.setRequestNo(reqNo);
 		if (json != null) {
-			YuanJuReport rechargeReport = mapper.fromJson(json, YuanJuReport.class);
+			ZhiXinReport rechargeReport = mapper.fromJson(json, ZhiXinReport.class);
 			logger.debug(MARK + "_report_bean:" + rechargeReport.toString());
-			String ret_msg=rechargeReport.getResmsg();
-			String ret_code=String.valueOf(rechargeReport.getRes());
-			data.setMessage(ret_msg);
-			data.setResult(ret_code);
-			data.setSuccessValue("2");
+			if(rechargeReport.getData() != null) {
+				String ret_msg=rechargeReport.getData().message;
+				String ret_code=String.valueOf(rechargeReport.getData().code);
+				data.setMessage(ret_msg);
+				data.setResult(ret_code);
+			} else {
+				data.setResult("-2");
+				data.setMessage("没有data参数");
+			}
+			data.setSuccessValue("1");
 		} else {
 			data.setSuccessValue("0");
 			data.setResult("-2");
@@ -88,28 +96,17 @@ public class YuanJuHandler extends AbstractHandler {
 
 	@Override
 	public void loadParams(String paramJson) {
-		// TODO Auto-generated method stub
 		JSONDataReader reader = new JSONDataReader();
 		reader.init(paramJson);
 		rechargeUrl = reader.read("rechargeUrl");
-		username = reader.read("username");
-		key = reader.read("key");
-		secret = reader.read("secret");
+		appKey = reader.read("appkey");
+		appSecret = reader.read("appsecret");
 		reader.release();
 	}
 
 	@Override
 	public String getParamTemplate() {
-		// TODO Auto-generated method stub
-		return "{" + "\"rechargeUrl\":\"充值地址\"," + "\"username\":\"账号\"," + "\"key\":\"密钥\"," + "\"secret\":\"密码\"" + "}";
-	}
-
-	public String getArea(String productId) {
-		if(productId.endsWith("$")) {
-			return "2";
-		} else {
-			return "1";
-		}
+		return "{" + "\"rechargeUrl\":\"充值地址\"," + "\"appkey\":\"密钥\"," + "\"appsecret\":\"密码\"" + "}";
 	}
 
 }
