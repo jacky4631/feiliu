@@ -44,11 +44,7 @@ public class FYHandler extends AbstractHandler {
 
 		String o = ClientUtils.getJson(method, dto);
 		logger.debug(MARK + "_recharge_url ret:" + o);
-		try {
-			o = new String(o.getBytes("ISO-8859-1"), "utf8");
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		}
+
 		JSONObject object = JSON.parseObject(o);
 		ResponseData data = new ResponseData();
 		data.setSuccessValue("0000000");
