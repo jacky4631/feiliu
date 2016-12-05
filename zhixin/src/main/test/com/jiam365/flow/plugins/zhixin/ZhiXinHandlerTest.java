@@ -32,4 +32,9 @@ public class ZhiXinHandlerTest extends TestCase {
 
     }
 
+    public void testCallback() throws Exception {
+        String json = "{\"timestamp\":\"20161205215500\",\"sign\":\"80b93f7b1cb9a9f6aa197ca8da19ecfe\",\"data\":{\"orderid\":\"f4a3218f64114181b8b6a4609ac26333\",\"mobile\":\"15257126879\",\"message\":\"充值成功\",\"code\":\"1\",\"messageid\":\"201612052134241000001\"}}";
+        handler.callback(json, "");
+    }
+
 }

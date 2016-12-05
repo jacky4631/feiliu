@@ -68,6 +68,10 @@ public class ZhiXinHandler extends AbstractHandler {
 	public ResponseData queryReport(RechargeRequest rechargeRequest, String reqNo) throws ChannelConnectionException {
 		String json = TradeReportServiceProxy.fetch(reqNo);
 		logger.debug(MARK + "_report_json:" + json);
+		return callback(json, reqNo);
+	}
+
+	public ResponseData callback(String json, String reqNo) {
 		ResponseData data = new ResponseData();
 		data.setRetryValues(new String[] { "-2"});
 		data.setRequestNo(reqNo);

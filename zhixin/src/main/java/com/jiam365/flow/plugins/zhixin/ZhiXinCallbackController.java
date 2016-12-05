@@ -1,6 +1,10 @@
 package com.jiam365.flow.plugins.zhixin;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.jiam365.flow.sdk.support.TradeReportServiceProxy;
+import com.jiam365.modules.mapper.JsonMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -39,9 +43,23 @@ public class ZhiXinCallbackController {
 
         if (!StringUtils.isEmpty(json)) {
             try {
-                ZhiXinReport report = ClientUtils.getJsonMapper().fromJson(json, ZhiXinReport.class);
-                if(report.getData() != null) {
-                    TradeReportServiceProxy.save(report.getData().messageid, json);
+                ZhiXinReport report = new ZhiXinReport();
+                ZhiXinReport.DataReport dataReport = report.new DataReport();
+                JSONObject jsonObject = JSON.parseObject(json);
+                report.setSign(jsonObject.getString("sign"));
+                report.setAppkey(jsonObject.getString("appkey"));
+                report.setTimestamp(jsonObject.getString("timestamp"));
+                report.setData(dataReport);
+                JSONArray dataArray = jsonObject.getJSONArray("data");
+                int dataSize = dataArray.size();
+                if(dataSize > 0) {
+                    JSONObject dataObject = dataArray.getJSONObject(0);
+                    dataReport.code = dataObject.getString("code");
+                    dataReport.message = dataObject.getString("message");
+                    dataReport.messageid = dataObject.getString("messageid");
+                    dataReport.mobile = dataObject.getString("mobile");
+                    dataReport.orderid = dataObject.getString("orderid");
+                    TradeReportServiceProxy.save(report.getData().messageid, ClientUtils.getJsonMapper().toJson(report));
                     return "ok";
                 }
                return "fail";
