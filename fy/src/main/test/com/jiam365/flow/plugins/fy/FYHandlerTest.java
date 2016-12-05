@@ -1,4 +1,4 @@
-package com.jiam365.flow.plugins.zhixin;
+package com.jiam365.flow.plugins.fy;
 
 import com.jiam365.flow.sdk.RechargeRequest;
 import com.jiam365.flow.sdk.response.ResponseData;
@@ -7,12 +7,12 @@ import junit.framework.TestCase;
 /**
  * Created by 沈吉 on 2016/12/2.
  */
-public class ZhiXinHandlerTest extends TestCase {
-    private ZhiXinHandler handler;
+public class FYHandlerTest extends TestCase {
+    private FYHandler handler;
     public void setUp() throws Exception {
         super.setUp();
-        handler = new ZhiXinHandler();
-        handler.loadParams("{" + "\"rechargeUrl\":\"http://118.178.94.190:8081/tflow/api/flowOrder\"," + "\"appkey\":\"c2c7edba6ef548678de96c785be1cdd6\"," + "\"appsecret\":\"qFM1k7sFy3okoe66nTo3r1eM1Nv8onE9m9JP5565VE5PMGmfYuwKZRpq83Xz2KAG\"" + "}");
+        handler = new FYHandler();
+        handler.loadParams("{" + "\"rechargeUrl\":\"http://120.25.62.190/dc/flow/cz_new\"," + "\"username\":\"henha\"," + "\"password\":\"henha123\"," + "\"key\":\"ae139edc8ae54e228294408a09379f9e\"" + "}");
 
     }
 
@@ -22,7 +22,7 @@ public class ZhiXinHandlerTest extends TestCase {
 
     public void testRecharge() throws Exception {
         RechargeRequest rechargeRequest = new RechargeRequest();
-        rechargeRequest.setProductId("123");
+        rechargeRequest.setOrigiProductId("10");
         rechargeRequest.setMobile("13402565476");
         ResponseData responseData = handler.recharge(rechargeRequest);
         System.out.println(responseData);

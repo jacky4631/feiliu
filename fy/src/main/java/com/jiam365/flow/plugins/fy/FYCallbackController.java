@@ -1,4 +1,4 @@
-package com.jiam365.flow.plugins.zhixin;
+package com.jiam365.flow.plugins.fy;
 
 import com.jiam365.flow.sdk.support.TradeReportServiceProxy;
 import org.slf4j.Logger;
@@ -13,9 +13,9 @@ import java.io.BufferedReader;
 
 @Controller
 @RequestMapping(value = "/report")
-public class ZhiXinCallbackController {
+public class FYCallbackController {
 
-    private static Logger logger = LoggerFactory.getLogger(ZhiXinCallbackController.class);
+    private static Logger logger = LoggerFactory.getLogger(FYCallbackController.class);
 
     @RequestMapping(value = "charge")
     @ResponseBody
@@ -35,21 +35,18 @@ public class ZhiXinCallbackController {
     }
 
     public String parse(String json) {
-        logger.debug("收到志新公司回调报文 {}", json);
+        logger.debug("收到FY公司回调报文 {}", json);
 
         if (!StringUtils.isEmpty(json)) {
             try {
-                ZhiXinReport report = ClientUtils.getJsonMapper().fromJson(json, ZhiXinReport.class);
-                if(report.getData() != null) {
-                    TradeReportServiceProxy.save(report.getData().messageid, json);
-                    return "ok";
-                }
-               return "fail";
+                FYReport report = ClientUtils.getJsonMapper().fromJson(json, FYReport.class);
+                TradeReportServiceProxy.save(report.getOrderid(), json);
+                return "000000";
             } catch (Exception e) {
-                return "fail";
+                return "999999";
             }
         } else {
-            return "fail";
+            return "999999";
         }
     }
 }
