@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -51,7 +52,7 @@ public class ZhiXinHandler extends AbstractHandler {
 		String o = ClientUtils.getJson(method);
 		logger.debug(MARK + "_recharge_url ret:" + o);
 		try {
-			o = new String(o.getBytes("ISO-8859-1"), "utf8");
+			o = URLDecoder.decode(o,"UTF-8");
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
