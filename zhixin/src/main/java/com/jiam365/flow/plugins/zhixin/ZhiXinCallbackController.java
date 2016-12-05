@@ -17,7 +17,7 @@ public class ZhiXinCallbackController {
 
     private static Logger logger = LoggerFactory.getLogger(ZhiXinCallbackController.class);
 
-    @RequestMapping(value = "charge")
+    @RequestMapping(value = "zhixin")
     @ResponseBody
     public String callback(HttpServletRequest request) {
         StringBuffer jb = new StringBuffer();

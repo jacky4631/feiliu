@@ -32,7 +32,7 @@ public class ZhiXinHandler extends AbstractHandler {
 		OrderCreateRequestDTO dto = new OrderCreateRequestDTO();
 		dto.setAppkey(appKey);
 		dto.setTimestamp(dateFormat.format(new Date()));
-		dto.setPackageid(request.getProductId());
+		dto.setPackageid(request.getOrigiProductId());
 		dto.setMobiles(request.getMobile());
 		String orderId = StringIdGenerator.get();
 		dto.setMessageid(orderId);
