@@ -17,7 +17,7 @@ public class FYCallbackController {
 
     private static Logger logger = LoggerFactory.getLogger(FYCallbackController.class);
 
-    @RequestMapping(value = "charge")
+    @RequestMapping(value = "fy")
     @ResponseBody
     public String callback(HttpServletRequest request) {
         StringBuffer jb = new StringBuffer();
