@@ -47,7 +47,7 @@ public class FYHandler extends AbstractHandler {
 
 		JSONObject object = JSON.parseObject(o);
 		ResponseData data = new ResponseData();
-		data.setSuccessValue("0000000");
+		data.setSuccessValue("000000");
 		data.setResult(object.getString("code"));
 		data.setMessage(object.getString("msg"));
 		data.setRequestNo(orderId);

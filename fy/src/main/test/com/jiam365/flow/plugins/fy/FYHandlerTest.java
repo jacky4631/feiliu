@@ -26,6 +26,7 @@ public class FYHandlerTest extends TestCase {
         rechargeRequest.setMobile("13402565476");
         ResponseData responseData = handler.recharge(rechargeRequest);
         System.out.println(responseData);
+//        assertEquals("000000",responseData.getResult() );
     }
 
     public void testQueryReport() throws Exception {
