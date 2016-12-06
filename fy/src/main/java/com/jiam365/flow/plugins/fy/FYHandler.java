@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -64,15 +65,21 @@ public class FYHandler extends AbstractHandler {
 		if (json != null) {
 			FYReport rechargeReport = ClientUtils.getJsonMapper().fromJson(json, FYReport.class);
 			logger.debug(MARK + "_report_bean:" + rechargeReport.toString());
-			String ret_msg=rechargeReport.getMsg();
+			String ret_msg= null;
+			try {
+				ret_msg = URLDecoder.decode(rechargeReport.getMsg(),"UTF-8");
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			}
 			String ret_code=String.valueOf(rechargeReport.getCode());
 			data.setMessage(ret_msg);
 			data.setResult(ret_code);
 			data.setSuccessValue("111111");
 		} else {
-			data.setSuccessValue("111111");
-			data.setResult("999999");
-			data.setMessage("没有回调");
+            //下面的值千万不能改
+            data.setSuccessValue("0");
+            data.setResult("-2");
+            data.setMessage("没有回调");
 		}
 		return data;
 	}

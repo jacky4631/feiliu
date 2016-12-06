@@ -55,16 +55,17 @@ public class FYCallbackController {
                     }else if("orderid".equals(key)) {
                         report.setOrderid(value);
                     }else if("msg".equals(key)) {
-                        report.setMsg(URLDecoder.decode(value,"UTF-8"));
+                        report.setMsg(value);
                     }
                 }
+                logger.debug("收到FY公司回调报文 解析后 {}", ClientUtils.getJsonMapper().toJson(report));
                 TradeReportServiceProxy.save(report.getOrderid(), ClientUtils.getJsonMapper().toJson(report));
-                return "000000";
+                return "{ \"code\":\"000000\" }";
             } catch (Exception e) {
-                return "999999";
+                return "{ \"code\":\"999999\" }";
             }
         } else {
-            return "999999";
+            return "{ \"code\":\"999999\" }";
         }
     }
 }
