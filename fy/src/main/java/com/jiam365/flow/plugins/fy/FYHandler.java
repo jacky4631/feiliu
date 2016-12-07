@@ -76,7 +76,7 @@ public class FYHandler extends AbstractHandler {
 			data.setResult(ret_code);
 			data.setSuccessValue("111111");
 		} else {
-            //下面的值千万不能改
+            //下面的值千万不能改 data.setRetryValues(new String[] { "-2"}) data.setResult("-2"); 值相同说明需要重试
             data.setSuccessValue("0");
             data.setResult("-2");
             data.setMessage("没有回调");
