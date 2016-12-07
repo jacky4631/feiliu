@@ -77,6 +77,8 @@ public class FYHandler extends AbstractHandler {
 			data.setSuccessValue("111111");
 		} else {
             //下面的值千万不能改 data.setRetryValues(new String[] { "-2"}) data.setResult("-2"); 值相同说明需要重试
+			//可以直接使用throw new ChannelConnectionException("");系统会默认重试
+			//如果throw new ChannelConnectionException("",false);订单会立即失败
             data.setSuccessValue("0");
             data.setResult("-2");
             data.setMessage("没有回调");
