@@ -1,6 +1,6 @@
-package com.jiam365.flow.plugins.zhixin;
+package com.jiam365.flow.plugins.qiweishu;
 
-public class ZhiXinReport {
+public class QiweishuReport {
 
 	private String appkey;
 	private String timestamp;
@@ -41,7 +41,7 @@ public class ZhiXinReport {
 
 	@Override
 	public String toString() {
-		return "ZhiXinReport{" +
+		return "QiweishuReport{" +
 				"appkey='" + appkey + '\'' +
 				", timestamp='" + timestamp + '\'' +
 				", sign='" + sign + '\'' +

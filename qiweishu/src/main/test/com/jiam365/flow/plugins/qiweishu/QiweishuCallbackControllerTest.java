@@ -1,4 +1,4 @@
-package com.jiam365.flow.plugins.zhixin;
+package com.jiam365.flow.plugins.qiweishu;
 
 import com.jiam365.modules.mapper.JsonMapper;
 import junit.framework.TestCase;
@@ -6,11 +6,11 @@ import junit.framework.TestCase;
 /**
  * Created by 沈吉 on 2016/12/2.
  */
-public class ZhiXinCallbackControllerTest extends TestCase {
-    private ZhiXinCallbackController controller;
+public class QiweishuCallbackControllerTest extends TestCase {
+    private QiweishuCallbackController controller;
     public void setUp() throws Exception {
         super.setUp();
-        controller = new ZhiXinCallbackController();
+        controller = new QiweishuCallbackController();
     }
 
     public void tearDown() throws Exception {
@@ -18,11 +18,11 @@ public class ZhiXinCallbackControllerTest extends TestCase {
     }
 
     public void testParse() throws Exception {
-        ZhiXinReport report = new ZhiXinReport();
+        QiweishuReport report = new QiweishuReport();
         report.setAppkey("c2c7edba6ef548678de96c785be1cdd6");
         report.setTimestamp("");
         report.setSign("");
-        ZhiXinReport.DataReport dataReport = report.new DataReport();
+        QiweishuReport.DataReport dataReport = report.new DataReport();
         dataReport.message = "message";
         dataReport.mobile = "13402565476";
         dataReport.orderid = "orderid";

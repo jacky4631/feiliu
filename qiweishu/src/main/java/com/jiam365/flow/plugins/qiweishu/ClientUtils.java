@@ -1,4 +1,4 @@
-package com.jiam365.flow.plugins.zhixin;
+package com.jiam365.flow.plugins.qiweishu;
 
 
 import com.jiam365.modules.mapper.JsonMapper;
@@ -11,6 +11,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
@@ -33,36 +34,43 @@ public class ClientUtils {
 
 
     public static String getJson(HttpPost method, Object dto) {
-    	 CloseableHttpClient httpClient = buildHttpClient();
-         if (dto != null) {
-             method.setHeader("header", "Content-Type: application/x-www-form-urlencoded");
-             List<NameValuePair> list=new ArrayList<>();
-             HttpEntity requestEntity=null;
- 			try {
- 				requestEntity = new UrlEncodedFormEntity(list,"utf-8");
- 			} catch (UnsupportedEncodingException e) {
- 				// TODO Auto-generated catch block
- 				e.printStackTrace();
- 			}
-             method.setEntity(requestEntity);
-         }
-         try {
-             HttpResponse response = httpClient.execute(method);
-             int status = response.getStatusLine().getStatusCode();
-             if (status < 200 || status >= 300) {
-                 throw new ClientProtocolException("远程状态码错误: status=" + status);
-             }
-             HttpEntity entity = response.getEntity();
-             String body = (entity != null) ? EntityUtils.toString(entity) : null;
-             return body;
-         } catch(Exception e) {
-             throw new RuntimeException(e);
-         } finally {
-             try {
-                 httpClient.close();
-             } catch (IOException e) {
-             }
-         }
+
+        CloseableHttpClient httpClient = buildHttpClient();
+        if (dto != null) {
+//             method.setHeader("header", "Content-Type: application/x-www-form-urlencoded");
+            List<NameValuePair> list=new ArrayList<>();
+            list.add(new BasicNameValuePair("customerOrderId", ((OrderCreateRequestDTO)dto).getCustomerOrderId()));
+            list.add(new BasicNameValuePair("enterpriseCode",((OrderCreateRequestDTO)dto).getEnterpriseCode()));
+            list.add(new BasicNameValuePair("productCode", ((OrderCreateRequestDTO)dto).getProductCode()));
+            list.add(new BasicNameValuePair("mobile", ((OrderCreateRequestDTO)dto).getMobile()));
+            list.add(new BasicNameValuePair("orderTime", ((OrderCreateRequestDTO)dto).getOrderTime()));
+            list.add(new BasicNameValuePair("sign", ((OrderCreateRequestDTO)dto).getSign()));
+            HttpEntity requestEntity=null;
+            try {
+                requestEntity = new UrlEncodedFormEntity(list,"utf-8");
+            } catch (UnsupportedEncodingException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            method.setEntity(requestEntity);
+        }
+        try {
+            HttpResponse response = httpClient.execute(method);
+            int status = response.getStatusLine().getStatusCode();
+            if (status < 200 || status >= 300) {
+                throw new ClientProtocolException("远程状态码错误: status=" + status);
+            }
+            HttpEntity entity = response.getEntity();
+            String body = (entity != null) ? EntityUtils.toString(entity) : null;
+            return body;
+        } catch(Exception e) {
+            throw new RuntimeException(e);
+        } finally {
+            try {
+                httpClient.close();
+            } catch (IOException e) {
+            }
+        }
 
      }
    
@@ -97,10 +105,4 @@ public class ClientUtils {
         return httpclient;
     }
 
-    public static JsonMapper getJsonMapper(){
-        if(mapper == null) {
-            mapper = JsonMapper.nonEmptyMapper();
-        }
-        return mapper;
-    }
 }

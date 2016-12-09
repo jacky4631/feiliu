@@ -1,4 +1,4 @@
-package com.jiam365.flow.plugins.zhixin;
+package com.jiam365.flow.plugins.qiweishu;
 
 import com.jiam365.flow.sdk.RechargeRequest;
 import com.jiam365.flow.sdk.response.ResponseData;
@@ -7,11 +7,11 @@ import junit.framework.TestCase;
 /**
  * Created by 沈吉 on 2016/12/2.
  */
-public class ZhiXinHandlerTest extends TestCase {
-    private ZhiXinHandler handler;
+public class QiweishuHandlerTest extends TestCase {
+    private QiweishuHandler handler;
     public void setUp() throws Exception {
         super.setUp();
-        handler = new ZhiXinHandler();
+        handler = new QiweishuHandler();
         handler.loadParams("{" + "\"rechargeUrl\":\"http://118.178.94.190:8081/tflow/api/flowOrder\"," + "\"appkey\":\"c2c7edba6ef548678de96c785be1cdd6\"," + "\"appsecret\":\"qFM1k7sFy3okoe66nTo3r1eM1Nv8onE9m9JP5565VE5PMGmfYuwKZRpq83Xz2KAG\"" + "}");
 
     }
