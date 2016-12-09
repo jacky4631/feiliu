@@ -33,7 +33,7 @@ public class XinkedangHandlerTest extends TestCase {
         System.out.println(responseData);
     }
 
-    public void testQueryReport() throws Exception {
+    public void testQueryReport() {
 
     }
 

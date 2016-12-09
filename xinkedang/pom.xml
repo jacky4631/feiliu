@@ -196,6 +196,6 @@
         <!-- spring 的基本依赖 结束 -->  
   </dependencies>
   <build>
-    <finalName>flow-adk</finalName>
+    <finalName>ssw-xinkedang</finalName>
   </build>
 </project>

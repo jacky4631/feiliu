@@ -1,6 +1,5 @@
 package com.jiam365.flow.plugins.xinkedang;
 
-import com.jiam365.modules.mapper.JsonMapper;
 import junit.framework.TestCase;
 
 /**
@@ -18,20 +17,20 @@ public class XinkedangCallbackControllerTest extends TestCase {
     }
 
     public void testParse() throws Exception {
-        XinkedangReport report = new XinkedangReport();
-        report.setAppkey("c2c7edba6ef548678de96c785be1cdd6");
-        report.setTimestamp("");
-        report.setSign("");
-        XinkedangReport.DataReport dataReport = report.new DataReport();
-        dataReport.message = "message";
-        dataReport.mobile = "13402565476";
-        dataReport.orderid = "orderid";
-        dataReport.code = "1";
-        dataReport.messageid = "messageid";
-        report.setData(dataReport);
-        JsonMapper mapper = new JsonMapper();
-        String res = controller.parse(mapper.toJson(report));
-        assertEquals(res, "ok");
+        String ret = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\">\n" +
+                " <soap:Body>\n" +
+                "  <ns2:notice xmlns:ns2=\"http://callback.webservice.wujun.com/\">\n" +
+                "   <ORDER>\n" +
+                "    <SERIAL_NUMBER>73175072200</SERIAL_NUMBER>\n" +
+                "    <ORDER_ID>N2014050418063489011248</ORDER_ID>\n" +
+                "    <FS_CODE>0000</FS_CODE>\n" +
+                "    <FS_MESSAGE>成功</FS_MESSAGE>\n" +
+                "   </ORDER>\n" +
+                "  </ns2:notice>\n" +
+                " </soap:Body>\n" +
+                "</soap:Envelope>\n";
+        String res = controller.parse(ret);
+        System.out.println(res);
     }
 
 }

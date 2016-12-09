@@ -27,7 +27,7 @@ public class OrderCreateRequestDTO {
 		this.data = data;
 	}
 
-	public void generateSignature(String date, String phone, String snum, String flowType, String size, String notifyUrl, String secretKey) {
+	public void generateSignature(String date, String phone, String snum, String flowType, String size, String notifyUrl, String secretKey) throws Exception{
 		DesDto desDto = new DesDto();
 		desDto.mid = this.mid;
 		desDto.date = date;
@@ -37,7 +37,7 @@ public class OrderCreateRequestDTO {
 		desDto.size = size;
 		desDto.notifyUrl = notifyUrl;
 		String desStr = ClientUtils.getJsonMapper().toJson(desDto);
-		this.setData(DESUtils.encrypt(desStr, secretKey));
+		this.setData(DesUtils.encrypt(desStr, secretKey));
 	}
 	public class DesDto{
 		public String mid;
