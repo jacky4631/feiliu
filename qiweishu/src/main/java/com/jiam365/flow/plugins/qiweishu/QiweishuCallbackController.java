@@ -1,8 +1,6 @@
 package com.jiam365.flow.plugins.qiweishu;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import com.jiam365.flow.sdk.support.TradeReportServiceProxy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,7 +18,7 @@ public class QiweishuCallbackController {
 
     private static Logger logger = LoggerFactory.getLogger(QiweishuCallbackController.class);
 
-    @RequestMapping(value = "zhixin")
+    @RequestMapping(value = "qiweishu")
     @ResponseBody
     public String callback(HttpServletRequest request) {
         StringBuffer jb = new StringBuffer();
@@ -38,35 +36,20 @@ public class QiweishuCallbackController {
     }
 
     public String parse(String json) {
-        logger.debug("收到志新公司回调报文 {}", json);
+        logger.debug("收到七位数公司回调报文 {}", json);
 
         if (!StringUtils.isEmpty(json)) {
-            try {
-                QiweishuReport report = new QiweishuReport();
-                QiweishuReport.DataReport dataReport = report.new DataReport();
-                JSONObject jsonObject = JSON.parseObject(json);
-                report.setSign(jsonObject.getString("sign"));
-                report.setAppkey(jsonObject.getString("appkey"));
-                report.setTimestamp(jsonObject.getString("timestamp"));
-                report.setData(dataReport);
-                JSONArray dataArray = jsonObject.getJSONArray("data");
-                int dataSize = dataArray.size();
-                if(dataSize > 0) {
-                    JSONObject dataObject = dataArray.getJSONObject(0);
-                    dataReport.code = dataObject.getString("code");
-                    dataReport.message = dataObject.getString("message");
-                    dataReport.messageid = dataObject.getString("messageid");
-                    dataReport.mobile = dataObject.getString("mobile");
-                    dataReport.orderid = dataObject.getString("orderid");
-                    TradeReportServiceProxy.save(report.getData().messageid, ClientUtils.getJsonMapper().toJson(report));
-                    return "ok";
-                }
-               return "fail";
-            } catch (Exception e) {
-                return "fail";
+            QiweishuReport report = JSON.parseObject(json, QiweishuReport.class);
+            if(report != null) {
+                TradeReportServiceProxy.save(report.getOrderId(), json);
+                return "{\"success\":true}";
+            } else {
+                return "{\"success\":false,\"error\":\"报文无法解析\"}";
             }
+
+
         } else {
-            return "fail";
+            return "{\"success\":false,\"error\":\"报文为空\"}";
         }
     }
 }

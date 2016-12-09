@@ -1,8 +1,5 @@
 package com.jiam365.flow.plugins.qiweishu;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
-
 /**
  * Created by ken on 15/12/13.
  */

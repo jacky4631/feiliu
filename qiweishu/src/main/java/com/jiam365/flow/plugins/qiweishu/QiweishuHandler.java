@@ -1,22 +1,17 @@
 package com.jiam365.flow.plugins.qiweishu;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.jiam365.flow.sdk.AbstractHandler;
 import com.jiam365.flow.sdk.ChannelConnectionException;
 import com.jiam365.flow.sdk.RechargeRequest;
-import com.jiam365.flow.sdk.response.JSONDataReader;
 import com.jiam365.flow.sdk.response.ResponseData;
 import com.jiam365.flow.sdk.support.TradeReportServiceProxy;
 import com.jiam365.modules.utils.StringIdGenerator;
-import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.util.TextUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -63,38 +58,27 @@ public class QiweishuHandler extends AbstractHandler {
     }
 
     public ResponseData callback(String json, String reqNo) {
-        ResponseData data = new ResponseData();
-        data.setRetryValues(new String[]{"-2"});
-        data.setRequestNo(reqNo);
-        if (json != null) {
-            QiweishuReport rechargeReport = ClientUtils.getJsonMapper().fromJson(json, QiweishuReport.class);
-            logger.debug(MARK + "_report_bean:" + rechargeReport.toString());
-            if (rechargeReport.getData() != null) {
-                String ret_msg = rechargeReport.getData().message;
-                String ret_code = String.valueOf(rechargeReport.getData().code);
-                data.setMessage(ret_msg);
-                data.setResult(ret_code);
-            } else {
-                data.setResult("-2");
-                data.setMessage("没有data参数");
-            }
-            data.setSuccessValue("1");
+        if (TextUtils.isEmpty(json)) {
+            throw new ChannelConnectionException("");
         } else {
-            data.setSuccessValue("0");
-            data.setResult("-2");
-            data.setMessage("没有回调");
+            ResponseData data = new ResponseData();
+            data.setRequestNo(reqNo);
+            QiweishuReport rechargeReport = JSON.parseObject(json, QiweishuReport.class);
+            String ret_msg = rechargeReport.getReason();
+            String ret_code = rechargeReport.getStatus();
+            data.setMessage(ret_msg);
+            data.setResult(ret_code);
+            data.setSuccessValue("1");
+            return data;
         }
-        return data;
     }
 
     @Override
     public void loadParams(String paramJson) {
-        JSONDataReader reader = new JSONDataReader();
-        reader.init(paramJson);
-        rechargeUrl = reader.read("rechargeUrl");
-        enterpriseCode = reader.read("enterpriseCode");
-        password = reader.read("appsecret");
-        reader.release();
+        Params params = JSON.parseObject(paramJson, Params.class);
+        rechargeUrl = params.getRechargeUrl();
+        enterpriseCode = params.getEnterpriseCode();
+        password = params.getPassword();
     }
 
     @Override

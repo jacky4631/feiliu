@@ -12,7 +12,7 @@ public class QiweishuHandlerTest extends TestCase {
     public void setUp() throws Exception {
         super.setUp();
         handler = new QiweishuHandler();
-        handler.loadParams("{" + "\"rechargeUrl\":\"http://118.178.94.190:8081/tflow/api/flowOrder\"," + "\"appkey\":\"c2c7edba6ef548678de96c785be1cdd6\"," + "\"appsecret\":\"qFM1k7sFy3okoe66nTo3r1eM1Nv8onE9m9JP5565VE5PMGmfYuwKZRpq83Xz2KAG\"" + "}");
+        handler.loadParams("{" + "\"rechargeUrl\":\"http://114.55.111.129/flux/httpOrder.action\"," + "\"enterpriseCode\":\"E100183\"," + "\"password\":\"9i4avAdF\"" + "}");
 
     }
 
@@ -22,7 +22,7 @@ public class QiweishuHandlerTest extends TestCase {
 
     public void testRecharge() throws Exception {
         RechargeRequest rechargeRequest = new RechargeRequest();
-        rechargeRequest.setProductId("123");
+        rechargeRequest.setOrigiProductId("P0001");
         rechargeRequest.setMobile("13402565476");
         ResponseData responseData = handler.recharge(rechargeRequest);
         System.out.println(responseData);

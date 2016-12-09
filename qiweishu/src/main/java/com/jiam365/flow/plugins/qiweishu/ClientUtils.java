@@ -1,7 +1,6 @@
 package com.jiam365.flow.plugins.qiweishu;
 
 
-import com.jiam365.modules.mapper.JsonMapper;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -20,7 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ClientUtils {
-    private static JsonMapper mapper;
 
     public static HttpPost getPostMethod(String rechargeUrl) {
         HttpPost httppost = new HttpPost(rechargeUrl);
@@ -86,8 +84,6 @@ public class ClientUtils {
             HttpEntity entity = response.getEntity();
             String body = (entity != null) ? EntityUtils.toString(entity) : null;
 
-            //System.out.println("res get: " + body);
-//            JSONObject object = JSON.parseObject(body);
             return body;
         } catch(Exception e) {
             throw new RuntimeException(e);
