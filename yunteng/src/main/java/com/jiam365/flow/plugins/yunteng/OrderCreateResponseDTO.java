@@ -5,22 +5,40 @@ package com.jiam365.flow.plugins.yunteng;
  */
 public class OrderCreateResponseDTO {
 	
-	private String code;
-	private String message;
+	private String orderId;
+	private String channelOrderId;
+	private String status;
+	private String failReason;
 
-	public String getCode() {
-		return code;
+	public String getOrderId() {
+		return orderId;
 	}
 
-	public void setCode(String code) {
-		this.code = code;
+	public void setOrderId(String orderId) {
+		this.orderId = orderId;
 	}
 
-	public String getMessage() {
-		return message;
+	public String getChannelOrderId() {
+		return channelOrderId;
 	}
 
-	public void setMessage(String message) {
-		this.message = message;
+	public void setChannelOrderId(String channelOrderId) {
+		this.channelOrderId = channelOrderId;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public String getFailReason() {
+		return failReason;
+	}
+
+	public void setFailReason(String failReason) {
+		this.failReason = failReason;
 	}
 }

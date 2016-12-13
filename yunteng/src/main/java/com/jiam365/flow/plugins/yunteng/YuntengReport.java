@@ -2,34 +2,25 @@ package com.jiam365.flow.plugins.yunteng;
 
 public class YuntengReport {
 
-	private String orderNo;
-	private String orderNumber;
-	private String mobile;
+	private String orderId;
+	private String channelOrderId;
 	private String status;
-	private String message;
+	private String failReason;
 
-	public String getOrderNo() {
-		return orderNo;
+	public String getOrderId() {
+		return orderId;
 	}
 
-	public void setOrderNo(String orderNo) {
-		this.orderNo = orderNo;
+	public void setOrderId(String orderId) {
+		this.orderId = orderId;
 	}
 
-	public String getOrderNumber() {
-		return orderNumber;
+	public String getChannelOrderId() {
+		return channelOrderId;
 	}
 
-	public void setOrderNumber(String orderNumber) {
-		this.orderNumber = orderNumber;
-	}
-
-	public String getMobile() {
-		return mobile;
-	}
-
-	public void setMobile(String mobile) {
-		this.mobile = mobile;
+	public void setChannelOrderId(String channelOrderId) {
+		this.channelOrderId = channelOrderId;
 	}
 
 	public String getStatus() {
@@ -40,11 +31,11 @@ public class YuntengReport {
 		this.status = status;
 	}
 
-	public String getMessage() {
-		return message;
+	public String getFailReason() {
+		return failReason;
 	}
 
-	public void setMessage(String message) {
-		this.message = message;
+	public void setFailReason(String failReason) {
+		this.failReason = failReason;
 	}
 }

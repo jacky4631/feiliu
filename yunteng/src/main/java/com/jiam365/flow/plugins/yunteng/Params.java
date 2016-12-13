@@ -5,8 +5,9 @@ package com.jiam365.flow.plugins.yunteng;
  */
 public class Params {
     private String rechargeUrl;
-    private String account;
+    private String appid;
     private String apiKey;
+    private String callbackUrl;
 
     public String getRechargeUrl() {
         return rechargeUrl;
@@ -16,12 +17,12 @@ public class Params {
         this.rechargeUrl = rechargeUrl;
     }
 
-    public String getAccount() {
-        return account;
+    public String getAppid() {
+        return appid;
     }
 
-    public void setAccount(String account) {
-        this.account = account;
+    public void setAppid(String appid) {
+        this.appid = appid;
     }
 
     public String getApiKey() {
@@ -30,5 +31,13 @@ public class Params {
 
     public void setApiKey(String apiKey) {
         this.apiKey = apiKey;
+    }
+
+    public String getCallbackUrl() {
+        return callbackUrl;
+    }
+
+    public void setCallbackUrl(String callbackUrl) {
+        this.callbackUrl = callbackUrl;
     }
 }

@@ -1,6 +1,7 @@
 package com.jiam365.flow.plugins.yunteng;
 
 
+import com.alibaba.fastjson.JSON;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -8,12 +9,15 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 public class ClientUtils {
@@ -33,16 +37,15 @@ public class ClientUtils {
 
         CloseableHttpClient httpClient = buildHttpClient();
         if (dto != null) {
-            List<NameValuePair> list = new ArrayList<>();
-//            list.add(new BasicNameValuePair("customerOrderId", ((OrderCreateRequestDTO)dto).getCustomerOrderId()));
-//            list.add(new BasicNameValuePair("enterpriseCode",((OrderCreateRequestDTO)dto).getEnterpriseCode()));
-//            list.add(new BasicNameValuePair("productCode", ((OrderCreateRequestDTO)dto).getProductCode()));
+//            List<NameValuePair> list = new ArrayList<>();
+//            list.add(new BasicNameValuePair("channelOrderId", ((OrderCreateRequestDTO)dto).getChannelOrderId()));
+//            list.add(new BasicNameValuePair("amount",String.valueOf(((OrderCreateRequestDTO)dto).getAmount())));
 //            list.add(new BasicNameValuePair("mobile", ((OrderCreateRequestDTO)dto).getMobile()));
-//            list.add(new BasicNameValuePair("orderTime", ((OrderCreateRequestDTO)dto).getOrderTime()));
-//            list.add(new BasicNameValuePair("sign", ((OrderCreateRequestDTO)dto).getSign()));
+//            list.add(new BasicNameValuePair("callbackUrl", ((OrderCreateRequestDTO)dto).getCallbackUrl()));
             HttpEntity requestEntity = null;
             try {
-                requestEntity = new UrlEncodedFormEntity(list, "utf-8");
+//                requestEntity = new UrlEncodedFormEntity(list, "utf-8");
+                requestEntity = new StringEntity(Base64.getEncoder().encodeToString(JSON.toJSONString(dto).getBytes()));
             } catch (UnsupportedEncodingException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();

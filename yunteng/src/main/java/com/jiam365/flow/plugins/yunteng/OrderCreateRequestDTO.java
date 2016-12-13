@@ -1,51 +1,35 @@
 package com.jiam365.flow.plugins.yunteng;
 
+import com.alibaba.fastjson.JSON;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+
+import java.util.Base64;
 
 /**
  * Created by ken on 15/12/13.
  */
 public class OrderCreateRequestDTO {
 	
-	private String action = "SingleCharge";
-	private String account;
-	private String chargetype;
-	private String orderno;
+	private String channelOrderId;
+	private int amount;
 	private String mobile;
-	private String procode;
-	private String chargesign;
+	private String callbackUrl;
 
-	public String getAction() {
-		return action;
+	public String getChannelOrderId() {
+		return channelOrderId;
 	}
 
-	public void setAction(String action) {
-		this.action = action;
+	public void setChannelOrderId(String channelOrderId) {
+		this.channelOrderId = channelOrderId;
 	}
 
-	public String getAccount() {
-		return account;
+	public int getAmount() {
+		return amount;
 	}
 
-	public void setAccount(String account) {
-		this.account = account;
-	}
-
-	public String getChargetype() {
-		return chargetype;
-	}
-
-	public void setChargetype(String chargetype) {
-		this.chargetype = chargetype;
-	}
-
-	public String getOrderno() {
-		return orderno;
-	}
-
-	public void setOrderno(String orderno) {
-		this.orderno = orderno;
+	public void setAmount(int amount) {
+		this.amount = amount;
 	}
 
 	public String getMobile() {
@@ -56,40 +40,21 @@ public class OrderCreateRequestDTO {
 		this.mobile = mobile;
 	}
 
-	public String getProcode() {
-		return procode;
+	public String getCallbackUrl() {
+		return callbackUrl;
 	}
 
-	public void setProcode(String procode) {
-		this.procode = procode;
+	public void setCallbackUrl(String callbackUrl) {
+		this.callbackUrl = callbackUrl;
 	}
 
-	public String getChargesign() {
-		return chargesign;
-	}
-
-	public void setChargesign(String chargesign) {
-		this.chargesign = chargesign;
-	}
-
-	public void generateSignature(String apiKey) {
+	public String generateSignature(String apiKey) {
 		StringBuilder sb = new StringBuilder();
-		sb.append("account=")
-				.append(account)
-				.append("&")
-				.append("mobile=")
-				.append(mobile)
-				.append("&")
-				.append("orderno=")
-				.append(orderno)
-				.append("&")
-				.append("procode=")
-				.append(procode)
-				.append("&")
-				.append("key=")
-				.append(apiKey);
-		String _signature= MD5.md5(sb.toString());
-		this.setChargesign(_signature);
+		sb.append(apiKey);
+		sb.append(Base64.getEncoder().encodeToString(JSON.toJSONBytes(this)));
+		sb.append(apiKey);
+		return MD5.md5(sb.toString());
+
 	}
 	
 

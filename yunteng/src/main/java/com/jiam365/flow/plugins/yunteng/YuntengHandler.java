@@ -8,6 +8,7 @@ import com.jiam365.flow.sdk.response.ResponseData;
 import com.jiam365.flow.sdk.support.TradeReportServiceProxy;
 import com.jiam365.modules.utils.StringIdGenerator;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.util.TextUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,53 +17,41 @@ import java.text.SimpleDateFormat;
 
 public class YuntengHandler extends AbstractHandler {
 
-    private String MARK = "MIGU";
+    private String MARK = "YUNTENG";
     private static Logger logger = LoggerFactory.getLogger(YuntengHandler.class);
     private String rechargeUrl;
-    private String account;
+    private String appid;
     private String apiKey;
+    private String callbackUrl;
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
 
-    public String getChargeType(String productId) {
-        if(productId.startsWith("NA")) {
-            return "1";//全国流量
-        } else if(productId.endsWith("$")) {
-            return "3";//省内流量
-        } else {
-            return "2";//省网流量
-        }
-    }
     @Override
     public ResponseData recharge(RechargeRequest request) throws ChannelConnectionException {
         OrderCreateRequestDTO dto = new OrderCreateRequestDTO();
         String orderId = StringIdGenerator.get();
-        dto.setAccount(account);
-        dto.setChargetype(getChargeType(request.getProductId()));
-        dto.setOrderno(orderId);
+        dto.setChannelOrderId(orderId);
+        dto.setAmount(request.getSize()*1024);
         dto.setMobile(request.getMobile());
-        dto.setProcode(request.getOrigiProductId());
-        dto.generateSignature(apiKey);
+        if(TextUtils.isEmpty(callbackUrl)){
+            callbackUrl = "http://120.55.71.93/report/yunteng";
+        }
+        dto.setCallbackUrl(callbackUrl);
+        String sign = dto.generateSignature(apiKey);
         String url="";
-        url=rechargeUrl+"?action="+dto.getAction()+
-                "&account="+dto.getAccount()+
-                "&mobile="+dto.getMobile()+
-                "&orderno="+dto.getOrderno()+
-                "&procode="+dto.getProcode()+
-                "&chargesign="+dto.getChargesign()+
-                "&chargetype="+dto.getChargetype();
+        url=rechargeUrl+"/" + appid +"?sign="+sign;
 
-        HttpGet method = ClientUtils.getGetMethod(url);
+        HttpPost method = ClientUtils.getPostMethod(url);
         logger.debug(MARK + "_recharge_url:" + url);
 
-        String o = ClientUtils.getJson(method);
+        String o = ClientUtils.getJson(method, dto);
         logger.debug(MARK + "_recharge_url ret:" + o);
 
         OrderCreateResponseDTO res = JSON.parseObject(o, OrderCreateResponseDTO.class);
         ResponseData data = new ResponseData();
-        data.setSuccessValue("1000");
-        data.setResult(res.getCode());
-        data.setMessage(res.getMessage());
-        data.setRequestNo(orderId);
+        data.setSuccessValue("0000");
+        data.setResult(res.getStatus());
+        data.setMessage(res.getFailReason());
+        data.setRequestNo(res.getOrderId());
         return data;
     }
 
@@ -75,16 +64,16 @@ public class YuntengHandler extends AbstractHandler {
 
     public ResponseData callback(String json, String reqNo) {
         if (TextUtils.isEmpty(json)) {
-            throw new ChannelConnectionException("");
+            throw new ChannelConnectionException("没有收到云腾回调");
         } else {
             ResponseData data = new ResponseData();
             data.setRequestNo(reqNo);
             YuntengReport rechargeReport = JSON.parseObject(json, YuntengReport.class);
-            String ret_msg = rechargeReport.getMessage();
+            String ret_msg = rechargeReport.getFailReason();
             String ret_code = rechargeReport.getStatus();
             data.setMessage(ret_msg);
             data.setResult(ret_code);
-            data.setSuccessValue("2");
+            data.setSuccessValue("1");
             return data;
         }
     }
@@ -93,13 +82,14 @@ public class YuntengHandler extends AbstractHandler {
     public void loadParams(String paramJson) {
         Params params = JSON.parseObject(paramJson, Params.class);
         rechargeUrl = params.getRechargeUrl();
-        account = params.getAccount();
+        appid = params.getAppid();
         apiKey = params.getApiKey();
+        callbackUrl = params.getCallbackUrl();
     }
 
     @Override
     public String getParamTemplate() {
-        return "{" + "\"rechargeUrl\":\"充值地址\"," + "\"account\":\"账号\"," + "\"apiKey\":\"密钥\"" + "}";
+        return "{" + "\"rechargeUrl\":\"充值地址\"," + "\"appid\":\"应用号\"," + "\"apiKey\":\"密钥\"," + "\"callbackUrl\":\"回调地址\"" + "}";
     }
 
 }

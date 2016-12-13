@@ -19,7 +19,7 @@ public class YuntengCallbackController {
 
     private static Logger logger = LoggerFactory.getLogger(YuntengCallbackController.class);
 
-    @RequestMapping(value = "migu")
+    @RequestMapping(value = "yunteng")
     @ResponseBody
     public String callback(HttpServletRequest request) {
         StringBuffer jb = new StringBuffer();
@@ -37,21 +37,20 @@ public class YuntengCallbackController {
     }
 
     public String parse(String json) {
-        logger.debug("收到米谷回调报文 {}", json);
+        logger.debug("收到云腾回调报文 {}", json);
 
         if (!StringUtils.isEmpty(json)) {
-            List<YuntengReport> reports = JSON.parseArray(json, YuntengReport.class);
-            if(reports != null && reports.size() > 0) {
-                YuntengReport report = reports.get(0);
-                TradeReportServiceProxy.save(report.getOrderNumber(), JSON.toJSONString(report));
-                return "ok";
+            YuntengReport report = JSON.parseObject(json, YuntengReport.class);
+            if(report != null) {
+                TradeReportServiceProxy.save(report.getOrderId(), json);
+                return "{ \" status \": \"1\" }";
             } else {
-                return "err";
+                return "{ \" status \": \"0\" }";
             }
 
 
         } else {
-            return "err";
+            return "{ \" status \": \"0\" }";
         }
     }
 }
