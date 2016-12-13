@@ -5,8 +5,8 @@ package com.jiam365.flow.plugins.migu;
  */
 public class Params {
     private String rechargeUrl;
-    private String enterpriseCode;
-    private String password;
+    private String account;
+    private String apiKey;
 
     public String getRechargeUrl() {
         return rechargeUrl;
@@ -16,19 +16,19 @@ public class Params {
         this.rechargeUrl = rechargeUrl;
     }
 
-    public String getEnterpriseCode() {
-        return enterpriseCode;
+    public String getAccount() {
+        return account;
     }
 
-    public void setEnterpriseCode(String enterpriseCode) {
-        this.enterpriseCode = enterpriseCode;
+    public void setAccount(String account) {
+        this.account = account;
     }
 
-    public String getPassword() {
-        return password;
+    public String getApiKey() {
+        return apiKey;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setApiKey(String apiKey) {
+        this.apiKey = apiKey;
     }
 }

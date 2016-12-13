@@ -12,7 +12,7 @@ public class MiguHandlerTest extends TestCase {
     public void setUp() throws Exception {
         super.setUp();
         handler = new MiguHandler();
-        handler.loadParams("{" + "\"rechargeUrl\":\"http://114.55.111.129/flux/httpOrder.action\"," + "\"enterpriseCode\":\"E100183\"," + "\"password\":\"9i4avAdF\"" + "}");
+        handler.loadParams("{" + "\"rechargeUrl\":\"http://101.201.148.20:8666/interface/Api.ashx\"," + "\"account\":\"szhh\"," + "\"apiKey\":\"2dbf29707612194a6de3dd2d3d361023\"" + "}");
 
     }
 
@@ -22,14 +22,17 @@ public class MiguHandlerTest extends TestCase {
 
     public void testRecharge() throws Exception {
         RechargeRequest rechargeRequest = new RechargeRequest();
-        rechargeRequest.setOrigiProductId("P0001");
+        rechargeRequest.setProductId("NA123456");
+        rechargeRequest.setOrigiProductId("10M");
         rechargeRequest.setMobile("13402565476");
         ResponseData responseData = handler.recharge(rechargeRequest);
         System.out.println(responseData);
     }
 
     public void testQueryReport() throws Exception {
-
+        String json = "{\"message\":\"充值成功！\",\"mobile\":\"15498785038\",\"orderNo\":\"20160331105537\",\"orderNumber\":\"201603170120000107262\",\"status\":\"2\"}";
+        ResponseData responseData = handler.callback(json, "201603170120000107262");
+        System.out.println(responseData);
     }
 
     public void testCallback() throws Exception {

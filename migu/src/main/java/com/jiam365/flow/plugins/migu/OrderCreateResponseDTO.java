@@ -5,40 +5,22 @@ package com.jiam365.flow.plugins.migu;
  */
 public class OrderCreateResponseDTO {
 	
-	private boolean success;
-	private String error;
-	private String orderId;
-	private int price;
+	private String code;
+	private String message;
 
-	public boolean isSuccess() {
-		return success;
+	public String getCode() {
+		return code;
 	}
 
-	public void setSuccess(boolean success) {
-		this.success = success;
+	public void setCode(String code) {
+		this.code = code;
 	}
 
-	public String getError() {
-		return error;
+	public String getMessage() {
+		return message;
 	}
 
-	public void setError(String error) {
-		this.error = error;
-	}
-
-	public String getOrderId() {
-		return orderId;
-	}
-
-	public void setOrderId(String orderId) {
-		this.orderId = orderId;
-	}
-
-	public int getPrice() {
-		return price;
-	}
-
-	public void setPrice(int price) {
-		this.price = price;
+	public void setMessage(String message) {
+		this.message = message;
 	}
 }

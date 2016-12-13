@@ -7,6 +7,7 @@ import com.jiam365.flow.sdk.RechargeRequest;
 import com.jiam365.flow.sdk.response.ResponseData;
 import com.jiam365.flow.sdk.support.TradeReportServiceProxy;
 import com.jiam365.modules.utils.StringIdGenerator;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.util.TextUtils;
 import org.slf4j.Logger;
@@ -17,36 +18,53 @@ import java.util.Date;
 
 public class MiguHandler extends AbstractHandler {
 
-    private String MARK = "QIWEISHU";
+    private String MARK = "MIGU";
     private static Logger logger = LoggerFactory.getLogger(MiguHandler.class);
     private String rechargeUrl;
-    private String enterpriseCode;
-    private String password;
+    private String account;
+    private String apiKey;
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
 
+    public String getChargeType(String productId) {
+        if(productId.startsWith("NA")) {
+            return "1";//全国流量
+        } else if(productId.endsWith("$")) {
+            return "3";//省内流量
+        } else {
+            return "2";//省网流量
+        }
+    }
     @Override
     public ResponseData recharge(RechargeRequest request) throws ChannelConnectionException {
         OrderCreateRequestDTO dto = new OrderCreateRequestDTO();
         String orderId = StringIdGenerator.get();
-        dto.setCustomerOrderId(orderId);
-        dto.setEnterpriseCode(enterpriseCode);
-        dto.setProductCode(request.getOrigiProductId());
+        dto.setAccount(account);
+        dto.setChargetype(getChargeType(request.getProductId()));
+        dto.setOrderno(orderId);
         dto.setMobile(request.getMobile());
-        dto.setOrderTime(dateFormat.format(new Date()));
-        dto.generateSignature(password);
+        dto.setProcode(request.getOrigiProductId());
+        dto.generateSignature(apiKey);
+        String url="";
+        url=rechargeUrl+"?action="+dto.getAction()+
+                "&account="+dto.getAccount()+
+                "&mobile="+dto.getMobile()+
+                "&orderno="+dto.getOrderno()+
+                "&procode="+dto.getProcode()+
+                "&chargesign="+dto.getChargesign()+
+                "&chargetype="+dto.getChargetype();
 
-        HttpPost method = ClientUtils.getPostMethod(rechargeUrl);
-        logger.debug(MARK + "_recharge_url:" + rechargeUrl);
+        HttpGet method = ClientUtils.getGetMethod(url);
+        logger.debug(MARK + "_recharge_url:" + url);
 
-        String o = ClientUtils.getJson(method, dto);
+        String o = ClientUtils.getJson(method);
         logger.debug(MARK + "_recharge_url ret:" + o);
 
         OrderCreateResponseDTO res = JSON.parseObject(o, OrderCreateResponseDTO.class);
         ResponseData data = new ResponseData();
-        data.setSuccessValue("true");
-        data.setResult(String.valueOf(res.isSuccess()));
-        data.setMessage(res.getError());
-        data.setRequestNo(res.getOrderId());
+        data.setSuccessValue("1000");
+        data.setResult(res.getCode());
+        data.setMessage(res.getMessage());
+        data.setRequestNo(orderId);
         return data;
     }
 
@@ -64,11 +82,11 @@ public class MiguHandler extends AbstractHandler {
             ResponseData data = new ResponseData();
             data.setRequestNo(reqNo);
             MiguReport rechargeReport = JSON.parseObject(json, MiguReport.class);
-            String ret_msg = rechargeReport.getReason();
+            String ret_msg = rechargeReport.getMessage();
             String ret_code = rechargeReport.getStatus();
             data.setMessage(ret_msg);
             data.setResult(ret_code);
-            data.setSuccessValue("1");
+            data.setSuccessValue("2");
             return data;
         }
     }
@@ -77,13 +95,13 @@ public class MiguHandler extends AbstractHandler {
     public void loadParams(String paramJson) {
         Params params = JSON.parseObject(paramJson, Params.class);
         rechargeUrl = params.getRechargeUrl();
-        enterpriseCode = params.getEnterpriseCode();
-        password = params.getPassword();
+        account = params.getAccount();
+        apiKey = params.getApiKey();
     }
 
     @Override
     public String getParamTemplate() {
-        return "{" + "\"rechargeUrl\":\"充值地址\"," + "\"enterpriseCode\":\"企业代码\"," + "\"password\":\"密码\"" + "}";
+        return "{" + "\"rechargeUrl\":\"充值地址\"," + "\"account\":\"账号\"," + "\"apiKey\":\"密钥\"" + "}";
     }
 
 }

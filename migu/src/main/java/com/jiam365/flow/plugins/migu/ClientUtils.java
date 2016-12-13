@@ -13,8 +13,7 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,17 +34,16 @@ public class ClientUtils {
 
         CloseableHttpClient httpClient = buildHttpClient();
         if (dto != null) {
-//             method.setHeader("header", "Content-Type: application/x-www-form-urlencoded");
-            List<NameValuePair> list=new ArrayList<>();
-            list.add(new BasicNameValuePair("customerOrderId", ((OrderCreateRequestDTO)dto).getCustomerOrderId()));
-            list.add(new BasicNameValuePair("enterpriseCode",((OrderCreateRequestDTO)dto).getEnterpriseCode()));
-            list.add(new BasicNameValuePair("productCode", ((OrderCreateRequestDTO)dto).getProductCode()));
-            list.add(new BasicNameValuePair("mobile", ((OrderCreateRequestDTO)dto).getMobile()));
-            list.add(new BasicNameValuePair("orderTime", ((OrderCreateRequestDTO)dto).getOrderTime()));
-            list.add(new BasicNameValuePair("sign", ((OrderCreateRequestDTO)dto).getSign()));
-            HttpEntity requestEntity=null;
+            List<NameValuePair> list = new ArrayList<>();
+//            list.add(new BasicNameValuePair("customerOrderId", ((OrderCreateRequestDTO)dto).getCustomerOrderId()));
+//            list.add(new BasicNameValuePair("enterpriseCode",((OrderCreateRequestDTO)dto).getEnterpriseCode()));
+//            list.add(new BasicNameValuePair("productCode", ((OrderCreateRequestDTO)dto).getProductCode()));
+//            list.add(new BasicNameValuePair("mobile", ((OrderCreateRequestDTO)dto).getMobile()));
+//            list.add(new BasicNameValuePair("orderTime", ((OrderCreateRequestDTO)dto).getOrderTime()));
+//            list.add(new BasicNameValuePair("sign", ((OrderCreateRequestDTO)dto).getSign()));
+            HttpEntity requestEntity = null;
             try {
-                requestEntity = new UrlEncodedFormEntity(list,"utf-8");
+                requestEntity = new UrlEncodedFormEntity(list, "utf-8");
             } catch (UnsupportedEncodingException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
@@ -61,7 +59,7 @@ public class ClientUtils {
             HttpEntity entity = response.getEntity();
             String body = (entity != null) ? EntityUtils.toString(entity) : null;
             return body;
-        } catch(Exception e) {
+        } catch (Exception e) {
             throw new RuntimeException(e);
         } finally {
             try {
@@ -70,8 +68,8 @@ public class ClientUtils {
             }
         }
 
-     }
-   
+    }
+
 
     public static String getJson(HttpGet method) {
         CloseableHttpClient httpClient = buildHttpClient();
@@ -82,10 +80,10 @@ public class ClientUtils {
                 throw new ClientProtocolException("远程状态码错误: status=" + status);
             }
             HttpEntity entity = response.getEntity();
-            String body = (entity != null) ? EntityUtils.toString(entity) : null;
-
-            return body;
-        } catch(Exception e) {
+//            String body = (entity != null) ? EntityUtils.toString(entity) : null;
+//            return body;
+            return convertStreamToString(entity.getContent());
+        } catch (Exception e) {
             throw new RuntimeException(e);
         } finally {
             try {
@@ -93,6 +91,40 @@ public class ClientUtils {
             } catch (IOException e) {
             }
         }
+
+    }
+
+    public static String convertStreamToString(InputStream is) {
+
+        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+
+        StringBuilder sb = new StringBuilder();
+
+        String line = null;
+
+        try {
+
+            while ((line = reader.readLine()) != null) {
+
+                sb.append(line + "\n");
+
+            }
+
+        } catch (IOException e) {
+
+        } finally {
+
+            try {
+
+                is.close();
+
+            } catch (IOException e) {
+
+            }
+
+        }
+
+        return sb.toString();
 
     }
 

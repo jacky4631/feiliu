@@ -2,26 +2,34 @@ package com.jiam365.flow.plugins.migu;
 
 public class MiguReport {
 
-	private String orderId;
-	private String customerOrderId;
+	private String orderNo;
+	private String orderNumber;
+	private String mobile;
 	private String status;
-	private String reason;
-	private String sign;
+	private String message;
 
-	public String getOrderId() {
-		return orderId;
+	public String getOrderNo() {
+		return orderNo;
 	}
 
-	public void setOrderId(String orderId) {
-		this.orderId = orderId;
+	public void setOrderNo(String orderNo) {
+		this.orderNo = orderNo;
 	}
 
-	public String getCustomerOrderId() {
-		return customerOrderId;
+	public String getOrderNumber() {
+		return orderNumber;
 	}
 
-	public void setCustomerOrderId(String customerOrderId) {
-		this.customerOrderId = customerOrderId;
+	public void setOrderNumber(String orderNumber) {
+		this.orderNumber = orderNumber;
+	}
+
+	public String getMobile() {
+		return mobile;
+	}
+
+	public void setMobile(String mobile) {
+		this.mobile = mobile;
 	}
 
 	public String getStatus() {
@@ -32,19 +40,11 @@ public class MiguReport {
 		this.status = status;
 	}
 
-	public String getReason() {
-		return reason;
+	public String getMessage() {
+		return message;
 	}
 
-	public void setReason(String reason) {
-		this.reason = reason;
-	}
-
-	public String getSign() {
-		return sign;
-	}
-
-	public void setSign(String sign) {
-		this.sign = sign;
+	public void setMessage(String message) {
+		this.message = message;
 	}
 }

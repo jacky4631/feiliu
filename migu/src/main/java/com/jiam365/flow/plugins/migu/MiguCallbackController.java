@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 @RequestMapping(value = "/report")
@@ -18,7 +20,7 @@ public class MiguCallbackController {
 
     private static Logger logger = LoggerFactory.getLogger(MiguCallbackController.class);
 
-    @RequestMapping(value = "qiweishu")
+    @RequestMapping(value = "migu")
     @ResponseBody
     public String callback(HttpServletRequest request) {
         StringBuffer jb = new StringBuffer();
@@ -36,20 +38,21 @@ public class MiguCallbackController {
     }
 
     public String parse(String json) {
-        logger.debug("收到七位数公司回调报文 {}", json);
+        logger.debug("收到米谷回调报文 {}", json);
 
         if (!StringUtils.isEmpty(json)) {
-            MiguReport report = JSON.parseObject(json, MiguReport.class);
-            if(report != null) {
-                TradeReportServiceProxy.save(report.getOrderId(), json);
-                return "{\"success\":true}";
+            List<MiguReport> reports = JSON.parseArray(json, MiguReport.class);
+            if(reports != null && reports.size() > 0) {
+                MiguReport report = reports.get(0);
+                TradeReportServiceProxy.save(report.getOrderNumber(), JSON.toJSONString(report));
+                return "ok";
             } else {
-                return "{\"success\":false,\"error\":\"报文无法解析\"}";
+                return "err";
             }
 
 
         } else {
-            return "{\"success\":false,\"error\":\"报文为空\"}";
+            return "err";
         }
     }
 }

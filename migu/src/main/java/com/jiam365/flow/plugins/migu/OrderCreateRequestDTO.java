@@ -8,35 +8,44 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  */
 public class OrderCreateRequestDTO {
 	
-	private String customerOrderId;
-	private String enterpriseCode;
-	private String productCode;
+	private String action = "SingleCharge";
+	private String account;
+	private String chargetype;
+	private String orderno;
 	private String mobile;
-	private String orderTime;
-	private String sign;
+	private String procode;
+	private String chargesign;
 
-	public String getCustomerOrderId() {
-		return customerOrderId;
+	public String getAction() {
+		return action;
 	}
 
-	public void setCustomerOrderId(String customerOrderId) {
-		this.customerOrderId = customerOrderId;
+	public void setAction(String action) {
+		this.action = action;
 	}
 
-	public String getEnterpriseCode() {
-		return enterpriseCode;
+	public String getAccount() {
+		return account;
 	}
 
-	public void setEnterpriseCode(String enterpriseCode) {
-		this.enterpriseCode = enterpriseCode;
+	public void setAccount(String account) {
+		this.account = account;
 	}
 
-	public String getProductCode() {
-		return productCode;
+	public String getChargetype() {
+		return chargetype;
 	}
 
-	public void setProductCode(String productCode) {
-		this.productCode = productCode;
+	public void setChargetype(String chargetype) {
+		this.chargetype = chargetype;
+	}
+
+	public String getOrderno() {
+		return orderno;
+	}
+
+	public void setOrderno(String orderno) {
+		this.orderno = orderno;
 	}
 
 	public String getMobile() {
@@ -47,40 +56,40 @@ public class OrderCreateRequestDTO {
 		this.mobile = mobile;
 	}
 
-	public String getOrderTime() {
-		return orderTime;
+	public String getProcode() {
+		return procode;
 	}
 
-	public void setOrderTime(String orderTime) {
-		this.orderTime = orderTime;
+	public void setProcode(String procode) {
+		this.procode = procode;
 	}
 
-	public String getSign() {
-		return sign;
+	public String getChargesign() {
+		return chargesign;
 	}
 
-	public void setSign(String sign) {
-		this.sign = sign;
+	public void setChargesign(String chargesign) {
+		this.chargesign = chargesign;
 	}
 
-	public void generateSignature(String password) {
+	public void generateSignature(String apiKey) {
 		StringBuilder sb = new StringBuilder();
-		sb.append("enterpriseCode=")
-				.append(enterpriseCode)
-				.append("&")
-				.append("productCode=")
-				.append(productCode)
+		sb.append("account=")
+				.append(account)
 				.append("&")
 				.append("mobile=")
 				.append(mobile)
 				.append("&")
-				.append("orderTime=")
-				.append(orderTime)
+				.append("orderno=")
+				.append(orderno)
 				.append("&")
-				.append("password=")
-				.append(password);
+				.append("procode=")
+				.append(procode)
+				.append("&")
+				.append("key=")
+				.append(apiKey);
 		String _signature= MD5.md5(sb.toString());
-		this.setSign(_signature);
+		this.setChargesign(_signature);
 	}
 	
 
