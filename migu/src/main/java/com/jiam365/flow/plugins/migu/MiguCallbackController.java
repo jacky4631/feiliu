@@ -42,9 +42,10 @@ public class MiguCallbackController {
 
         if (!StringUtils.isEmpty(json)) {
             List<MiguReport> reports = JSON.parseArray(json, MiguReport.class);
+            logger.debug("收到米谷回调报文 {}", "reports.size: " + reports.size());
             if(reports != null && reports.size() > 0) {
                 MiguReport report = reports.get(0);
-                TradeReportServiceProxy.save(report.getOrderNumber(), JSON.toJSONString(report));
+                TradeReportServiceProxy.save(report.getOrderNo(), JSON.toJSONString(report));
                 return "ok";
             } else {
                 return "err";

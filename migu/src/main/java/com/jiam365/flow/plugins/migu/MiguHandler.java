@@ -80,8 +80,8 @@ public class MiguHandler extends AbstractHandler {
             throw new ChannelConnectionException("");
         } else {
             ResponseData data = new ResponseData();
-            data.setRequestNo(reqNo);
             MiguReport rechargeReport = JSON.parseObject(json, MiguReport.class);
+            data.setRequestNo(rechargeReport.getOrderNumber());
             String ret_msg = rechargeReport.getMessage();
             String ret_code = rechargeReport.getStatus();
             data.setMessage(ret_msg);

@@ -18,7 +18,7 @@ public class MiguCallbackControllerTest extends TestCase {
 
     public void testParse() throws Exception {
         MiguReport report = new MiguReport();
-        String res = controller.parse("[{\"orderNo\":\"20160331105537\",\"orderNumber\":\"201603170120000107262\",\"mobile\":\"15498785038\",\"status\":\"2\",\"message\":\"充值成功！\"},{\"orderNo\":\"20160331123837\",\"orderNumber\":\"201603170120000123462\",\"mobile\":\"18693940989\",\"status\":\"2\",\"message\":\"充值成功！\"}]");
+        String res = controller.parse("[{\"orderNo\":\"201612151146351000001\",\"orderNumber\":\"M2016121511463558603024358\",\"mobile\":\"13354050256\",\"status\":\"2\",\"message\":\"\",\"sign\":\"9f92f57312c3c88475adb93a39a91fd1\"}]");
         assertEquals(res, "ok");
     }
 
