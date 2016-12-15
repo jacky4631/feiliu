@@ -42,7 +42,7 @@ public class YuntengCallbackController {
         if (!StringUtils.isEmpty(json)) {
             YuntengReport report = JSON.parseObject(json, YuntengReport.class);
             if(report != null) {
-                TradeReportServiceProxy.save(report.getOrderId(), json);
+                TradeReportServiceProxy.save(report.getOrderId(), json);//这里需要保存自己系统的订单号
                 return "{ \" status \": \"1\" }";
             } else {
                 return "{ \" status \": \"0\" }";
