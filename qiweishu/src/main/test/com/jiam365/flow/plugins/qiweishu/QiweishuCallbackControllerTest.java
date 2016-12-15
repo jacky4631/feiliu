@@ -18,7 +18,7 @@ public class QiweishuCallbackControllerTest extends TestCase {
 
     public void testParse() throws Exception {
         QiweishuReport report = new QiweishuReport();
-        String res = controller.parse("{\"timestamp\":\"20161205215500\",\"sign\":\"80b93f7b1cb9a9f6aa197ca8da19ecfe\",\"data\":[{\"message\":\"充值成功\",\"code\":\"1\",\"messageid\":\"201612052134241000001\",\"orderid\":\"f4a3218f64114181b8b6a4609ac26333\",\"mobile\":\"15257126879\"}],\"apikey\":\"c2c7edba6ef548678de96c785be1cdd6\"}");
+        String res = controller.parse("sign=c9131abb60818cd8d02746fe0e32a008&reason=%E6%88%90%E5%8A%9F&status=1&customerOrderId=201612151510281000001&orderId=PO20161215151028533862");
         assertEquals(res, "ok");
     }
 

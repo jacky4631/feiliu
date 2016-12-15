@@ -62,8 +62,8 @@ public class QiweishuHandler extends AbstractHandler {
             throw new ChannelConnectionException("");
         } else {
             ResponseData data = new ResponseData();
-            data.setRequestNo(reqNo);
             QiweishuReport rechargeReport = JSON.parseObject(json, QiweishuReport.class);
+            data.setRequestNo(rechargeReport.getOrderId());
             String ret_msg = rechargeReport.getReason();
             String ret_code = rechargeReport.getStatus();
             data.setMessage(ret_msg);

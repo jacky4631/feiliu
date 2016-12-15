@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;
+import java.net.URLDecoder;
 
 @Controller
 @RequestMapping(value = "/report")
@@ -39,14 +40,31 @@ public class QiweishuCallbackController {
         logger.debug("收到七位数公司回调报文 {}", json);
 
         if (!StringUtils.isEmpty(json)) {
-            QiweishuReport report = JSON.parseObject(json, QiweishuReport.class);
-            if(report != null) {
-                TradeReportServiceProxy.save(report.getOrderId(), json);
+            QiweishuReport report = new QiweishuReport();
+            try {
+                String[] params = json.split("&");
+                for (String paramObj : params) {
+                    String[] param = paramObj.split("=");
+                    String key = param[0];
+                    String value = param[1];
+                    if ("orderId".equals(key)) {
+                        report.setOrderId(value);
+                    } else if ("customerOrderId".equals(key)) {
+                        report.setCustomerOrderId(value);
+                    } else if ("status".equals(key)) {
+                        report.setStatus(value);
+                    } else if ("reason".equals(key)) {
+                        report.setReason(URLDecoder.decode(value,"UTF-8"));
+                    } else if ("sign".equals(key)) {
+                        report.setSign(value);
+                    }
+                }
+                TradeReportServiceProxy.save(report.getCustomerOrderId(), JSON.toJSONString(report));
                 return "{\"success\":true}";
-            } else {
+
+            } catch (Exception e) {
                 return "{\"success\":false,\"error\":\"报文无法解析\"}";
             }
-
 
         } else {
             return "{\"success\":false,\"error\":\"报文为空\"}";
