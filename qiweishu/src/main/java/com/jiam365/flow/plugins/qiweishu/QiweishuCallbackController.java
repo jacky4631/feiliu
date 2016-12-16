@@ -59,7 +59,7 @@ public class QiweishuCallbackController {
                         report.setSign(value);
                     }
                 }
-                TradeReportServiceProxy.save(report.getCustomerOrderId(), JSON.toJSONString(report));
+                TradeReportServiceProxy.save(report.getOrderId(), JSON.toJSONString(report));
                 return "{\"success\":true}";
 
             } catch (Exception e) {
