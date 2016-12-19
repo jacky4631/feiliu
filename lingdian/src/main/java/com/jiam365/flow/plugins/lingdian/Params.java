@@ -5,8 +5,9 @@ package com.jiam365.flow.plugins.lingdian;
  */
 public class Params {
     private String rechargeUrl;
-    private String account;
-    private String apiKey;
+    private String username;
+    private String key;
+    private String callbackUrl;
 
     public String getRechargeUrl() {
         return rechargeUrl;
@@ -16,19 +17,27 @@ public class Params {
         this.rechargeUrl = rechargeUrl;
     }
 
-    public String getAccount() {
-        return account;
+    public String getUsername() {
+        return username;
     }
 
-    public void setAccount(String account) {
-        this.account = account;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public String getApiKey() {
-        return apiKey;
+    public String getKey() {
+        return key;
     }
 
-    public void setApiKey(String apiKey) {
-        this.apiKey = apiKey;
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    public String getCallbackUrl() {
+        return callbackUrl;
+    }
+
+    public void setCallbackUrl(String callbackUrl) {
+        this.callbackUrl = callbackUrl;
     }
 }

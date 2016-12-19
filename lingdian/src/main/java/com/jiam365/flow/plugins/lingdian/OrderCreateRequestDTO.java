@@ -1,100 +1,111 @@
 package com.jiam365.flow.plugins.lingdian;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+
 
 /**
  * Created by ken on 15/12/13.
  */
-public class OrderCreateRequestDTO {
-	
-	private String action = "SingleCharge";
-	private String account;
-	private String chargetype;
-	private String orderno;
-	private String mobile;
-	private String procode;
-	private String chargesign;
+public class OrderCreateRequestDTO extends BaseRequestDTO {
 
-	public String getAction() {
-		return action;
-	}
+    /**
+     * 交易号,客户提交
+     */
+    private String tradeNo;
 
-	public void setAction(String action) {
-		this.action = action;
-	}
+    /**
+     * 电话号码,半角逗号分割无空格
+     */
+    private String mobiles;
 
-	public String getAccount() {
-		return account;
-	}
 
-	public void setAccount(String account) {
-		this.account = account;
-	}
+    /**
+     * 流量规格,100M, 500M, 1G，等等
+     */
+    private String spec;
 
-	public String getChargetype() {
-		return chargetype;
-	}
+    /**
+     * 国内c(country), 省内p(province)
+     */
+    private String areaType;
 
-	public void setChargetype(String chargetype) {
-		this.chargetype = chargetype;
-	}
+    /**
+     * 本月tm(this month), 下月nm(next month)
+     */
+    private String effectiveType;
 
-	public String getOrderno() {
-		return orderno;
-	}
+    /**
+     * 回调网址
+     */
+    private String url;
 
-	public void setOrderno(String orderno) {
-		this.orderno = orderno;
-	}
+    public String getTradeNo() {
+        return tradeNo;
+    }
 
-	public String getMobile() {
-		return mobile;
-	}
+    public void setTradeNo(String tradeNo) {
+        this.tradeNo = tradeNo;
+    }
 
-	public void setMobile(String mobile) {
-		this.mobile = mobile;
-	}
+    public String getMobiles() {
+        return mobiles;
+    }
 
-	public String getProcode() {
-		return procode;
-	}
+    public void setMobiles(String mobiles) {
+        this.mobiles = mobiles;
+    }
 
-	public void setProcode(String procode) {
-		this.procode = procode;
-	}
+    public String getSpec() {
+        return spec;
+    }
 
-	public String getChargesign() {
-		return chargesign;
-	}
+    public void setSpec(String spec) {
+        this.spec = spec;
+    }
 
-	public void setChargesign(String chargesign) {
-		this.chargesign = chargesign;
-	}
+    public String getAreaType() {
+        return areaType;
+    }
 
-	public void generateSignature(String apiKey) {
-		StringBuilder sb = new StringBuilder();
-		sb.append("account=")
-				.append(account)
-				.append("&")
-				.append("mobile=")
-				.append(mobile)
-				.append("&")
-				.append("orderno=")
-				.append(orderno)
-				.append("&")
-				.append("procode=")
-				.append(procode)
-				.append("&")
-				.append("key=")
-				.append(apiKey);
-		String _signature= MD5.md5(sb.toString());
-		this.setChargesign(_signature);
-	}
-	
+    public void setAreaType(String areaType) {
+        this.areaType = areaType;
+    }
 
-	public String toString() {
-		return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE);
-	}
+    public String getEffectiveType() {
+        return effectiveType;
+    }
 
+    public void setEffectiveType(String effectiveType) {
+        this.effectiveType = effectiveType;
+    }
+
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+
+    @Override
+    public void generateSignature(String key) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(this.getTimestamp()).append(this.getTradeNo()).append(this.getMobiles()).append(this.getSpec());
+        if (!StringUtils.isBlank(this.getUrl())) {
+            sb.append(this.getUrl());
+        }
+        String data = sb.append(key).toString();
+        System.out.println("sb:"+data);
+        String _signature = MD5.md5(data);
+        this.setSignature(_signature);
+    }
+
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE);
+    }
 }

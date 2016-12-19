@@ -18,8 +18,8 @@ public class LingdianCallbackControllerTest extends TestCase {
 
     public void testParse() throws Exception {
         LingdianReport report = new LingdianReport();
-        String res = controller.parse("[{\"orderNo\":\"201612151146351000001\",\"orderNumber\":\"M2016121511463558603024358\",\"mobile\":\"13354050256\",\"status\":\"2\",\"message\":\"\",\"sign\":\"9f92f57312c3c88475adb93a39a91fd1\"}]");
-        assertEquals(res, "ok");
+        String res = controller.parse("tradeNo=1111100000&mobile=18684410000&ok=true&result=s&signature=0cfa8e32703a8dd906425f02e95aa08e");
+        assertEquals(res, "true");
     }
 
 }

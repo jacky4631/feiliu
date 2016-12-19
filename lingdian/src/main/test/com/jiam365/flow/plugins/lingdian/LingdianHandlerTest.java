@@ -12,7 +12,11 @@ public class LingdianHandlerTest extends TestCase {
     public void setUp() throws Exception {
         super.setUp();
         handler = new LingdianHandler();
-        handler.loadParams("{" + "\"rechargeUrl\":\"http://101.201.148.20:8666/interface/Api.ashx\"," + "\"account\":\"szhh\"," + "\"apiKey\":\"2dbf29707612194a6de3dd2d3d361023\"" + "}");
+        handler.loadParams("{"
+                + "\"rechargeUrl\":\"http://182.92.181.48:9000/pf/api/1.0/order/create-single\","
+                + "\"account\":\"szhh\","
+                + "\"apiKey\":\"822ba8200d58406f86dcebd3bcd17997\""
+                + "}");
 
     }
 
@@ -23,20 +27,14 @@ public class LingdianHandlerTest extends TestCase {
     public void testRecharge() throws Exception {
         RechargeRequest rechargeRequest = new RechargeRequest();
         rechargeRequest.setProductId("NA123456");
-        rechargeRequest.setOrigiProductId("10M");
+        rechargeRequest.setSize(10);
         rechargeRequest.setMobile("13402565476");
         ResponseData responseData = handler.recharge(rechargeRequest);
         System.out.println(responseData);
     }
 
-    public void testQueryReport() throws Exception {
-        String json = "{\"message\":\"充值成功！\",\"mobile\":\"15498785038\",\"orderNo\":\"20160331105537\",\"orderNumber\":\"201603170120000107262\",\"status\":\"2\"}";
-        ResponseData responseData = handler.callback(json, "201603170120000107262");
-        System.out.println(responseData);
-    }
-
     public void testCallback() throws Exception {
-        String json = "{\"message\":\"\",\"mobile\":\"13354050256\",\"orderNo\":\"201612151146351000001\",\"orderNumber\":\"M2016121511463558603024358\",\"status\":\"2\"}";
+        String json = "{\"mobile\":\"18684410000\",\"ok\":\"true\",\"result\":\"s\",\"signature\":\"0cfa8e32703a8dd906425f02e95aa08e\",\"tradeNo\":\"1111100000\"}";
         ResponseData responseData = handler.callback(json, "");
         System.out.println(responseData);
     }

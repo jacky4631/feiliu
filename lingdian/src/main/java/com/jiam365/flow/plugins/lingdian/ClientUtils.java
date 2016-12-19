@@ -1,20 +1,21 @@
 package com.jiam365.flow.plugins.lingdian;
 
 
+import com.alibaba.fastjson.JSON;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.entity.EntityBuilder;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 
-import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 public class ClientUtils {
 
@@ -33,20 +34,10 @@ public class ClientUtils {
 
         CloseableHttpClient httpClient = buildHttpClient();
         if (dto != null) {
-            List<NameValuePair> list = new ArrayList<>();
-//            list.add(new BasicNameValuePair("customerOrderId", ((OrderCreateRequestDTO)dto).getCustomerOrderId()));
-//            list.add(new BasicNameValuePair("enterpriseCode",((OrderCreateRequestDTO)dto).getEnterpriseCode()));
-//            list.add(new BasicNameValuePair("productCode", ((OrderCreateRequestDTO)dto).getProductCode()));
-//            list.add(new BasicNameValuePair("mobile", ((OrderCreateRequestDTO)dto).getMobile()));
-//            list.add(new BasicNameValuePair("orderTime", ((OrderCreateRequestDTO)dto).getOrderTime()));
-//            list.add(new BasicNameValuePair("sign", ((OrderCreateRequestDTO)dto).getSign()));
-            HttpEntity requestEntity = null;
-            try {
-                requestEntity = new UrlEncodedFormEntity(list, "utf-8");
-            } catch (UnsupportedEncodingException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
+            method.setHeader("Content-Type", "application/json;charset=UTF-8");
+            String requestJsonBody = JSON.toJSONString(dto);
+            System.out.println("req:" + requestJsonBody);
+            HttpEntity requestEntity = EntityBuilder.create().setBinary(requestJsonBody.getBytes()).build();
             method.setEntity(requestEntity);
         }
         try {
@@ -79,10 +70,9 @@ public class ClientUtils {
                 throw new ClientProtocolException("远程状态码错误: status=" + status);
             }
             HttpEntity entity = response.getEntity();
-//            String body = (entity != null) ? EntityUtils.toString(entity) : null;
-//            return body;
+
             return convertStreamToString(entity.getContent());
-        } catch (Exception e) {
+        } catch(Exception e) {
             throw new RuntimeException(e);
         } finally {
             try {
@@ -131,5 +121,4 @@ public class ClientUtils {
         CloseableHttpClient httpclient = HttpClients.createDefault();
         return httpclient;
     }
-
 }

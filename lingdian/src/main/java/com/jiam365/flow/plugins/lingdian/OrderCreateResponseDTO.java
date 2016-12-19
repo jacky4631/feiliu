@@ -5,15 +5,16 @@ package com.jiam365.flow.plugins.lingdian;
  */
 public class OrderCreateResponseDTO {
 	
-	private String code;
+	private boolean ok;
 	private String message;
+	private int code;
 
-	public String getCode() {
-		return code;
+	public boolean isOk() {
+		return ok;
 	}
 
-	public void setCode(String code) {
-		this.code = code;
+	public void setOk(boolean ok) {
+		this.ok = ok;
 	}
 
 	public String getMessage() {
@@ -22,5 +23,13 @@ public class OrderCreateResponseDTO {
 
 	public void setMessage(String message) {
 		this.message = message;
+	}
+
+	public int getCode() {
+		return code;
+	}
+
+	public void setCode(int code) {
+		this.code = code;
 	}
 }
