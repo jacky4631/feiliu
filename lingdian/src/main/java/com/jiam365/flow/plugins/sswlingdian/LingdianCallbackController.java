@@ -1,4 +1,4 @@
-package com.jiam365.flow.plugins.lingdian;
+package com.jiam365.flow.plugins.sswlingdian;
 
 import com.alibaba.fastjson.JSON;
 import com.jiam365.flow.sdk.support.TradeReportServiceProxy;

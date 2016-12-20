@@ -1,4 +1,4 @@
-package com.jiam365.flow.plugins.lingdian;
+package com.jiam365.flow.plugins.sswlingdian;
 
 /**
  * Created by ken on 15/12/13.

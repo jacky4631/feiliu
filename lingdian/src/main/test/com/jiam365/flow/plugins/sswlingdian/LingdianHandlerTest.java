@@ -1,4 +1,4 @@
-package com.jiam365.flow.plugins.lingdian;
+package com.jiam365.flow.plugins.sswlingdian;
 
 import com.jiam365.flow.sdk.RechargeRequest;
 import com.jiam365.flow.sdk.response.ResponseData;
