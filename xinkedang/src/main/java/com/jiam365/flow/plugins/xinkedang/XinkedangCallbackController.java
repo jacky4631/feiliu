@@ -64,7 +64,7 @@ public class XinkedangCallbackController {
                         }
                     }
                 }
-                TradeReportServiceProxy.save(report.getOrder_id(), ClientUtils.getJsonMapper().toJson(report));
+                TradeReportServiceProxy.save(report.getSerial_number(), ClientUtils.getJsonMapper().toJson(report));
                 return retMsg("0000", "成功");
             } catch (Exception e) {
                 return retMsg("1111", "系统异常");
