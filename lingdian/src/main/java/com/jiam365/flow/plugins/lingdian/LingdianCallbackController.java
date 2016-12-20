@@ -5,13 +5,15 @@ import com.jiam365.flow.sdk.support.TradeReportServiceProxy;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;
 
-
+@Controller
+@RequestMapping(value = "/report")
 public class LingdianCallbackController {
 
 	private static Logger logger = LoggerFactory.getLogger(LingdianCallbackController.class);
