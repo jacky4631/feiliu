@@ -12,11 +12,12 @@ public class LingdianHandlerTest extends TestCase {
     public void setUp() throws Exception {
         super.setUp();
         handler = new LingdianHandler();
-        handler.loadParams("{"
-                + "\"rechargeUrl\":\"http://182.92.181.48:9000/pf/api/1.0/order/create-single\","
-                + "\"account\":\"szhh\","
-                + "\"apiKey\":\"822ba8200d58406f86dcebd3bcd17997\""
-                + "}");
+        handler.loadParams("{\n" +
+                "\"rechargeUrl\": \"http://182.92.181.48:9000/pf/api/1.0/order/create-single\"," +
+                "\"username\": \"szhh\"," +
+                "\"key\": \"822ba8200d58406f86dcebd3bcd17997\"," +
+                "\"callbackUrl\": \"\"" +
+                "}");
 
     }
 

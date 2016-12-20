@@ -110,12 +110,12 @@ public class LingdianHandler extends AbstractHandler {
 
 	@Override
 	public String getParamTemplate() {
-		return "{"
-				+ "\"rechargeUrl\":\"充值地址\","
-				+ "\"username\":\"用户 ID\","
-				+ "\"key\":\"认证 KEY\","
-				+ "\"callbackUrl\":\"回调地址\","
-				+ "}";
+		return "{" +
+				"\"rechargeUrl\": \"充值地址\"," +
+				"\"username\": \"用户ID\"," +
+				"\"key\": \"认证KEY\"," +
+				"\"callbackUrl\": \"回调地址\"" +
+				"}";
 	}
 
 }
