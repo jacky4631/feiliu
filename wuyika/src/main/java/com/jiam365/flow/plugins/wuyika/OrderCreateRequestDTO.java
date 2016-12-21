@@ -2,7 +2,6 @@ package com.jiam365.flow.plugins.wuyika;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import org.springframework.core.annotation.Order;
 
 /**
  * Created by ken on 15/12/13.
@@ -194,7 +193,7 @@ public class OrderCreateRequestDTO {
 				.append("MerURL=")
 				.append(MerURL)
 				.append("&")
-				.append("FlowType =")
+				.append("FlowType=")
 				.append(FlowType)
 				.append("&")
 				.append("Attach=")
@@ -202,7 +201,7 @@ public class OrderCreateRequestDTO {
 				.append("&")
 				.append("Sign=")
 				.append(Sign);
-		return sb.toString();
+			return sb.toString();
 	}
 
 	public String toString() {

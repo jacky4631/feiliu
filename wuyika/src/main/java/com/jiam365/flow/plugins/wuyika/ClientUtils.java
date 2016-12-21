@@ -54,6 +54,7 @@ public class ClientUtils {
                 e.printStackTrace();
             }
             method.setEntity(requestEntity);
+            method.addHeader("Content-type","application/x-www-form-urlencoded;charset=UTF-8");
         }
         try {
             HttpResponse response = httpClient.execute(method);
