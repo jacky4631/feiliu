@@ -34,7 +34,7 @@ public class LingdianHandler extends AbstractHandler {
 		dto.setAreaType(getArea(request.getProductId()));
 		dto.setEffectiveType("tm");
 		if(StringUtils.isEmpty(callbackUrl)) {
-			callbackUrl = "http://120.55.71.93/report/sswlingdian";
+			callbackUrl = "http://120.55.71.93/report/lingdian";
 		}
 		dto.setUrl(callbackUrl);
 		dto.generateSignature(key);

@@ -29,7 +29,7 @@ public class LingdianHandlerTest extends TestCase {
         RechargeRequest rechargeRequest = new RechargeRequest();
         rechargeRequest.setProductId("NA123456");
         rechargeRequest.setSize(10);
-        rechargeRequest.setMobile("13402565476");
+        rechargeRequest.setMobile("18946594179");
         ResponseData responseData = handler.recharge(rechargeRequest);
         System.out.println(responseData);
     }

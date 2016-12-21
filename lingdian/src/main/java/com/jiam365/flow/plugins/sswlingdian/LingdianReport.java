@@ -37,6 +37,15 @@ public class LingdianReport {
 	public void setSignature(String signature) {
 		this.signature = signature;
 	}
-	
 
+	@Override
+	public String toString() {
+		return "LingdianReport{" +
+				"tradeNo='" + tradeNo + '\'' +
+				", mobile='" + mobile + '\'' +
+				", ok='" + ok + '\'' +
+				", result='" + result + '\'' +
+				", signature='" + signature + '\'' +
+				'}';
+	}
 }
