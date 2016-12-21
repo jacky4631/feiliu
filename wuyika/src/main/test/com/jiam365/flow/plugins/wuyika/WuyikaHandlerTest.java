@@ -12,7 +12,12 @@ public class WuyikaHandlerTest extends TestCase {
     public void setUp() throws Exception {
         super.setUp();
         handler = new WuyikaHandler();
-        handler.loadParams("{" + "\"rechargeUrl\":\"http://101.201.148.20:8666/interface/Api.ashx\"," + "\"account\":\"szhh\"," + "\"apiKey\":\"2dbf29707612194a6de3dd2d3d361023\"" + "}");
+        handler.loadParams("{"
+                + "\"rechargeUrl\":\"http://flowapi.shenzhouka.com/api/FlowCharge.aspx\","
+                + "\"merID\":\"2286\","
+                + "\"key\":\"38c1315b99d21e1ff738822cba4bf759\","
+                + "\"callbackUrl\":\"\""
+                +"}");
 
     }
 
@@ -22,9 +27,9 @@ public class WuyikaHandlerTest extends TestCase {
 
     public void testRecharge() throws Exception {
         RechargeRequest rechargeRequest = new RechargeRequest();
-        rechargeRequest.setProductId("NA123456");
-        rechargeRequest.setOrigiProductId("10M");
-        rechargeRequest.setMobile("13402565476");
+        rechargeRequest.setProductId("NA8123456");
+        rechargeRequest.setSize(5);
+        rechargeRequest.setMobile("15109536624");
         ResponseData responseData = handler.recharge(rechargeRequest);
         System.out.println(responseData);
     }

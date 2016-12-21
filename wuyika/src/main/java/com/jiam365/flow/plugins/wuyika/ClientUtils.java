@@ -8,6 +8,7 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
@@ -33,18 +34,23 @@ public class ClientUtils {
 
         CloseableHttpClient httpClient = buildHttpClient();
         if (dto != null) {
-            List<NameValuePair> list = new ArrayList<>();
+//            List<NameValuePair> list = new ArrayList<>();
 //            list.add(new BasicNameValuePair("customerOrderId", ((OrderCreateRequestDTO)dto).getCustomerOrderId()));
 //            list.add(new BasicNameValuePair("enterpriseCode",((OrderCreateRequestDTO)dto).getEnterpriseCode()));
 //            list.add(new BasicNameValuePair("productCode", ((OrderCreateRequestDTO)dto).getProductCode()));
 //            list.add(new BasicNameValuePair("mobile", ((OrderCreateRequestDTO)dto).getMobile()));
 //            list.add(new BasicNameValuePair("orderTime", ((OrderCreateRequestDTO)dto).getOrderTime()));
 //            list.add(new BasicNameValuePair("sign", ((OrderCreateRequestDTO)dto).getSign()));
-            HttpEntity requestEntity = null;
+//            HttpEntity requestEntity = null;
+//            try {
+//                requestEntity = new UrlEncodedFormEntity(list, "utf-8");
+//            } catch (UnsupportedEncodingException e) {
+//                e.printStackTrace();
+//            }
+            StringEntity requestEntity = null;
             try {
-                requestEntity = new UrlEncodedFormEntity(list, "utf-8");
+                requestEntity = new StringEntity(((OrderCreateRequestDTO)dto).generateRequestString());
             } catch (UnsupportedEncodingException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
             method.setEntity(requestEntity);
@@ -56,7 +62,7 @@ public class ClientUtils {
                 throw new ClientProtocolException("远程状态码错误: status=" + status);
             }
             HttpEntity entity = response.getEntity();
-            String body = (entity != null) ? EntityUtils.toString(entity) : null;
+            String body = (entity != null) ? EntityUtils.toString(entity, "GBK") : null;
             return body;
         } catch (Exception e) {
             throw new RuntimeException(e);

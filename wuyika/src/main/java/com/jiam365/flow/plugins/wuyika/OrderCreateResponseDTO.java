@@ -5,22 +5,31 @@ package com.jiam365.flow.plugins.wuyika;
  */
 public class OrderCreateResponseDTO {
 	
-	private String code;
-	private String message;
+	private String OrderID;
+	private String TranStat;
+	private String TranInfo;
 
-	public String getCode() {
-		return code;
+	public String getOrderID() {
+		return OrderID;
 	}
 
-	public void setCode(String code) {
-		this.code = code;
+	public void setOrderID(String orderID) {
+		OrderID = orderID;
 	}
 
-	public String getMessage() {
-		return message;
+	public String getTranStat() {
+		return TranStat;
 	}
 
-	public void setMessage(String message) {
-		this.message = message;
+	public void setTranStat(String tranStat) {
+		TranStat = tranStat;
+	}
+
+	public String getTranInfo() {
+		return TranInfo;
+	}
+
+	public void setTranInfo(String tranInfo) {
+		TranInfo = tranInfo;
 	}
 }

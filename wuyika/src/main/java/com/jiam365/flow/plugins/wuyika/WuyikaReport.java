@@ -2,49 +2,80 @@ package com.jiam365.flow.plugins.wuyika;
 
 public class WuyikaReport {
 
-	private String orderNo;
-	private String orderNumber;
-	private String mobile;
-	private String status;
-	private String message;
+	private String Command;
+	private String OrderID;
+	private String ChgMobile;
+	private String Amount;
+	private String Date;
+	private String OrderStatus;
+	private String Sign;
 
-	public String getOrderNo() {
-		return orderNo;
+	public String getCommand() {
+		return Command;
 	}
 
-	public void setOrderNo(String orderNo) {
-		this.orderNo = orderNo;
+	public void setCommand(String command) {
+		Command = command;
 	}
 
-	public String getOrderNumber() {
-		return orderNumber;
+	public String getOrderID() {
+		return OrderID;
 	}
 
-	public void setOrderNumber(String orderNumber) {
-		this.orderNumber = orderNumber;
+	public void setOrderID(String orderID) {
+		OrderID = orderID;
 	}
 
-	public String getMobile() {
-		return mobile;
+	public String getChgMobile() {
+		return ChgMobile;
 	}
 
-	public void setMobile(String mobile) {
-		this.mobile = mobile;
+	public void setChgMobile(String chgMobile) {
+		ChgMobile = chgMobile;
 	}
 
-	public String getStatus() {
-		return status;
+	public String getAmount() {
+		return Amount;
 	}
 
-	public void setStatus(String status) {
-		this.status = status;
+	public void setAmount(String amount) {
+		Amount = amount;
 	}
 
-	public String getMessage() {
-		return message;
+	public String getDate() {
+		return Date;
 	}
 
-	public void setMessage(String message) {
-		this.message = message;
+	public void setDate(String date) {
+		Date = date;
+	}
+
+	public String getOrderStatus() {
+		return OrderStatus;
+	}
+
+	public void setOrderStatus(String orderStatus) {
+		OrderStatus = orderStatus;
+	}
+
+	public String getSign() {
+		return Sign;
+	}
+
+	public void setSign(String sign) {
+		Sign = sign;
+	}
+
+	@Override
+	public String toString() {
+		return "WuyikaReport{" +
+				"Command='" + Command + '\'' +
+				", OrderID='" + OrderID + '\'' +
+				", ChgMobile='" + ChgMobile + '\'' +
+				", Amount='" + Amount + '\'' +
+				", Date='" + Date + '\'' +
+				", OrderStatus='" + OrderStatus + '\'' +
+				", Sign='" + Sign + '\'' +
+				'}';
 	}
 }

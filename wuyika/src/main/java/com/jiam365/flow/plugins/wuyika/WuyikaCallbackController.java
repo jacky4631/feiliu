@@ -19,7 +19,7 @@ public class WuyikaCallbackController {
 
     private static Logger logger = LoggerFactory.getLogger(WuyikaCallbackController.class);
 
-    @RequestMapping(value = "migu")
+    @RequestMapping(value = "wuyika")
     @ResponseBody
     public String callback(HttpServletRequest request) {
         StringBuffer jb = new StringBuffer();
@@ -28,31 +28,38 @@ public class WuyikaCallbackController {
             BufferedReader reader = request.getReader();
             while ((line = reader.readLine()) != null)
                 jb.append(line);
+
+            logger.debug("收到伍壹卡回调报文1 {}", jb.toString());
+            String json = new String(jb.toString().trim().getBytes(),"GBK");
+            return parse(json);
         } catch (Exception e) {
-            /* report an error */
+            return "fail";
         }
 
-        String json = jb.toString().trim();
-        return parse(json);
     }
 
     public String parse(String json) {
-        logger.debug("收到米谷回调报文 {}", json);
+        logger.debug("收到伍壹卡回调报文2 {}", json);
 
-        if (!StringUtils.isEmpty(json)) {
-            List<WuyikaReport> reports = JSON.parseArray(json, WuyikaReport.class);
-            logger.debug("收到米谷回调报文 {}", "reports.size: " + reports.size());
-            if(reports != null && reports.size() > 0) {
-                WuyikaReport report = reports.get(0);
-                TradeReportServiceProxy.save(report.getOrderNo(), JSON.toJSONString(report));
-                return "ok";
-            } else {
-                return "err";
+        WuyikaReport report = new WuyikaReport();
+        String[] params = json.split("&");
+        for(String param : params) {
+            String[] childParam = param.split("=");
+            if(childParam.length > 1){
+                String key = childParam[0];
+                String value = childParam[1];
+                if("OrderID".equals(key)){
+                    report.setOrderID(value);
+                }else if("OrderStatus".equals(key)) {
+                    report.setOrderStatus(value);
+                }
             }
-
-
+        }
+        if (!StringUtils.isEmpty(report.getOrderStatus()) && !StringUtils.isEmpty(report.getOrderID())) {
+            TradeReportServiceProxy.save(report.getOrderID(), JSON.toJSONString(report));
+            return "success";
         } else {
-            return "err";
+            return "fail";
         }
     }
 }
