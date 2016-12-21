@@ -52,9 +52,9 @@ public class LingdianHandler extends AbstractHandler {
 
 	public String getArea(String productId) {
 		if(productId.endsWith("$")) {
-			return "P";//非漫游包
+			return "p";//非漫游包
 		} else {
-			return "C";//漫游包
+			return "c";//漫游包
 		}
 	}
 
