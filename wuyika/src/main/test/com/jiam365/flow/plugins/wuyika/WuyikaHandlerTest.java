@@ -28,7 +28,7 @@ public class WuyikaHandlerTest extends TestCase {
     public void testRecharge() throws Exception {
         RechargeRequest rechargeRequest = new RechargeRequest();
         rechargeRequest.setProductId("NA8123456");
-        rechargeRequest.setSize(5);
+        rechargeRequest.setSize(10);
         rechargeRequest.setMobile("15109536624");
         ResponseData responseData = handler.recharge(rechargeRequest);
         System.out.println(responseData);
