@@ -1,5 +1,6 @@
 package com.jiam365.flow.plugins.sswdahan;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -7,22 +8,14 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  * Created by ken on 15/12/13.
  */
 public class OrderCreateRequestDTO {
-	
-	private String action = "SingleCharge";
+
 	private String account;
-	private String chargetype;
-	private String orderno;
-	private String mobile;
-	private String procode;
-	private String chargesign;
-
-	public String getAction() {
-		return action;
-	}
-
-	public void setAction(String action) {
-		this.action = action;
-	}
+	private String mobiles;
+	private String sign;
+	private int packageSize;
+	private String msgTemplateId;
+	private String clientOrderId;
+	private long timestamp = System.currentTimeMillis();
 
 	public String getAccount() {
 		return account;
@@ -32,69 +25,66 @@ public class OrderCreateRequestDTO {
 		this.account = account;
 	}
 
-	public String getChargetype() {
-		return chargetype;
+	public String getMobiles() {
+		return mobiles;
 	}
 
-	public void setChargetype(String chargetype) {
-		this.chargetype = chargetype;
+	public void setMobiles(String mobiles) {
+		this.mobiles = mobiles;
 	}
 
-	public String getOrderno() {
-		return orderno;
+	public String getSign() {
+		return sign;
 	}
 
-	public void setOrderno(String orderno) {
-		this.orderno = orderno;
+	public void setSign(String sign) {
+		this.sign = sign;
 	}
 
-	public String getMobile() {
-		return mobile;
+	public int getPackageSize() {
+		return packageSize;
 	}
 
-	public void setMobile(String mobile) {
-		this.mobile = mobile;
+	public void setPackageSize(int packageSize) {
+		this.packageSize = packageSize;
 	}
 
-	public String getProcode() {
-		return procode;
+	public String getMsgTemplateId() {
+		return msgTemplateId;
 	}
 
-	public void setProcode(String procode) {
-		this.procode = procode;
+	public void setMsgTemplateId(String msgTemplateId) {
+		this.msgTemplateId = msgTemplateId;
 	}
 
-	public String getChargesign() {
-		return chargesign;
+	public String getClientOrderId() {
+		return clientOrderId;
 	}
 
-	public void setChargesign(String chargesign) {
-		this.chargesign = chargesign;
+	public void setClientOrderId(String clientOrderId) {
+		this.clientOrderId = clientOrderId;
 	}
 
-	public void generateSignature(String apiKey) {
+	public long getTimestamp() {
+		return timestamp;
+	}
+
+	public void setTimestamp(long timestamp) {
+		this.timestamp = timestamp;
+	}
+
+	public void generateSignature(String pwd) {
 		StringBuilder sb = new StringBuilder();
-		sb.append("account=")
-				.append(account)
-				.append("&")
-				.append("mobile=")
-				.append(mobile)
-				.append("&")
-				.append("orderno=")
-				.append(orderno)
-				.append("&")
-				.append("procode=")
-				.append(procode)
-				.append("&")
-				.append("key=")
-				.append(apiKey);
-		String _signature= MD5.md5(sb.toString());
-		this.setChargesign(_signature);
+		//sign=MD5(account+MD5(pwd)+timestamp+mobiles) 
+		sb.append(this.getAccount()).append(MD5.md5(pwd)).append(this.getTimestamp()).append(this.getMobiles()).append(packageSize).append(clientOrderId);
+		String data = sb.toString();
+		System.out.println("sb:" + data);
+		String _signature = MD5.md5(data);
+		this.setSign(_signature);
 	}
-	
 
+	@Override
 	public String toString() {
 		return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE);
 	}
-
 }

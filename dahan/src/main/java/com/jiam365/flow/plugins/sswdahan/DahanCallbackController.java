@@ -1,58 +1,106 @@
 package com.jiam365.flow.plugins.sswdahan;
 
-import com.alibaba.fastjson.JSON;
-import com.jiam365.flow.sdk.support.TradeReportServiceProxy;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Controller;
-import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.BufferedReader;
-import java.util.List;
+
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+
+import com.alibaba.fastjson.JSONObject;
+import com.jiam365.flow.sdk.support.TradeReportServiceProxy;
+import com.jiam365.modules.mapper.JsonMapper;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 @Controller
-@RequestMapping(value = "/report")
-public class DahanCallbackController {
+@RequestMapping(value="/report")
+public class DaHanCallbackController {
 
-    private static Logger logger = LoggerFactory.getLogger(DahanCallbackController.class);
+	private static Logger logger = LoggerFactory.getLogger(DaHanCallbackController.class);
 
-    @RequestMapping(value = "migu")
-    @ResponseBody
-    public String callback(HttpServletRequest request) {
-        StringBuffer jb = new StringBuffer();
-        String line = null;
-        try {
-            BufferedReader reader = request.getReader();
-            while ((line = reader.readLine()) != null)
-                jb.append(line);
-        } catch (Exception e) {
-            /* report an error */
-        }
+	@RequestMapping(value="dahan")
+	@ResponseBody
+	public String callback(HttpServletRequest request) {
+		
+		
+		StringBuffer _sb = new StringBuffer();
+		try{
+		InputStream _input = request.getInputStream();
+		InputStreamReader _reader = new InputStreamReader(_input);
+		BufferedReader _buff = new BufferedReader(_reader);
+		String _b = null;
+		while ((_b = _buff.readLine()) != null) {
+			_sb.append(_b + System.getProperty("line.separator"));
+		}
+		}catch (Exception e) {
+			// TODO: handle exception
+		}
+		logger.debug("收到大汉流量银行公司回调json:"+_sb);
+		
+		if(_sb==null||_sb.equals("")){
+			return "{" + "\"resultCode\":\"1111\","+ "\"resultMsg\":\"处理失败！\"" + "}";
+		}
 
-        String json = jb.toString().trim();
-        return parse(json);
-    }
+		JSONObject jsonObject = JSONObject.parseObject(_sb.toString());
+		DahanReport report = new DahanReport();
+		try{
+		if(jsonObject.containsKey("clientOrderId"))
+		report.setClientOrderId(jsonObject.getString("clientOrderId"));
+		
+		if(jsonObject.containsKey("mobile"))
+		report.setMobile(jsonObject.getString("mobile"));
+		
+		if(jsonObject.containsKey("reportTime"))
+		report.setReportTime(jsonObject.getString("reportTime"));
+		
+		if(jsonObject.containsKey("callBackTime"))
+		report.setCallBackTime(jsonObject.getString("callBackTime"));
+		
+		if(jsonObject.containsKey("status"))
+		report.setStatus(jsonObject.getString("status"));
+		
+		if(jsonObject.containsKey("errorCode"))
+		report.setErrorCode(jsonObject.getString("errorCode"));
+		
+		if(jsonObject.containsKey("errorDesc"))
+		report.setErrorDesc(jsonObject.getString("errorDesc"));
+		
+		if(jsonObject.containsKey("intervalTime"))
+		report.setIntervalTime(jsonObject.getString("intervalTime"));
+		
+		if(jsonObject.containsKey("clientSubmitTime"))
+		report.setClientSubmitTime(jsonObject.getString("clientSubmitTime"));
+		
+		if(jsonObject.containsKey("discount"))
+		report.setDiscount(jsonObject.getString("discount"));
+		
+		if(jsonObject.containsKey("costMoney"))
+		report.setCostMoney(jsonObject.getString("costMoney"));
+		}catch(Exception e){
+			
+		}
+		
+		logger.debug("收到大汉流量银行公司回调报文 clientOrderId {}, mobile: {}, status: {}, errorCode: {}, errorDesc: {}",
+				report.getClientOrderId(),
+				report.getMobile(), report.getStatus(), report.getErrorCode(), report.getErrorDesc());
+		if (StringUtils.isNotBlank(report.getStatus()) && StringUtils.isNotBlank(report.getClientOrderId())) {
+			JsonMapper mapper = JsonMapper.nonDefaultMapper();
+			TradeReportServiceProxy.save(report.getClientOrderId(), mapper.toJson(report));
+			
+			return "{" + "\"resultCode\":\"0000\","+ "\"resultMsg\":\"处理成功！\"" + "}";
+		} else {
+			return "{" + "\"resultCode\":\"1111\","+ "\"resultMsg\":\"处理失败！\"" + "}";
+		}
+	}
 
-    public String parse(String json) {
-        logger.debug("收到米谷回调报文 {}", json);
-
-        if (!StringUtils.isEmpty(json)) {
-            List<DahanReport> reports = JSON.parseArray(json, DahanReport.class);
-            logger.debug("收到米谷回调报文 {}", "reports.size: " + reports.size());
-            if(reports != null && reports.size() > 0) {
-                DahanReport report = reports.get(0);
-                TradeReportServiceProxy.save(report.getOrderNo(), JSON.toJSONString(report));
-                return "ok";
-            } else {
-                return "err";
-            }
-
-
-        } else {
-            return "err";
-        }
-    }
 }

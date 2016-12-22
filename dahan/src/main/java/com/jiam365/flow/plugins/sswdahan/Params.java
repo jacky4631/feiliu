@@ -4,17 +4,10 @@ package com.jiam365.flow.plugins.sswdahan;
  * Created by 沈吉 on 2016/12/9.
  */
 public class Params {
-    private String rechargeUrl;
     private String account;
-    private String apiKey;
-
-    public String getRechargeUrl() {
-        return rechargeUrl;
-    }
-
-    public void setRechargeUrl(String rechargeUrl) {
-        this.rechargeUrl = rechargeUrl;
-    }
+    private String pwd;
+    private String rechargeUrl;
+    private String queryUrl;
 
     public String getAccount() {
         return account;
@@ -24,11 +17,27 @@ public class Params {
         this.account = account;
     }
 
-    public String getApiKey() {
-        return apiKey;
+    public String getPwd() {
+        return pwd;
     }
 
-    public void setApiKey(String apiKey) {
-        this.apiKey = apiKey;
+    public void setPwd(String pwd) {
+        this.pwd = pwd;
+    }
+
+    public String getRechargeUrl() {
+        return rechargeUrl;
+    }
+
+    public void setRechargeUrl(String rechargeUrl) {
+        this.rechargeUrl = rechargeUrl;
+    }
+
+    public String getQueryUrl() {
+        return queryUrl;
+    }
+
+    public void setQueryUrl(String queryUrl) {
+        this.queryUrl = queryUrl;
     }
 }
