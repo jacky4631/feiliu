@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.objenesis:objenesis:unknown">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/objenesis/objenesis/unknown/objenesis-unknown.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/objenesis/objenesis/unknown/objenesis-unknown-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/objenesis/objenesis/unknown/objenesis-unknown-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
