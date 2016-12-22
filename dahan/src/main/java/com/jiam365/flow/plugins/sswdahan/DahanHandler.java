@@ -14,10 +14,10 @@ import org.slf4j.LoggerFactory;
 
 import java.text.SimpleDateFormat;
 
-public class MiguHandler extends AbstractHandler {
+public class DahanHandler extends AbstractHandler {
 
     private String MARK = "MIGU";
-    private static Logger logger = LoggerFactory.getLogger(MiguHandler.class);
+    private static Logger logger = LoggerFactory.getLogger(DahanHandler.class);
     private String rechargeUrl;
     private String account;
     private String apiKey;
@@ -78,7 +78,7 @@ public class MiguHandler extends AbstractHandler {
             throw new ChannelConnectionException("");
         } else {
             ResponseData data = new ResponseData();
-            MiguReport rechargeReport = JSON.parseObject(json, MiguReport.class);
+            DahanReport rechargeReport = JSON.parseObject(json, DahanReport.class);
             data.setRequestNo(rechargeReport.getOrderNumber());
             String ret_msg = rechargeReport.getMessage();
             String ret_code = rechargeReport.getStatus();

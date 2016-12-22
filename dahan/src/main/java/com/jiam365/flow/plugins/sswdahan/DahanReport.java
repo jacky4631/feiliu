@@ -1,6 +1,6 @@
 package com.jiam365.flow.plugins.sswdahan;
 
-public class MiguReport {
+public class DahanReport {
 
 	private String orderNo;
 	private String orderNumber;

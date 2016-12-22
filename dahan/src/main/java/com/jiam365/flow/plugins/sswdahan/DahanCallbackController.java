@@ -15,9 +15,9 @@ import java.util.List;
 
 @Controller
 @RequestMapping(value = "/report")
-public class MiguCallbackController {
+public class DahanCallbackController {
 
-    private static Logger logger = LoggerFactory.getLogger(MiguCallbackController.class);
+    private static Logger logger = LoggerFactory.getLogger(DahanCallbackController.class);
 
     @RequestMapping(value = "migu")
     @ResponseBody
@@ -40,10 +40,10 @@ public class MiguCallbackController {
         logger.debug("收到米谷回调报文 {}", json);
 
         if (!StringUtils.isEmpty(json)) {
-            List<MiguReport> reports = JSON.parseArray(json, MiguReport.class);
+            List<DahanReport> reports = JSON.parseArray(json, DahanReport.class);
             logger.debug("收到米谷回调报文 {}", "reports.size: " + reports.size());
             if(reports != null && reports.size() > 0) {
-                MiguReport report = reports.get(0);
+                DahanReport report = reports.get(0);
                 TradeReportServiceProxy.save(report.getOrderNo(), JSON.toJSONString(report));
                 return "ok";
             } else {
