@@ -4,9 +4,9 @@
 
 package com.jiam365.flow.server.service;
 
+import com.jiam365.flow.server.utils.HttpInvokeUtils;
 import org.slf4j.LoggerFactory;
 import com.jiam365.flow.server.entity.SmConfig;
-import com.jiam365.flow.plugins.http.HttpInvokeUtils;
 import com.jiam365.modules.tools.ConfigurationHolder;
 import java.text.MessageFormat;
 import org.springframework.beans.factory.annotation.Autowired;

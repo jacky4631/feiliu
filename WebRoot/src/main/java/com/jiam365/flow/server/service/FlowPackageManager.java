@@ -196,45 +196,36 @@ public class FlowPackageManager
         Collections.sort(productGroups, (a, b) -> a.getGroupCode().compareTo(b.getGroupCode()));
         return productGroups;
     }
-    
-    public void createGroup(final long channelId, final String state, final Boolean roamable, final String telco, final int idMethod, final int prior, final double discount) {
-        final Telco provider = Telco.valueOf(telco);
-        List<FlowProduct> flowProducts = this.flowProductManager.findStateProducts(Telco.valueOf(telco), state);
+
+    public void createGroup(long channelId, String state, Boolean roamable, String telco, int idMethod, int prior, double discount) {
+        Telco provider = Telco.valueOf((String)telco);
+        List<FlowProduct> flowProducts = this.flowProductManager.findStateProducts(Telco.valueOf((String)telco), state);
         if (flowProducts.size() == 0) {
             this.flowProductManager.cloneProductGroup(provider, state);
-            flowProducts = this.flowProductManager.findStateProducts(Telco.valueOf(telco), state);
+            flowProducts = this.flowProductManager.findStateProducts(Telco.valueOf((String)telco), state);
         }
         if (flowProducts.size() == 0) {
             throw new RuntimeException("\u627e\u4e0d\u5230\u6307\u5b9a\u7684\u7701\u5305\u57fa\u7840\u5e93\u4ea7\u54c1\u5b9a\u4e49, \u4e5f\u65e0\u6cd5\u4ece\u5168\u56fd\u5305\u590d\u5236, \u8bf7\u81f3\u5c11\u5148\u5b9a\u4e49\u624b\u5de5\u57fa\u7840\u4ea7\u54c1\u5e93\u7684\u5168\u56fd\u4ea7\u54c1.");
         }
-        final FlowPackage flowPackage;
-        String productId;
-        final FlowPackage flowPackage2;
         flowProducts.stream().filter(flowProduct -> flowProduct.getSize() != 12).forEach(flowProduct -> {
-            flowPackage = new FlowPackage();
-            flowPackage.setDiscount(discount);
-            flowPackage.setEnabled(false);
-            flowPackage.setFlowChannelId(channelId);
-            flowPackage.setPrice(flowProduct.getPrice());
-            flowPackage.setPriority(prior);
-            if (roamable) {
-                productId = flowProduct.getId();
-            }
-            else {
-                productId = flowProduct.getId() + "$";
-            }
-            flowPackage2.setProductId(productId);
-            flowPackage.setSize(flowProduct.getSize());
-            flowPackage.setTitle(flowProduct.getShortName());
-            flowPackage.setOrigiProductId(this.generateProductId(flowPackage.getProductId(), idMethod, flowProduct.getSize()));
-            this.saveOrUpdate(flowPackage);
-            return;
-        });
-        final String groupProfileId = ProductIDHelper.groupProfileId(channelId, state, roamable, telco);
-        final ChannelProductGroupProfile profile = this.getGroupProfile(groupProfileId);
+                    FlowPackage flowPackage = new FlowPackage();
+                    flowPackage.setDiscount(discount);
+                    flowPackage.setEnabled(false);
+                    flowPackage.setFlowChannelId(Long.valueOf(channelId));
+                    flowPackage.setPrice(flowProduct.getPrice());
+                    flowPackage.setPriority(prior);
+                    flowPackage.setProductId(roamable != false ? flowProduct.getId() : flowProduct.getId() + "$");
+                    flowPackage.setSize(flowProduct.getSize());
+                    flowPackage.setTitle(flowProduct.getShortName());
+                    flowPackage.setOrigiProductId(this.generateProductId(flowPackage.getProductId(), idMethod, flowProduct.getSize()));
+                    this.saveOrUpdate(flowPackage);
+                }
+        );
+        String groupProfileId = ProductIDHelper.groupProfileId((long)channelId, (String)state, (Boolean)roamable, (String)telco);
+        ChannelProductGroupProfile profile = this.getGroupProfile(groupProfileId);
         this.saveGroupProfile(profile);
     }
-    
+
     private String generateProductId(final String productId, final int type, final int size) {
         switch (type) {
             case 0: {
