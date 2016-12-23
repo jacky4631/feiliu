@@ -4,6 +4,8 @@
 
 package com.jiam365.flow.base.utils;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.io.IOException;
@@ -13,8 +15,6 @@ import java.io.InputStream;
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.File;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpServletRequest;
 
 public class DownloadUtils
 {
