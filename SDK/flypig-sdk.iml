@@ -11,6 +11,11 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="flypig-core" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-webmvc:4.2.5.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-web:4.2.5.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.tomcat:jsp-api:6.0.29" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.tomcat:el-api:6.0.29" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.tomcat:servlet-api:6.0.29" level="project" />
     <orderEntry type="library" name="Maven: com.alibaba:fastjson:1.1.37" level="project" />
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.6.5" level="project" />
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.6.0" level="project" />

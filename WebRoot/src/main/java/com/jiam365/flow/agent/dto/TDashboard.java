@@ -1,9 +1,10 @@
 package com.jiam365.flow.agent.dto;
 
 import com.jiam365.flow.server.utils.DoubleUtils;
-import com.jiam365.modules.telco.Telco;
 import java.text.NumberFormat;
+import java.util.Iterator;
 import java.util.Date;
+import com.jiam365.modules.telco.Telco;
 import java.util.Map;
 
 public class TDashboard
@@ -23,182 +24,165 @@ public class TDashboard
     private long telecomFail;
     private long telecomPending;
     private double billAmount;
-    private Date time = new Date();
-    private double cmccAmount = 0.0D;
-    private double telecomAmount = 0.0D;
-    private double unicomAmount = 0.0D;
+    private Date time;
+    private double cmccAmount;
+    private double telecomAmount;
+    private double unicomAmount;
 
-    public Long getTotalCount()
-    {
-        long count = 0L;
-        for (Telco provider : this.successTotal.keySet()) {
-            count += ((Long)this.successTotal.get(provider)).longValue();
-        }
-        for (Telco provider : this.failTotal.keySet()) {
-            count += ((Long)this.failTotal.get(provider)).longValue();
-        }
-        for (Telco provider : this.pendingTotal.keySet()) {
-            count += ((Long)this.pendingTotal.get(provider)).longValue();
-        }
-        return Long.valueOf(count);
+    public TDashboard() {
+        this.time = new Date();
+        this.cmccAmount = 0.0;
+        this.telecomAmount = 0.0;
+        this.unicomAmount = 0.0;
     }
 
-    public String getFinishPercent()
-    {
-        long totalCount = getTotalCount().longValue();
+    public Long getTotalCount() {
+        long count = 0L;
+        for (final Telco provider : this.successTotal.keySet()) {
+            count += this.successTotal.get(provider);
+        }
+        for (final Telco provider : this.failTotal.keySet()) {
+            count += this.failTotal.get(provider);
+        }
+        for (final Telco provider : this.pendingTotal.keySet()) {
+            count += this.pendingTotal.get(provider);
+        }
+        return count;
+    }
+
+    public String getFinishPercent() {
+        final long totalCount = this.getTotalCount();
         if (totalCount == 0L) {
             return "0%";
         }
-        double percent = (this.unicomSuccess + this.cmccSuccess + this.telecomSuccess) / totalCount;
-        NumberFormat format = NumberFormat.getPercentInstance();
+        final double percent = (this.unicomSuccess + this.cmccSuccess + this.telecomSuccess) / totalCount;
+        final NumberFormat format = NumberFormat.getPercentInstance();
         format.setMinimumFractionDigits(1);
         return format.format(percent);
     }
 
-    public double getBalance()
-    {
+    public double getBalance() {
         return this.balance;
     }
 
-    public void setBalance(double balance)
-    {
+    public void setBalance(final double balance) {
         this.balance = balance;
     }
 
-    public Map<Telco, Long> getSuccessTotal()
-    {
+    public Map<Telco, Long> getSuccessTotal() {
         return this.successTotal;
     }
 
-    public void setSuccessTotal(Map<Telco, Long> successTotal)
-    {
+    public void setSuccessTotal(final Map<Telco, Long> successTotal) {
         this.successTotal = successTotal;
-        this.cmccSuccess = safeLong((Long)successTotal.get(Telco.CMCC));
-        this.telecomSuccess = safeLong((Long)successTotal.get(Telco.TELECOM));
-        this.unicomSuccess = safeLong((Long)successTotal.get(Telco.UNICOM));
+        this.cmccSuccess = this.safeLong(successTotal.get(Telco.CMCC));
+        this.telecomSuccess = this.safeLong(successTotal.get(Telco.TELECOM));
+        this.unicomSuccess = this.safeLong(successTotal.get(Telco.UNICOM));
     }
 
-    public Map<Telco, Long> getFailTotal()
-    {
+    public Map<Telco, Long> getFailTotal() {
         return this.failTotal;
     }
 
-    public void setFailTotal(Map<Telco, Long> failTotal)
-    {
+    public void setFailTotal(final Map<Telco, Long> failTotal) {
         this.failTotal = failTotal;
-        this.cmccFail = safeLong((Long)failTotal.get(Telco.CMCC));
-        this.telecomFail = safeLong((Long)failTotal.get(Telco.TELECOM));
-        this.unicomFail = safeLong((Long)failTotal.get(Telco.UNICOM));
+        this.cmccFail = this.safeLong(failTotal.get(Telco.CMCC));
+        this.telecomFail = this.safeLong(failTotal.get(Telco.TELECOM));
+        this.unicomFail = this.safeLong(failTotal.get(Telco.UNICOM));
     }
 
-    public Map<Telco, Long> getPendingTotal()
-    {
+    public Map<Telco, Long> getPendingTotal() {
         return this.pendingTotal;
     }
 
-    public void setPendingTotal(Map<Telco, Long> pendingTotal)
-    {
+    public void setPendingTotal(final Map<Telco, Long> pendingTotal) {
         this.pendingTotal = pendingTotal;
-        this.cmccPending = safeLong((Long)pendingTotal.get(Telco.CMCC));
-        this.telecomPending = safeLong((Long)pendingTotal.get(Telco.TELECOM));
-        this.unicomPending = safeLong((Long)pendingTotal.get(Telco.UNICOM));
+        this.cmccPending = this.safeLong(pendingTotal.get(Telco.CMCC));
+        this.telecomPending = this.safeLong(pendingTotal.get(Telco.TELECOM));
+        this.unicomPending = this.safeLong(pendingTotal.get(Telco.UNICOM));
     }
 
-    public void setBillAmountMap(Map<Telco, Double> billAmountMap)
-    {
+    public void setBillAmountMap(final Map<Telco, Double> billAmountMap) {
         this.billAmountMap = billAmountMap;
-        double amount = 0.0D;
-        for (Telco provider : billAmountMap.keySet())
-        {
-            double current = ((Double)billAmountMap.get(provider)).doubleValue();
+        double amount = 0.0;
+        for (final Telco provider : billAmountMap.keySet()) {
+            final double current = billAmountMap.get(provider);
             amount = DoubleUtils.add(amount, current);
-            switch (provider)
-            {
-                case CMCC:
+            switch (provider) {
+                case CMCC: {
                     this.cmccAmount = DoubleUtils.round(current, 2);
-                    break;
-                case TELECOM:
+                    continue;
+                }
+                case TELECOM: {
                     this.telecomAmount = DoubleUtils.round(current, 2);
-                    break;
-                case UNICOM:
+                    continue;
+                }
+                case UNICOM: {
                     this.unicomAmount = DoubleUtils.round(current, 2);
+                    continue;
+                }
             }
         }
         this.billAmount = DoubleUtils.round(amount, 2);
     }
 
-    public Double getBillAmount()
-    {
-        return Double.valueOf(this.billAmount);
+    public Double getBillAmount() {
+        return this.billAmount;
     }
 
-    public long getCmccSuccess()
-    {
+    public long getCmccSuccess() {
         return this.cmccSuccess;
     }
 
-    public long getCmccFail()
-    {
+    public long getCmccFail() {
         return this.cmccFail;
     }
 
-    public long getCmccPending()
-    {
+    public long getCmccPending() {
         return this.cmccPending;
     }
 
-    public long getUnicomSuccess()
-    {
+    public long getUnicomSuccess() {
         return this.unicomSuccess;
     }
 
-    public long getUnicomFail()
-    {
+    public long getUnicomFail() {
         return this.unicomFail;
     }
 
-    public long getUnicomPending()
-    {
+    public long getUnicomPending() {
         return this.unicomPending;
     }
 
-    public long getTelecomSuccess()
-    {
+    public long getTelecomSuccess() {
         return this.telecomSuccess;
     }
 
-    public long getTelecomFail()
-    {
+    public long getTelecomFail() {
         return this.telecomFail;
     }
 
-    public long getTelecomPending()
-    {
+    public long getTelecomPending() {
         return this.telecomPending;
     }
 
-    private long safeLong(Long value)
-    {
-        return value == null ? 0L : value.longValue();
+    private long safeLong(final Long value) {
+        return (value == null) ? 0L : value;
     }
 
-    public double getCmccAmount()
-    {
+    public double getCmccAmount() {
         return this.cmccAmount;
     }
 
-    public double getTelecomAmount()
-    {
+    public double getTelecomAmount() {
         return this.telecomAmount;
     }
 
-    public double getUnicomAmount()
-    {
+    public double getUnicomAmount() {
         return this.unicomAmount;
     }
 
-    public Date getTime()
-    {
+    public Date getTime() {
         return this.time;
     }
 }
