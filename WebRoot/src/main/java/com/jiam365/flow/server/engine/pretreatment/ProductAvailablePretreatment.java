@@ -34,7 +34,7 @@ public class ProductAvailablePretreatment implements Pretreatment
         final String baseProductId = ProductIDHelper.baseProductId(productId);
         final FlowProduct flowProduct = this.flowProductManager.get(baseProductId);
         if (userProduct == null || flowProduct == null || !flowProduct.isEnabled()) {
-            throw new TradeException(productId + "\u4e0d\u5b58\u5728\u6216\u672a\u6388\u6743\u4f7f\u7528");
+            throw new TradeException(productId + "不存在或未授权使用");
         }
         RechargeRequests.mobileAndProduct(request, info, flowProduct, userProduct);
     }

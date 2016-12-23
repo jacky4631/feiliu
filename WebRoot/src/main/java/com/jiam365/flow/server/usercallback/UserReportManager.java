@@ -44,7 +44,7 @@ public class UserReportManager
             final int delayMinutes = this.paramsService.loadUserReportParam().getDelayMinutes();
             userReport.setLastTimestamp(System.currentTimeMillis() - 60000 * delayMinutes);
             userReport.setRetryTimes(0);
-            this.userReportDao.save((Object)userReport);
+            this.userReportDao.save(userReport);
         }
     }
     
@@ -65,7 +65,7 @@ public class UserReportManager
             final int delayMinutes = this.paramsService.loadUserReportParam().getDelayMinutes();
             userReport.setLastTimestamp(System.currentTimeMillis() - 60000 * delayMinutes);
             userReport.setRetryTimes(0);
-            this.userReportDao.save((Object)userReport);
+            this.userReportDao.save(userReport);
         }
     }
     
@@ -76,15 +76,15 @@ public class UserReportManager
     public void saveAgain(final UserReport report) {
         report.setRetryTimes(report.getRetryTimes() + 1);
         report.setLastTimestamp(System.currentTimeMillis());
-        this.userReportDao.save((Object)report);
+        this.userReportDao.save(report);
     }
     
     public void createReport(final UserReport report) {
-        this.userReportDao.save((Object)report);
+        this.userReportDao.save(report);
     }
     
     public void remove(final String tradeId) {
-        this.userReportDao.deleteById((Object)tradeId);
+        this.userReportDao.deleteById(tradeId);
     }
     
     public synchronized List<UserReport> popTasks(final int count) {

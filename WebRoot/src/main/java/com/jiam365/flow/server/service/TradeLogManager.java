@@ -43,17 +43,17 @@ public class TradeLogManager
         try {
             final User user = this.userManager.getUserByUsername(tradeLog.getUsername());
             tradeLog.setDisplayUsername(user.getDisplayName());
-            this.tradeLogDao.save((Object)tradeLog);
+            this.tradeLogDao.save(tradeLog);
         }
         catch (MongoClientException e) {
             TradeLogManager.logger.warn("\u4ea4\u6613\u65e5\u5fd7\u4fdd\u5b58\u5931\u8d25, \u8bf7\u624b\u5de5\u5904\u7406\u8be5\u4ea4\u6613\u65e5\u5fd7, \u8be6\u89c1\u672a\u5904\u7406\u4ea4\u6613\u65e5\u5fd7\u6587\u4ef6");
             final Logger log = LoggerFactory.getLogger("unsave_trade");
-            log.info("\u672a\u6210\u529f\u5165\u5e93\u7684\u4ea4\u6613\u65e5\u5fd7: {}", (Object)tradeLog.asString());
+            log.info("\u672a\u6210\u529f\u5165\u5e93\u7684\u4ea4\u6613\u65e5\u5fd7: {}", tradeLog.asString());
         }
     }
     
     public void delete(final String tradeId) {
-        this.tradeLogDao.deleteById((Object)tradeId);
+        this.tradeLogDao.deleteById(tradeId);
     }
     
     public List<TradeLog> findTerminateTradeLog(final int max) {
@@ -79,7 +79,7 @@ public class TradeLogManager
     }
     
     public void updateAfterReRoute(final Trade trade) {
-        final TradeLog log = (TradeLog)this.tradeLogDao.get((Object)trade.getTradeId());
+        final TradeLog log = (TradeLog)this.tradeLogDao.get(trade.getTradeId());
         if (log != null) {
             log.setChannelId(trade.getConnection().channelId());
             log.setChannelName(trade.getConnection().getChannel().getName());
@@ -101,10 +101,10 @@ public class TradeLogManager
     }
     
     public void clearTradeLogBillInfo(final String tradeId) {
-        final TradeLog log = (TradeLog)this.tradeLogDao.get((Object)tradeId);
+        final TradeLog log = (TradeLog)this.tradeLogDao.get(tradeId);
         if (log != null) {
             log.setBillAmount(0.0);
-            this.tradeLogDao.save((Object)log);
+            this.tradeLogDao.save(log);
         }
     }
     
@@ -113,14 +113,14 @@ public class TradeLogManager
     }
     
     public void updateChannelMessage(final String tradeId, final String message) {
-        final TradeLog tradeLog = (TradeLog)this.tradeLogDao.get((Object)tradeId);
+        final TradeLog tradeLog = (TradeLog)this.tradeLogDao.get(tradeId);
         if (tradeLog != null && tradeLog.getResult() == 9) {
             if (StringUtils.isBlank((CharSequence)tradeLog.getRemark())) {
                 tradeLog.setRemark("\u539f\u4e0a\u6e38\u6d88\u606f: " + tradeLog.getChannelMessage());
             }
             tradeLog.setChannelMessage(message);
         }
-        this.tradeLogDao.save((Object)tradeLog);
+        this.tradeLogDao.save(tradeLog);
     }
     
     public void updateChannelResultAndCost(final boolean isSuccess, final Trade trade) {
@@ -252,7 +252,7 @@ public class TradeLogManager
     }
     
     public TradeLog get(final String id) {
-        return (TradeLog)this.tradeLogDao.get((Object)id);
+        return (TradeLog)this.tradeLogDao.get(id);
     }
     
     public TradeLog getByUserRequestNo(final String username, final String userRequestNo) {

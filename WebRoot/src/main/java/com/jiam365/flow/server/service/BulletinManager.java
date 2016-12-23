@@ -18,11 +18,11 @@ public class BulletinManager
     private BulletinDao bulletinDao;
     
     public void remove(final String id) {
-        this.bulletinDao.deleteById((Object)id);
+        this.bulletinDao.deleteById(id);
     }
     
     public void save(final Bulletin bulletin) {
-        this.bulletinDao.save((Object)bulletin);
+        this.bulletinDao.save(bulletin);
     }
     
     public Page<Bulletin> searchPage(final Page<Bulletin> page) {

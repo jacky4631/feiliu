@@ -54,7 +54,7 @@ public class RechargeMobilePromptManager
             content = st.render();
             final String username = trade.getRequest().getUsername();
             if (config.isValid() && this.userManager.sendSmActived(username)) {
-                this.executorService.submit((Callable<Object>)new SmsPromptTask(trade, content));
+                this.executorService.submit(new SmsPromptTask(trade, content));
             }
         }
     }

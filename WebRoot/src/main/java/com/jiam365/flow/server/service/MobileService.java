@@ -35,7 +35,7 @@ public class MobileService
     }
     
     public String getStateNameByCode(final String code) {
-        final State state = (State)this.stateDao.get((Object)code);
+        final State state = (State)this.stateDao.get(code);
         return (state == null) ? "" : state.getName();
     }
     

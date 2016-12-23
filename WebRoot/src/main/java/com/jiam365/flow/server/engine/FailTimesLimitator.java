@@ -20,16 +20,16 @@ public class FailTimesLimitator implements InitializingBean
     
     public void afterPropertiesSet() throws Exception {
         final Blacklist blacklist = this.blacklistManager.load();
-        this.counter = (Cache<String, Integer>)CacheBuilder.newBuilder().expireAfterWrite((long)blacklist.getMonitorPeriod(), TimeUnit.HOURS).maximumSize(500000L).build();
+        this.counter = CacheBuilder.newBuilder().expireAfterWrite((long)blacklist.getMonitorPeriod(), TimeUnit.HOURS).maximumSize(500000L).build();
     }
     
     public synchronized void addFailMobile(final String mobile) {
         final Integer total = (Integer)this.counter.getIfPresent((Object)mobile);
         if (total != null) {
-            this.counter.put((Object)mobile, (Object)(total + 1));
+            this.counter.put(mobile, (total + 1));
         }
         else {
-            this.counter.put((Object)mobile, (Object)1);
+            this.counter.put(mobile, 1);
         }
     }
     

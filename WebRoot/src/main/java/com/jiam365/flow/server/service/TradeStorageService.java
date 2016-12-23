@@ -26,12 +26,12 @@ public class TradeStorageService
     public void storePendingTrades(final Map<String, Trade> trades) {
         for (final Trade trade : trades.values()) {
             final PendingTrade pendingTrade = new PendingTrade(trade);
-            this.pendingTradeDao.save((Object)pendingTrade);
+            this.pendingTradeDao.save(pendingTrade);
         }
     }
     
     public void store(final PendingTrade pendingTrade) {
-        this.pendingTradeDao.save((Object)pendingTrade);
+        this.pendingTradeDao.save(pendingTrade);
     }
     
     public List<Trade> loadPendingTrades(final TradeCenter central) {
@@ -45,7 +45,7 @@ public class TradeStorageService
             final Trade trade = pendingTrade.toTrade(central, this.channelConnectionManager);
             if (trade != null) {
                 trades.add(trade);
-                this.pendingTradeDao.deleteById((Object)pendingTrade.getTradeId());
+                this.pendingTradeDao.deleteById(pendingTrade.getTradeId());
             }
         }
         return trades;

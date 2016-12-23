@@ -19,15 +19,15 @@ public class BalanceNotifyManager
     private BalanceNotifyDao balanceNotifyDao;
     
     public BalanceNotify get(final String id) {
-        return (BalanceNotify)this.balanceNotifyDao.get((Object)id);
+        return (BalanceNotify)this.balanceNotifyDao.get(id);
     }
     
     public void remove(final String id) {
-        this.balanceNotifyDao.deleteById((Object)id);
+        this.balanceNotifyDao.deleteById(id);
     }
     
     public void save(final BalanceNotify notify) {
-        this.balanceNotifyDao.save((Object)notify);
+        this.balanceNotifyDao.save(notify);
     }
     
     public List<BalanceNotify> findAllEnabled() {

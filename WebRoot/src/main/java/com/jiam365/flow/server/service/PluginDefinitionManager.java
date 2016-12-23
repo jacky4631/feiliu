@@ -23,15 +23,15 @@ public class PluginDefinitionManager
     }
     
     public void remove(final String id) {
-        this.pluginDefinitionDao.deleteById((Object)id);
+        this.pluginDefinitionDao.deleteById(id);
     }
     
     public PluginDefinition get(final String id) {
-        return (PluginDefinition)this.pluginDefinitionDao.get((Object)id);
+        return (PluginDefinition)this.pluginDefinitionDao.get(id);
     }
     
     public void save(final PluginDefinition definition) {
-        this.pluginDefinitionDao.save((Object)definition);
+        this.pluginDefinitionDao.save(definition);
     }
     
     public Page<PluginDefinition> searchPage(final Page<PluginDefinition> page) {

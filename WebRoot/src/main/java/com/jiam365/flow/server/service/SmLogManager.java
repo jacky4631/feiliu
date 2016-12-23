@@ -31,7 +31,7 @@ public class SmLogManager
     private UserManager userManager;
     
     public void save(final SmLog log) {
-        this.smLogDao.save((Object)log);
+        this.smLogDao.save(log);
     }
     
     public double pay(final String operator, final String username, final Date toDate) {

@@ -17,12 +17,12 @@ public class ProductCompatibilityPretreatment implements Pretreatment
     @Override
     public void check(final RechargeRequest request) throws RestException {
         boolean compatibility = true;
-        final String message = "\u624b\u673a\u53f7\u7801\u548c\u5145\u503c\u5305\u4e0d\u517c\u5bb9,\u65e0\u6cd5\u5145\u503c";
+        final String message = "手机号码和充值包不兼容,无法充值";
         final MobileInfo info = request.getMobileInfo();
         final String productId = request.getProductId();
         final Telco telco = ProductIDHelper.telco(productId);
         if (telco == null) {
-            throw new TradeException("\u624b\u673a\u53f7\u7801\u548c\u5145\u503c\u5305\u4e0d\u517c\u5bb9,\u65e0\u6cd5\u5145\u503c");
+            throw new TradeException("手机号码和充值包不兼容,无法充值");
         }
         if (!telco.equals((Object)info.getProvider())) {
             compatibility = false;
@@ -35,7 +35,7 @@ public class ProductCompatibilityPretreatment implements Pretreatment
             }
         }
         if (!compatibility) {
-            throw new TradeException("\u624b\u673a\u53f7\u7801\u548c\u5145\u503c\u5305\u4e0d\u517c\u5bb9,\u65e0\u6cd5\u5145\u503c");
+            throw new TradeException("手机号码和充值包不兼容,无法充值");
         }
     }
 }

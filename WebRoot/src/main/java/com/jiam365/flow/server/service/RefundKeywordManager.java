@@ -33,7 +33,7 @@ public class RefundKeywordManager
     
     public Set<String> loadKeywords() {
         try {
-            return (Set<String>)this.keywordsCache.get((Object)RefundKeywordManager.ID);
+            return (Set<String>)this.keywordsCache.get(RefundKeywordManager.ID);
         }
         catch (ExecutionException e) {
             return new HashSet<String>();
@@ -41,7 +41,7 @@ public class RefundKeywordManager
     }
     
     private Set<String> getKeywords(final String id) {
-        final RefundKeyword store = (RefundKeyword)this.refundKeywordDao.get((Object)id);
+        final RefundKeyword store = (RefundKeyword)this.refundKeywordDao.get(id);
         return (store == null) ? new HashSet<String>() : store.getKeywords();
     }
     
@@ -61,25 +61,25 @@ public class RefundKeywordManager
     public int addKeyword(final String keyword) {
         final RefundKeyword store = this.getOrCreate();
         store.addKeyword(keyword);
-        this.refundKeywordDao.save((Object)store);
-        this.keywordsCache.refresh((Object)RefundKeywordManager.ID);
+        this.refundKeywordDao.save(store);
+        this.keywordsCache.refresh(RefundKeywordManager.ID);
         return this.loadKeywords().size();
     }
     
     public int reomveKeyword(final String keyword) {
         final RefundKeyword store = this.getOrCreate();
         store.removeKeyword(keyword);
-        this.refundKeywordDao.save((Object)store);
-        this.keywordsCache.refresh((Object)RefundKeywordManager.ID);
+        this.refundKeywordDao.save(store);
+        this.keywordsCache.refresh(RefundKeywordManager.ID);
         return this.loadKeywords().size();
     }
     
     public RefundKeyword getOrCreate() {
-        RefundKeyword store = (RefundKeyword)this.refundKeywordDao.get((Object)RefundKeywordManager.ID);
+        RefundKeyword store = (RefundKeyword)this.refundKeywordDao.get(RefundKeywordManager.ID);
         if (store == null) {
             store = new RefundKeyword();
             store.setId("ONLY");
-            this.refundKeywordDao.save((Object)store);
+            this.refundKeywordDao.save(store);
         }
         return store;
     }

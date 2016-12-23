@@ -34,12 +34,12 @@ public class ChannelGroupManager
     }
     
     public ChannelGroup get(final String id) {
-        return (ChannelGroup)this.channelGroupDao.get((Object)id);
+        return (ChannelGroup)this.channelGroupDao.get(id);
     }
     
     public ChannelGroup load(final String id) {
         try {
-            return (ChannelGroup)this.groupCache.get((Object)id);
+            return (ChannelGroup)this.groupCache.get(id);
         }
         catch (ExecutionException e) {
             return null;
@@ -47,13 +47,13 @@ public class ChannelGroupManager
     }
     
     public void remove(final String id) {
-        this.channelGroupDao.deleteById((Object)id);
-        this.groupCache.invalidate((Object)id);
+        this.channelGroupDao.deleteById(id);
+        this.groupCache.invalidate(id);
     }
     
     public void save(final ChannelGroup channelGroup) {
-        this.channelGroupDao.save((Object)channelGroup);
-        this.groupCache.refresh((Object)channelGroup.getId());
+        this.channelGroupDao.save(channelGroup);
+        this.groupCache.refresh(channelGroup.getId());
     }
     
     public List<ChannelGroup> findAll() {

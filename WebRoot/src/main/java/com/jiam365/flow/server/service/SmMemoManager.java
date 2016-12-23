@@ -18,15 +18,15 @@ public class SmMemoManager
     private SmMemoDao smMemoDao;
     
     public SmMemo get(final String id) {
-        return (SmMemo)this.smMemoDao.get((Object)id);
+        return (SmMemo)this.smMemoDao.get(id);
     }
     
     public void remove(final String id) {
-        this.smMemoDao.deleteById((Object)id);
+        this.smMemoDao.deleteById(id);
     }
     
     public void save(final SmMemo smMemo) {
-        this.smMemoDao.save((Object)smMemo);
+        this.smMemoDao.save(smMemo);
     }
     
     public Page<SmMemo> searchPage(final Page<SmMemo> page) {

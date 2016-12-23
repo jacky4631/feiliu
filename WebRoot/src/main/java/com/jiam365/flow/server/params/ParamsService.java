@@ -32,7 +32,7 @@ public class ParamsService
     
     public TimeoutParam loadTimeoutParam() {
         try {
-            return (TimeoutParam)this.cache.get((Object)TimeoutParam.class);
+            return (TimeoutParam)this.cache.get(TimeoutParam.class);
         }
         catch (Exception e) {
             return new TimeoutParam();
@@ -41,12 +41,12 @@ public class ParamsService
     
     public void saveTimeoutParam(final TimeoutParam timeoutParam) {
         this.save(timeoutParam);
-        this.cache.refresh((Object)TimeoutParam.class);
+        this.cache.refresh(TimeoutParam.class);
     }
     
     public FunctionLimitParam loadFunctionLimitParam() {
         try {
-            return (FunctionLimitParam)this.cache.get((Object)FunctionLimitParam.class);
+            return (FunctionLimitParam)this.cache.get(FunctionLimitParam.class);
         }
         catch (Exception e) {
             return new FunctionLimitParam();
@@ -55,12 +55,12 @@ public class ParamsService
     
     public void saveFunctionLimitParam(final FunctionLimitParam functionLimitParam) {
         this.save(functionLimitParam);
-        this.cache.refresh((Object)FunctionLimitParam.class);
+        this.cache.refresh(FunctionLimitParam.class);
     }
     
     public UserReportParam loadUserReportParam() {
         try {
-            return (UserReportParam)this.cache.get((Object)UserReportParam.class);
+            return (UserReportParam)this.cache.get(UserReportParam.class);
         }
         catch (Exception ignore) {
             return new UserReportParam();
@@ -69,12 +69,12 @@ public class ParamsService
     
     public void saveUserReport(final UserReportParam userReportParam) {
         this.save(userReportParam);
-        this.cache.refresh((Object)UserReportParam.class);
+        this.cache.refresh(UserReportParam.class);
     }
     
     public ProductSelectionParam loadProductSelectionParam() {
         try {
-            return (ProductSelectionParam)this.cache.get((Object)ProductSelectionParam.class);
+            return (ProductSelectionParam)this.cache.get(ProductSelectionParam.class);
         }
         catch (ExecutionException ignore) {
             return new ProductSelectionParam();
@@ -83,19 +83,19 @@ public class ParamsService
     
     public void saveProductSelectionParam(final ProductSelectionParam productSelectionParam) {
         this.save(productSelectionParam);
-        this.cache.refresh((Object)ProductSelectionParam.class);
+        this.cache.refresh(ProductSelectionParam.class);
     }
     
     protected void save(final Object object) {
         final JsonMapper mapper = JsonMapper.nonEmptyMapper();
         final String id = object.getClass().getCanonicalName();
         final Params params = new Params(id, mapper.toJson(object));
-        this.paramsDao.save((Object)params);
+        this.paramsDao.save(params);
     }
     
     protected Params get(final Class<?> clazz) {
         final String id = clazz.getCanonicalName();
-        Params params = (Params)this.paramsDao.get((Object)id);
+        Params params = (Params)this.paramsDao.get(id);
         if (params == null) {
             params = new Params(id, "{}");
         }
@@ -104,6 +104,6 @@ public class ParamsService
     
     public void deleteParams(final Class<?> clazz) {
         final String id = clazz.getCanonicalName();
-        this.paramsDao.deleteById((Object)id);
+        this.paramsDao.deleteById(id);
     }
 }

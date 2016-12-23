@@ -23,22 +23,22 @@ public class RateLimitationPretreatment implements Pretreatment, InitializingBea
     @Override
     public void check(final RechargeRequest request) throws TradeException {
         final String key = request.getUsername() + request.getMobile();
-        final Integer total = (Integer)this.counter.getIfPresent((Object)key);
+        final Integer total = (Integer)this.counter.getIfPresent(key);
         final FunctionLimitParam param = this.paramsService.loadFunctionLimitParam();
         final int maxTimesPerDay = param.getRechargeTimesLimit();
         if (total != null) {
             if (total >= maxTimesPerDay) {
-                throw new TradeException(param.getLimitScopeSeconds() + "\u79d2\u5185\u6700\u591a\u53ea\u80fd\u7ed9\u540c\u4e00\u4e2a\u53f7\u7801\u5145\u503c" + maxTimesPerDay + "\u6b21");
+                throw new TradeException(param.getLimitScopeSeconds() + "秒内最多只能给同一个号码充值" + maxTimesPerDay + "\u6b21");
             }
-            this.counter.put((Object)key, (Object)(total + 1));
+            this.counter.put(key, (total + 1));
         }
         else {
-            this.counter.put((Object)key, (Object)1);
+            this.counter.put(key, 1);
         }
     }
     
     public void afterPropertiesSet() throws Exception {
         final FunctionLimitParam param = this.paramsService.loadFunctionLimitParam();
-        this.counter = (Cache<String, Integer>)CacheBuilder.newBuilder().expireAfterWrite((long)param.getLimitScopeSeconds(), TimeUnit.SECONDS).maximumSize(40000L).build();
+        this.counter = CacheBuilder.newBuilder().expireAfterWrite((long)param.getLimitScopeSeconds(), TimeUnit.SECONDS).maximumSize(40000L).build();
     }
 }

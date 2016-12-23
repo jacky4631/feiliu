@@ -54,7 +54,7 @@ public class FlowPackageManager
     
     public ChannelProductGroupProfile loadGroupProfile(final String id) {
         try {
-            return (ChannelProductGroupProfile)this.profileCache.get((Object)id);
+            return (ChannelProductGroupProfile)this.profileCache.get(id);
         }
         catch (ExecutionException e) {
             return new ChannelProductGroupProfile();
@@ -62,7 +62,7 @@ public class FlowPackageManager
     }
     
     public ChannelProductGroupProfile getGroupProfile(final String id) {
-        ChannelProductGroupProfile profile = (ChannelProductGroupProfile)this.channelProductGroupProfileDao.get((Object)id);
+        ChannelProductGroupProfile profile = (ChannelProductGroupProfile)this.channelProductGroupProfileDao.get(id);
         if (profile == null) {
             profile = new ChannelProductGroupProfile(id);
         }
@@ -77,8 +77,8 @@ public class FlowPackageManager
         final long channelId = Long.parseLong(StringUtils.substringBefore(id, "-"));
         profile.setChannelId(channelId);
         profile.setName(this.fullChannelGroupName(id));
-        this.channelProductGroupProfileDao.save((Object)profile);
-        this.profileCache.refresh((Object)id);
+        this.channelProductGroupProfileDao.save(profile);
+        this.profileCache.refresh(id);
     }
     
     public String fullChannelGroupName(final String fullGroupCode) {
@@ -102,13 +102,13 @@ public class FlowPackageManager
         flowPackages.stream().forEach(flowPackage -> {
             flowPackage.setPrice(price);
             flowPackage.setBillAmount(DoubleUtils.round(DoubleUtils.mul(price, flowPackage.getDiscount()), 2));
-            this.flowPackageDao.save((Object)flowPackage);
+            this.flowPackageDao.save(flowPackage);
         });
     }
     
     public void removeGroupProfile(final String profileId) {
-        this.channelProductGroupProfileDao.deleteById((Object)profileId);
-        this.profileCache.invalidate((Object)profileId);
+        this.channelProductGroupProfileDao.deleteById(profileId);
+        this.profileCache.invalidate(profileId);
     }
     
     public List<ChannelProductGroupProfile> findProtectedProfile() {
@@ -116,9 +116,9 @@ public class FlowPackageManager
     }
     
     public FlowPackage removeFlowPackage(final String id) {
-        final FlowPackage flowPackage = (FlowPackage)this.flowPackageDao.get((Object)id);
+        final FlowPackage flowPackage = (FlowPackage)this.flowPackageDao.get(id);
         if (flowPackage != null) {
-            this.flowPackageDao.delete((Object)flowPackage);
+            this.flowPackageDao.delete(flowPackage);
         }
         return flowPackage;
     }
@@ -128,7 +128,7 @@ public class FlowPackageManager
     }
     
     public FlowPackage getFlowPackage(final String id) {
-        return (FlowPackage)this.flowPackageDao.get((Object)id);
+        return (FlowPackage)this.flowPackageDao.get(id);
     }
     
     public List<FlowPackage> findByChannelId(final Long channelId) {
@@ -147,13 +147,13 @@ public class FlowPackageManager
             flowPackage.setId((fp != null) ? fp.getId() : Identities.uuid2());
         }
         flowPackage.setBillAmount(DoubleUtils.mul(flowPackage.getPrice(), flowPackage.getDiscount()));
-        this.flowPackageDao.save((Object)flowPackage);
+        this.flowPackageDao.save(flowPackage);
     }
     
     public FlowPackage changeStatus(final String id) {
-        final FlowPackage flowPackage = (FlowPackage)this.flowPackageDao.get((Object)id);
+        final FlowPackage flowPackage = (FlowPackage)this.flowPackageDao.get(id);
         flowPackage.setEnabled(!flowPackage.isEnabled());
-        this.flowPackageDao.save((Object)flowPackage);
+        this.flowPackageDao.save(flowPackage);
         return flowPackage;
     }
     

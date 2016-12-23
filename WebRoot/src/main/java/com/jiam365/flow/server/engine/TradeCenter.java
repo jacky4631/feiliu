@@ -88,7 +88,7 @@ public class TradeCenter implements InitializingBean
         final TradeLog tradeLog = new TradeLog(trade);
         this.tradeLogManager.save(tradeLog);
         if (trade.assignedToConnection()) {
-            this.executorService.submit((Callable<Object>)trade);
+            this.executorService.submit(trade);
         }
         else {
             trade.delayMe(true);
@@ -105,7 +105,7 @@ public class TradeCenter implements InitializingBean
         this.billingCenter.payChannelAccount(trade);
         this.tradeLogManager.updateAfterReRoute(trade);
         this.state.putTrace(trade);
-        this.executorService.submit((Callable<Object>)trade);
+        this.executorService.submit(trade);
     }
     
     protected void continueTrade(final Trade callable, final int delaySeconds) {

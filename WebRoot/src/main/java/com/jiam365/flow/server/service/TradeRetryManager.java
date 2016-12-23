@@ -16,7 +16,7 @@ public class TradeRetryManager
     private TradeRetryDao tradeRetryDao;
     
     public void save(final TradeRetry tradeRetry) {
-        this.tradeRetryDao.save((Object)tradeRetry);
+        this.tradeRetryDao.save(tradeRetry);
     }
     
     public void saveRetry(final Trade trade) {
@@ -27,7 +27,7 @@ public class TradeRetryManager
             retry.setExecuteProductId(trade.getRequest().getExecuteProductId());
             retry.setTradeId(trade.getTradeId());
             retry.setFailReason(trade.getLastMessage());
-            this.tradeRetryDao.save((Object)retry);
+            this.tradeRetryDao.save(retry);
         }
     }
     

@@ -24,7 +24,7 @@ public class DuplicateUserReqNo implements Pretreatment
         final String username = request.getUsername();
         final String userReqNo = request.getUserReqNo();
         if (StringUtils.isNotBlank((CharSequence)userReqNo) && this.tradeLogManager.getByUserRequestNo(username, userReqNo) != null) {
-            DuplicateUserReqNo.logger.warn("\u7528\u6237\u8ba2\u5355\u53f7\u91cd\u590d, \u6765\u81ea{}, \u7528\u6237\u8ba2\u5355\u53f7{}, \u5df2\u62d2\u7edd", (Object)username, (Object)userReqNo);
+            DuplicateUserReqNo.logger.warn("用户订单号重复, 来自{}, 用户订单号{}, 已拒绝", (Object)username, (Object)userReqNo);
             throw new GeneralRestException("50009");
         }
     }

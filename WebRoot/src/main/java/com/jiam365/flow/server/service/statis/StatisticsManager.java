@@ -101,7 +101,7 @@ public class StatisticsManager
             final Date[] period = SimpleDateUtils.getDayPeriod(i);
             if (i < 0) {
                 try {
-                    profilts.add((Double)this.profitCache.get((Object)new PeriodKey(period)));
+                    profilts.add((Double)this.profitCache.get(new PeriodKey(period)));
                 }
                 catch (ExecutionException e) {
                     profilts.add(0.0);

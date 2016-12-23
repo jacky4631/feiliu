@@ -28,18 +28,18 @@ public class SmConfigManager
     }
     
     public void saveSmConfig(final SmConfig smConfig) {
-        this.smConfigDao.save((Object)smConfig);
+        this.smConfigDao.save(smConfig);
         synchronized (this) {
             this.configCache = smConfig;
         }
     }
     
     public void saveTemplate(final SmTemplate SmTemplate) {
-        this.smTemplateDao.save((Object)SmTemplate);
+        this.smTemplateDao.save(SmTemplate);
     }
     
     public SmTemplate getTemplate(final long userId) {
-        SmTemplate template = (SmTemplate)this.smTemplateDao.get((Object)userId);
+        SmTemplate template = (SmTemplate)this.smTemplateDao.get(userId);
         if (template == null) {
             final SmConfig setting = this.smConfigDao.getSetting();
             template = new SmTemplate(userId);

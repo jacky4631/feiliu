@@ -23,7 +23,7 @@ public class FlowInterceptorManager
     private FlowCallbackInterceptorDao flowCallbackInterceptorDao;
     
     public void save(final FlowInterceptor interceptor) {
-        this.flowInterceptorDao.save((Object)interceptor);
+        this.flowInterceptorDao.save(interceptor);
     }
     
     public FlowInterceptor get() {
@@ -32,21 +32,21 @@ public class FlowInterceptorManager
     }
     
     public FlowCallbackInterceptor getFlowCallbackInterceptor(final String id) {
-        return (FlowCallbackInterceptor)this.flowCallbackInterceptorDao.get((Object)id);
+        return (FlowCallbackInterceptor)this.flowCallbackInterceptorDao.get(id);
     }
     
     public void saveCallbackInterceptor(final FlowCallbackInterceptor interceptor) {
-        this.flowCallbackInterceptorDao.save((Object)interceptor);
+        this.flowCallbackInterceptorDao.save(interceptor);
     }
     
     public void deleteCallbackInterceptor(final FlowCallbackInterceptor interceptor) {
-        this.flowCallbackInterceptorDao.delete((Object)interceptor);
+        this.flowCallbackInterceptorDao.delete(interceptor);
     }
     
     public FlowCallbackInterceptor deleteCallbackInterceptor(final String id) {
-        final FlowCallbackInterceptor flowCallbackInterceptor = (FlowCallbackInterceptor)this.flowCallbackInterceptorDao.get((Object)id);
+        final FlowCallbackInterceptor flowCallbackInterceptor = (FlowCallbackInterceptor)this.flowCallbackInterceptorDao.get(id);
         if (flowCallbackInterceptor != null) {
-            this.flowCallbackInterceptorDao.delete((Object)flowCallbackInterceptor);
+            this.flowCallbackInterceptorDao.delete(flowCallbackInterceptor);
         }
         return flowCallbackInterceptor;
     }

@@ -67,12 +67,12 @@ public class UserManager
     }
     
     public User getUser(final long userId) {
-        return (User)this.userDao.get((Object)userId);
+        return (User)this.userDao.get(userId);
     }
     
     public String getAllowIps(final String username) {
         try {
-            final User user = (User)this.userCache.get((Object)username);
+            final User user = (User)this.userCache.get(username);
             if (user.getAllowIps() != null) {
                 return user.getAllowIps();
             }
@@ -83,7 +83,7 @@ public class UserManager
     
     public boolean sendSmActived(final String username) {
         try {
-            final User user = (User)this.userCache.get((Object)username);
+            final User user = (User)this.userCache.get(username);
             return user.isSendSm();
         }
         catch (ExecutionException ex) {
@@ -93,7 +93,7 @@ public class UserManager
     
     public String getCallbackUrl(final String username) {
         try {
-            final User user = (User)this.userCache.get((Object)username);
+            final User user = (User)this.userCache.get(username);
             if (user.getCallbackUrl() != null) {
                 return user.getCallbackUrl();
             }
@@ -104,7 +104,7 @@ public class UserManager
     
     public double getSmPrice(final String username) {
         try {
-            final User user = (User)this.userCache.get((Object)username);
+            final User user = (User)this.userCache.get(username);
             return user.getSmPrice();
         }
         catch (ExecutionException ex) {
@@ -135,7 +135,7 @@ public class UserManager
     
     public User loadUserByUsername(final String username) {
         try {
-            final User u = (User)this.userCache.get((Object)username);
+            final User u = (User)this.userCache.get(username);
             return u.isNew() ? null : u;
         }
         catch (ExecutionException e) {
@@ -157,11 +157,11 @@ public class UserManager
         }
         this.entryptPassword(user);
         if (user.getRoles().isEmpty()) {
-            user.setRoles(Lists.newArrayList((Object[])new String[] { "user" }));
+            user.setRoles(Lists.newArrayList(new String[] { "user" }));
         }
         user.setRegisterDate(new Date());
         user.setAuthToken(Identities.uuid2());
-        this.userDao.save((Object)user);
+        this.userDao.save(user);
     }
     
     public void updateUser(final User user) {
@@ -174,8 +174,8 @@ public class UserManager
         if (user.getId() == 1L && !user.getRoles().contains("admin")) {
             user.addRole("admin");
         }
-        this.userDao.save((Object)user);
-        this.userCache.refresh((Object)user.getUsername());
+        this.userDao.save(user);
+        this.userCache.refresh(user.getUsername());
     }
     
     public void enableUser(final long id, final boolean enable) {
@@ -200,30 +200,30 @@ public class UserManager
         if (result != 0) {
             throw new RuntimeException("User " + user.getUsername() + "'s balance is not zero, can't remove");
         }
-        this.fundAccountDao.deleteById((Object)id);
+        this.fundAccountDao.deleteById(id);
         this.userProductDao.removeProductsByUsername(user.getUsername());
-        this.userDao.deleteById((Object)id);
-        this.userCache.invalidate((Object)id);
+        this.userDao.deleteById(id);
+        this.userCache.invalidate(id);
     }
     
     public void updateBalance(final long userId, final double balance) {
-        FundAccount fundAccount = (FundAccount)this.fundAccountDao.get((Object)userId);
+        FundAccount fundAccount = (FundAccount)this.fundAccountDao.get(userId);
         if (fundAccount == null) {
             fundAccount = new FundAccount();
             fundAccount.setUserId(userId);
         }
         fundAccount.setBalance(balance);
-        this.fundAccountDao.save((Object)fundAccount);
+        this.fundAccountDao.save(fundAccount);
     }
     
     public void updatecreditLine(final long userId, final double creditLine) {
-        FundAccount fundAccount = (FundAccount)this.fundAccountDao.get((Object)userId);
+        FundAccount fundAccount = (FundAccount)this.fundAccountDao.get(userId);
         if (fundAccount == null) {
             fundAccount = new FundAccount();
             fundAccount.setUserId(userId);
         }
         fundAccount.setCreditLine(creditLine);
-        this.fundAccountDao.save((Object)fundAccount);
+        this.fundAccountDao.save(fundAccount);
     }
     
     public Long getUid(final String username) {
@@ -232,7 +232,7 @@ public class UserManager
     }
     
     public double getBalance(final long userId) {
-        final FundAccount fundAccount = (FundAccount)this.fundAccountDao.get((Object)userId);
+        final FundAccount fundAccount = (FundAccount)this.fundAccountDao.get(userId);
         return (fundAccount == null) ? 0.0 : fundAccount.getBalance();
     }
     
@@ -245,7 +245,7 @@ public class UserManager
     }
     
     public FundAccount getCredit(final long userId) {
-        return (FundAccount)this.fundAccountDao.get((Object)userId);
+        return (FundAccount)this.fundAccountDao.get(userId);
     }
     
     public void saveSmsTemplate(final SmTemplate SmTemplate) {
@@ -286,7 +286,7 @@ public class UserManager
         final List<FundAccount> accounts = this.fundAccountDao.findNotEqualsZeroAccounts();
         final List<UserInfo> users = new ArrayList<UserInfo>();
         for (final FundAccount account : accounts) {
-            final User user = (User)this.userDao.get((Object)account.getUserId());
+            final User user = (User)this.userDao.get(account.getUserId());
             if (user != null) {
                 final UserInfo userInfo = new UserInfo();
                 BeanMapper.copy((Object)user, (Object)userInfo);

@@ -83,7 +83,7 @@ public class UserProductManager
         final List<FlowProduct> flowProducts = new ArrayList<FlowProduct>();
         for (final UserProduct userProduct : userProducts) {
             final OrigiProductId oid = new OrigiProductId(userProduct.getProductId());
-            final FlowProduct flowProduct = (FlowProduct)this.flowProductDao.get((Object)oid.origiProductId);
+            final FlowProduct flowProduct = (FlowProduct)this.flowProductDao.get(oid.origiProductId);
             if (flowProduct != null) {
                 if (!flowProduct.isEnabled()) {
                     continue;
@@ -120,7 +120,7 @@ public class UserProductManager
     }
     
     public void save(final UserProduct userProduct) {
-        this.userProductDao.save((Object)userProduct);
+        this.userProductDao.save(userProduct);
     }
     
     public boolean hasProduct(final String productId, final String username) {
@@ -136,7 +136,7 @@ public class UserProductManager
     }
     
     public void authProduct2User(final String productId, final String username, final boolean roamable) {
-        final FlowProduct flowProduct = (FlowProduct)this.flowProductDao.get((Object)productId);
+        final FlowProduct flowProduct = (FlowProduct)this.flowProductDao.get(productId);
         if (flowProduct == null) {
             throw new RuntimeException("\u6307\u5b9a\u7684\u57fa\u7840\u4ea7\u54c1\u5e76\u4e0d\u5b58\u5728, \u65e0\u6cd5\u6388\u6743");
         }
@@ -157,7 +157,7 @@ public class UserProductManager
     }
     
     public UserProduct updateDiscount(final String id, final double discount) {
-        final UserProduct userProduct = (UserProduct)this.userProductDao.get((Object)id);
+        final UserProduct userProduct = (UserProduct)this.userProductDao.get(id);
         userProduct.setDiscount(discount);
         this.save(userProduct);
         return userProduct;
@@ -167,12 +167,12 @@ public class UserProductManager
         final List<UserProduct> userProducts = this.userProductDao.findUserProducts(productId);
         userProducts.stream().forEach(userProduct -> {
             userProduct.setPrice(price);
-            this.userProductDao.save((Object)userProduct);
+            this.userProductDao.save(userProduct);
         });
     }
     
     public UserProduct applyDiscount2Group(final String id, final double discount) {
-        final UserProduct userProduct = (UserProduct)this.userProductDao.get((Object)id);
+        final UserProduct userProduct = (UserProduct)this.userProductDao.get(id);
         final boolean roamable = !userProduct.getProductId().endsWith("$");
         final List<UserProduct> products = this.userProductDao.findProducts(userProduct.getUsername(), userProduct.getProvider(), userProduct.getScope(), roamable);
         for (final UserProduct up : products) {
@@ -183,19 +183,19 @@ public class UserProductManager
     }
     
     public UserProduct removeGroup(final String id) {
-        final UserProduct userProduct = (UserProduct)this.userProductDao.get((Object)id);
+        final UserProduct userProduct = (UserProduct)this.userProductDao.get(id);
         final boolean roamable = !userProduct.getProductId().endsWith("$");
         final List<UserProduct> products = this.userProductDao.findProducts(userProduct.getUsername(), userProduct.getProvider(), userProduct.getScope(), roamable);
         for (final UserProduct up : products) {
-            this.userProductDao.delete((Object)up);
+            this.userProductDao.delete(up);
         }
         return userProduct;
     }
     
     public UserProduct removeProduct(final String id) {
-        final UserProduct userProduct = (UserProduct)this.userProductDao.get((Object)id);
+        final UserProduct userProduct = (UserProduct)this.userProductDao.get(id);
         if (userProduct != null) {
-            this.userProductDao.delete((Object)userProduct);
+            this.userProductDao.delete(userProduct);
         }
         return userProduct;
     }

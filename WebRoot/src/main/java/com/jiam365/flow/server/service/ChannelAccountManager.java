@@ -28,7 +28,7 @@ public class ChannelAccountManager
         final List<ChannelAccount> accounts = this.channelAccountDao.findNotEqualsZeroAccounts();
         final List<FlowChannel> channels = new ArrayList<FlowChannel>();
         for (final ChannelAccount account : accounts) {
-            final FlowChannel channel = (FlowChannel)this.flowChannelDao.get((Object)account.getChannleId());
+            final FlowChannel channel = (FlowChannel)this.flowChannelDao.get(account.getChannleId());
             if (channel != null) {
                 channel.setBalance(account.getBalance());
                 channels.add(channel);
@@ -39,11 +39,11 @@ public class ChannelAccountManager
     
     public double trans2Channel(final long channelId, final double money) {
         this.changeBalance(channelId, money);
-        return ((ChannelAccount)this.channelAccountDao.get((Object)channelId)).getBalance();
+        return ((ChannelAccount)this.channelAccountDao.get(channelId)).getBalance();
     }
     
     public double getBalance(final long channelId) {
-        final ChannelAccount account = (ChannelAccount)this.channelAccountDao.get((Object)channelId);
+        final ChannelAccount account = (ChannelAccount)this.channelAccountDao.get(channelId);
         return (account == null) ? 0.0 : account.getBalance();
     }
     
@@ -63,12 +63,12 @@ public class ChannelAccountManager
     
     private void changeBalance(final long channelId, final double money) {
         try {
-            ChannelAccount account = (ChannelAccount)this.channelAccountDao.get((Object)channelId);
+            ChannelAccount account = (ChannelAccount)this.channelAccountDao.get(channelId);
             if (account == null) {
                 account = new ChannelAccount();
                 account.setChannleId(channelId);
                 account.setBalance(money);
-                this.channelAccountDao.save((Object)account);
+                this.channelAccountDao.save(account);
             }
             else {
                 this.channelAccountDao.incBalance(channelId, money);

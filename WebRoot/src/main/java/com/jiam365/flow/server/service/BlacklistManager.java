@@ -58,7 +58,7 @@ public class BlacklistManager
     
     public Blacklist load() {
         try {
-            return (Blacklist)this.cache.get((Object)BlacklistManager.KEY);
+            return (Blacklist)this.cache.get(BlacklistManager.KEY);
         }
         catch (Exception e) {
             return new Blacklist();
@@ -66,8 +66,8 @@ public class BlacklistManager
     }
     
     public void save(final Blacklist list) {
-        this.blacklistDao.save((Object)list);
-        this.cache.refresh((Object)BlacklistManager.KEY);
+        this.blacklistDao.save(list);
+        this.cache.refresh(BlacklistManager.KEY);
     }
     
     static {

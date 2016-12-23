@@ -24,15 +24,15 @@ public class TransferLogManager
     }
     
     public TransferLog get(final String tid) {
-        return (TransferLog)this.transferLogDao.get((Object)tid);
+        return (TransferLog)this.transferLogDao.get(tid);
     }
     
     public void update(final TransferLog log) {
-        this.transferLogDao.save((Object)log);
+        this.transferLogDao.save(log);
     }
     
     public void delete(final String tid) {
-        this.transferLogDao.deleteById((Object)tid);
+        this.transferLogDao.deleteById(tid);
     }
     
     public void saveLog(final String operator, final int accountingSubject, final String username, final String displayName, final double amount, final double balance, final String remark, final int... type) {
@@ -47,7 +47,7 @@ public class TransferLogManager
         if (type.length > 0) {
             log.setType(type[0]);
         }
-        this.transferLogDao.save((Object)log);
+        this.transferLogDao.save(log);
     }
     
     public Page<TransferLog> searchPage(final Page<TransferLog> page) {

@@ -25,18 +25,18 @@ public class RoleManager
     }
     
     public void remove(final String id) {
-        this.roleDao.deleteById((Object)id);
+        this.roleDao.deleteById(id);
     }
     
     public Role get(final String id) {
-        return (Role)this.roleDao.get((Object)id);
+        return (Role)this.roleDao.get(id);
     }
     
     public void save(final Role role) {
         if (StringUtils.isBlank((CharSequence)role.getId())) {
             role.setId(Identities.uuid2());
         }
-        this.roleDao.save((Object)role);
+        this.roleDao.save(role);
     }
     
     public Page<Role> searchPage(final Page<Role> page) {

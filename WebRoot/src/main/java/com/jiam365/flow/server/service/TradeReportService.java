@@ -20,7 +20,7 @@ public class TradeReportService implements ITradeReportService
     
     public void save(final TradeReport report) {
         try {
-            this.tradeReportDao.save((Object)report);
+            this.tradeReportDao.save(report);
         }
         catch (Exception e) {
             TradeReportService.logger.error("\u4fdd\u5b58\u4e34\u65f6\u62a5\u544a{}\u51fa\u73b0\u9519\u8bef", (Object)report.getJson(), (Object)e);
@@ -45,9 +45,9 @@ public class TradeReportService implements ITradeReportService
     }
     
     public TradeReport fetch(final String key) {
-        final TradeReport report = (TradeReport)this.tradeReportDao.get((Object)key);
+        final TradeReport report = (TradeReport)this.tradeReportDao.get(key);
         if (report != null) {
-            this.tradeReportDao.deleteById((Object)key);
+            this.tradeReportDao.deleteById(key);
         }
         return report;
     }

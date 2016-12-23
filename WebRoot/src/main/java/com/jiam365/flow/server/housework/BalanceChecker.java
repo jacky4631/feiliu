@@ -35,7 +35,7 @@ public class BalanceChecker
     private Cache<String, Integer> cache;
     
     public BalanceChecker() {
-        this.cache = (Cache<String, Integer>)CacheBuilder.newBuilder().expireAfterWrite(30L, TimeUnit.MINUTES).maximumSize(1000L).build();
+        this.cache = CacheBuilder.newBuilder().expireAfterWrite(30L, TimeUnit.MINUTES).maximumSize(1000L).build();
     }
     
     public void execute() {
@@ -95,7 +95,7 @@ public class BalanceChecker
                 st.add("balance", (Object)balance);
                 st.add("threshold", (Object)notify.getThreshold());
                 this.smService.sendSm(mobile, st.render());
-                this.cache.put((Object)this.getCombinId(notify.getChannels()), (Object)1);
+                this.cache.put(this.getCombinId(notify.getChannels()), 1);
             }
         }
     }

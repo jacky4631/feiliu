@@ -26,7 +26,7 @@ public class FlowProductManager
     private MobileService mobileService;
     
     public FlowProduct get(final String id) {
-        return (FlowProduct)this.flowProductDao.get((Object)id);
+        return (FlowProduct)this.flowProductDao.get(id);
     }
     
     public List<FlowProduct> findAll() {
@@ -99,11 +99,11 @@ public class FlowProductManager
         else if (!id.equals(flowProduct.getId())) {
             throw new RuntimeException("\u786e\u5b9aID\u7684\u4ea7\u54c1,\u4e0d\u80fd\u518d\u88ab\u4fee\u6539\u89c4\u683c\u4fe1\u606f");
         }
-        this.flowProductDao.save((Object)flowProduct);
+        this.flowProductDao.save(flowProduct);
     }
     
     public void remove(final String id) {
-        this.flowProductDao.deleteById((Object)id);
+        this.flowProductDao.deleteById(id);
     }
     
     public Page<FlowProduct> searchPage(final Page<FlowProduct> page) {

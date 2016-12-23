@@ -20,7 +20,7 @@ public class OperationLogManager
     private OperationLogDao operationLogDao;
     
     public void save(final OperationLog log) {
-        this.operationLogDao.save((Object)log);
+        this.operationLogDao.save(log);
     }
     
     public Page<OperationLog> searchPage(final Page<OperationLog> page) {
