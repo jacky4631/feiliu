@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+    <bean id="rechargeMobilePromptManager" class="com.jiam365.flow.server.engine.RechargeMobilePromptManager"
+          destroy-method="shutdown"/>
+
+    <bean id="channelConnectionManager" class="com.jiam365.flow.server.channel.ChannelConnectionManager"
+          depends-on="springContextHolder" init-method="init" destroy-method="shutdown">
+    </bean>
+
+    <bean id="tradeCenter" class="com.jiam365.flow.server.engine.TradeCenter" destroy-method="shutdown">
+        <property name="tradeLogManager" ref="tradeLogManager"/>
+        <property name="tradeStorageService" ref="tradeStorageService"/>
+        <property name="billingCenter" ref="billingCenter"/>
+        <property name="callbackInterceptor" ref="callbackInterceptor"/>
+    </bean>
+
+    <bean id="terminateTradeCentral" class="com.jiam365.flow.server.engine.TerminatedRechargeManager"
+          destroy-method="shutdown">
+    </bean>
+
+    <bean id="tradeReportService" class="com.jiam365.flow.server.service.TradeReportService"
+          init-method="selfRegister"/>
+
+    <!-- Chooser -->
+    <bean id="channelChooser" class="com.jiam365.flow.server.engine.ChannelChooser">
+        <property name="conditions">
+            <list>
+                <ref bean="connectionAvaliable"/>
+                <ref bean="ignoreUsed"/>
+                <ref bean="priceRestrict"/>
+                <ref bean="replaceable"/>
+                <ref bean="areaIsNotRestrict"/>
+                <ref bean="notSameOrgRestrict"/>
+                <ref bean="protectedProductGrant"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="connectionAvaliable" class="com.jiam365.flow.server.engine.route.ConnectionAvaliable"/>
+    <bean id="areaIsNotRestrict" class="com.jiam365.flow.server.engine.route.AreaIsNotRestrict"/>
+    <bean id="ignoreUsed" class="com.jiam365.flow.server.engine.route.IgnoreUsed"/>
+    <bean id="notSameOrgRestrict" class="com.jiam365.flow.server.engine.route.NotSameOrgRestrict"/>
+    <bean id="replaceable" class="com.jiam365.flow.server.engine.route.Replaceable"/>
+    <bean id="priceRestrict" class="com.jiam365.flow.server.engine.route.PriceRestrict"/>
+    <bean id="protectedProductGrant" class="com.jiam365.flow.server.engine.route.ProtectedProductGrant"/>
+    <!-- End of Chooser -->
+
+    <bean id="rechargeInterceptor" class="com.jiam365.flow.server.engine.RechargeInterceptor"/>
+
+    <bean id="callbackInterceptor" class="com.jiam365.flow.server.engine.CallbackInterceptor"/>
+
+    <!-- FlowRouter -->
+    <bean id="flowRouter" class="com.jiam365.flow.server.engine.FlowRouter">
+        <property name="tradeCenter" ref="tradeCenter"/>
+        <property name="rechargeInterceptor" ref="rechargeInterceptor"/>
+        <property name="channelChooser" ref="channelChooser"/>
+        <property name="pretreatments">
+            <list>
+                <ref bean="productAvailable"/>
+                <ref bean="rechargeMoment"/>
+                <ref bean="productCompatibility"/>
+                <ref bean="blackList"/>
+                <ref bean="rateLimitation"/>
+                <ref bean="duplicateUserReqNo"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="productAvailable" class="com.jiam365.flow.server.engine.pretreatment.ProductAvailablePretreatment"/>
+    <bean id="blackList" class="com.jiam365.flow.server.engine.pretreatment.BlackListPretreatment"/>
+    <bean id="rechargeMoment" class="com.jiam365.flow.server.engine.pretreatment.RechargeMomentPretreatment"/>
+    <bean id="productCompatibility"
+          class="com.jiam365.flow.server.engine.pretreatment.ProductCompatibilityPretreatment"/>
+    <bean id="rateLimitation" class="com.jiam365.flow.server.engine.pretreatment.RateLimitationPretreatment"/>
+    <bean id="duplicateUserReqNo" class="com.jiam365.flow.server.engine.pretreatment.DuplicateUserReqNo"/>
+    <!-- End of FlowRouter -->
+
+    <bean id="usercallbackMessenger" class="com.jiam365.flow.server.usercallback.UsercallbackMessenger"
+          destroy-method="shutdown">
+        <property name="userReportManager" ref="userReportManager"/>
+    </bean>
+</beans>

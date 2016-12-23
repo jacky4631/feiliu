@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
+
+    <description>Database Layer</description>
+
+    <bean id="mongoClientFactory" class="com.jiam365.modules.persistent.MongoClientFactory">
+        <property name="connectStr" value="${mongo.connectStr}"/>
+    </bean>
+
+    <bean id="mongoClient" factory-bean="mongoClientFactory" factory-method="create"/>
+
+    <bean id="morphia" class="org.mongodb.morphia.Morphia"/>
+
+    <bean id="datastore" class="com.jiam365.modules.persistent.DatastoreFactory">
+        <property name="mongoClient" ref="mongoClient"/>
+        <property name="morphia" ref="morphia"/>
+        <property name="dbName" value="flow"/>
+        <property name="packages">
+            <list>
+                <value>com.jiam365.flow.server.entity</value>
+                <value>com.jiam365.flow.server.product</value>
+                <value>com.jiam365.flow.server.dic</value>
+            </list>
+        </property>
+        <property name="mapClasses">
+            <list>
+                <value>com.jiam365.flow.server.channel.FlowChannel</value>
+                <value>com.jiam365.flow.server.usercallback.UserReport</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="userDao" class="com.jiam365.flow.server.dao.UserDao">
+        <constructor-arg ref="datastore"/>
+    </bean>
+
+    <bean id="fundAccountDao" class="com.jiam365.flow.server.dao.FundAccountDao">
+        <constructor-arg ref="datastore"/>
+    </bean>
+
+    <bean id="smTemplateDao" class="com.jiam365.flow.server.dao.SmTemplateDao">
+        <constructor-arg ref="datastore"/>
+    </bean>
+
+    <bean id="smConfigDao" class="com.jiam365.flow.server.dao.SmConfigDao">
+        <constructor-arg ref="datastore"/>
+    </bean>
+
+    <bean id="roleDao" class="com.jiam365.flow.server.dao.RoleDao">
+        <constructor-arg ref="datastore"/>
+    </bean>
+
+    <bean id="tradeLogDao" class="com.jiam365.flow.server.dao.TradeLogDao">
+        <constructor-arg ref="datastore"/>
+    </bean>
+
+    <bean id="flowChannelDao" class="com.jiam365.flow.server.dao.FlowChannelDao">
+        <constructor-arg ref="datastore"/>
+    </bean>
+
+    <bean id="channelAccountDao" class="com.jiam365.flow.server.dao.ChannelAccountDao">
+        <constructor-arg ref="datastore"/>
+    </bean>
+
+    <bean id="flowPackageDao" class="com.jiam365.flow.server.dao.FlowPackageDao">
+        <constructor-arg ref="datastore"/>
+    </bean>
+
+    <bean id="stateDao" class="com.jiam365.flow.server.dao.StateDao">
+        <constructor-arg ref="datastore"/>
+    </bean>
+
+    <bean id="mobileLocationDao" class="com.jiam365.flow.server.dao.MobileLocationDao">
+        <constructor-arg ref="datastore"/>
+    </bean>
+
+    <bean id="pendingTradeDao" class="com.jiam365.flow.server.dao.PendingTradeDao">
+        <constructor-arg ref="datastore"/>
+    </bean>
+
+    <bean id="tradeReportDao" class="com.jiam365.flow.server.dao.TradeReportDao">
+        <constructor-arg ref="datastore"/>
+    </bean>
+
+    <bean id="transferLogDao" class="com.jiam365.flow.server.dao.TransferLogDao">
+        <constructor-arg ref="datastore"/>
+    </bean>
+
+    <bean id="flowProductDao" class="com.jiam365.flow.server.dao.FlowProductDao">
+        <constructor-arg ref="datastore"/>
+    </bean>
+
+    <bean id="paramsDao" class="com.jiam365.flow.server.dao.ParamsDao">
+        <constructor-arg ref="datastore"/>
+    </bean>
+
+    <bean id="userProductDao" class="com.jiam365.flow.server.dao.UserProductDao">
+        <constructor-arg ref="datastore"/>
+    </bean>
+
+    <bean id="userReportDao" class="com.jiam365.flow.server.dao.UserReportDao">
+        <constructor-arg ref="datastore"/>
+    </bean>
+
+    <bean id="bulletinDao" class="com.jiam365.flow.server.dao.BulletinDao">
+        <constructor-arg ref="datastore"/>
+    </bean>
+
+    <bean id="pluginDefinitionDao" class="com.jiam365.flow.server.dao.PluginDefinitionDao">
+        <constructor-arg ref="datastore"/>
+    </bean>
+
+    <bean id="flowInterceptorDao" class="com.jiam365.flow.server.dao.FlowInterceptorDao">
+        <constructor-arg ref="datastore"/>
+    </bean>
+
+    <bean id="flowCallbackInterceptorDao" class="com.jiam365.flow.server.dao.FlowCallbackInterceptorDao">
+        <constructor-arg ref="datastore"/>
+    </bean>
+
+    <bean id="tradeRetryDao" class="com.jiam365.flow.server.dao.TradeRetryDao">
+        <constructor-arg ref="datastore"/>
+    </bean>
+
+    <bean id="blacklistDao" class="com.jiam365.flow.server.dao.BlacklistDao">
+        <constructor-arg ref="datastore"/>
+    </bean>
+
+    <!--短信计费日志 -->
+    <bean id="smLogDao" class="com.jiam365.flow.server.dao.SmLogDao">
+        <constructor-arg ref="datastore"/>
+    </bean>
+
+    <bean id="operationLogDao" class="com.jiam365.flow.server.dao.OperationLogDao">
+        <constructor-arg ref="datastore"/>
+    </bean>
+
+    <bean id="smMemoDao" class="com.jiam365.flow.server.dao.SmMemoDao">
+        <constructor-arg ref="datastore"/>
+    </bean>
+
+    <bean id="channelGroupDao" class="com.jiam365.flow.server.dao.ChannelGroupDao">
+        <constructor-arg ref="datastore"/>
+    </bean>
+
+    <bean id="balanceNotifyDao" class="com.jiam365.flow.server.dao.BalanceNotifyDao">
+        <constructor-arg ref="datastore"/>
+    </bean>
+
+    <bean id="refundKeywordDao" class="com.jiam365.flow.server.dao.RefundKeywordDao">
+        <constructor-arg ref="datastore"/>
+    </bean>
+
+    <bean id="channelProductGroupProfileDao" class="com.jiam365.flow.server.dao.ChannelProductGroupProfileDao">
+        <constructor-arg ref="datastore"/>
+    </bean>
+</beans>

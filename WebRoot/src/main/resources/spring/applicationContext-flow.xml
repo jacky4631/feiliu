@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+    <bean id="userManager" class="com.jiam365.flow.server.service.UserManager"/>
+
+    <bean id="roleManager" class="com.jiam365.flow.server.service.RoleManager"/>
+
+    <bean id="billingCenter" class="com.jiam365.flow.server.engine.BillingCenter"/>
+
+    <bean id="mobileService" class="com.jiam365.flow.server.service.MobileService"/>
+
+    <bean id="channelAccountManager" class="com.jiam365.flow.server.service.ChannelAccountManager"/>
+
+    <bean id="tradeLogManager" class="com.jiam365.flow.server.service.TradeLogManager"/>
+
+    <bean id="tradeStorageService" class="com.jiam365.flow.server.service.TradeStorageService"/>
+
+    <bean id="transferLogManager" class="com.jiam365.flow.server.service.TransferLogManager"/>
+
+    <bean id="flowProductManager" class="com.jiam365.flow.server.product.FlowProductManager"/>
+
+    <bean id="flowPackageManager" class="com.jiam365.flow.server.service.FlowPackageManager"/>
+
+    <bean id="paramsService" class="com.jiam365.flow.server.params.ParamsService"/>
+
+    <bean id="smService" class="com.jiam365.flow.server.service.SmService"/>
+
+    <bean id="userProductManager" class="com.jiam365.flow.server.product.UserProductManager"/>
+
+    <bean id="userReportManager" class="com.jiam365.flow.server.usercallback.UserReportManager"/>
+
+    <bean id="bulletinManager" class="com.jiam365.flow.server.service.BulletinManager"/>
+
+    <bean id="statisticsManager" class="com.jiam365.flow.server.service.statis.StatisticsManager"/>
+
+    <bean id="smConfigManager" class="com.jiam365.flow.server.params.SmConfigManager"/>
+
+    <bean id="pluginDefinitionManager" class="com.jiam365.flow.server.service.PluginDefinitionManager"/>
+
+    <bean id="flowInterceptorManager" class="com.jiam365.flow.server.service.FlowInterceptorManager"/>
+
+    <bean id="tradeRetryManager" class="com.jiam365.flow.server.service.TradeRetryManager"/>
+
+    <bean id="blacklistManager" class="com.jiam365.flow.server.service.BlacklistManager"/>
+
+    <bean id="smLogManager" class="com.jiam365.flow.server.service.SmLogManager"/>
+
+    <bean id="operationLogManager" class="com.jiam365.flow.server.service.OperationLogManager"/>
+
+    <bean id="channelGroupManager" class="com.jiam365.flow.server.service.ChannelGroupManager"/>
+
+    <bean id="balanceNotifyManager" class="com.jiam365.flow.server.service.BalanceNotifyManager"/>
+
+    <bean id="failTimesLimitator" class="com.jiam365.flow.server.engine.FailTimesLimitator"/>
+
+    <bean id="refundKeywordManager" class="com.jiam365.flow.server.service.RefundKeywordManager"/>
+</beans>

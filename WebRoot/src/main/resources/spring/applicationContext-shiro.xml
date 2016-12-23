@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd"
+       default-lazy-init="true">
+
+    <description>Shiro Security Configuration</description>
+
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <property name="realm" ref="shiroDbRealm"/>
+        <property name="rememberMeManager" ref="rememberMeManager"/>
+        <property name="cacheManager" ref="shiroEhcacheManager"/>
+    </bean>
+
+    <bean id="shiroDbRealm" class="com.jiam365.flow.base.service.account.ShiroDbRealm">
+        <property name="userManager" ref="userManager"/>
+    </bean>
+
+    <bean id="anyRoleFilter" class="com.jiam365.flow.base.web.ShiroAnyRolesFilter"/>
+
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+        <property name="securityManager" ref="securityManager"/>
+        <property name="loginUrl" value="/login"/>
+        <property name="successUrl" value="/"/>
+        <property name="filterChainDefinitions">
+            <value>
+                /login = authc
+                /logout = logout
+                /favicon.ico = anon
+                /static/** = anon
+                /flow/** = anon
+                /flowpack/** = anon
+                /mock/** = anon
+                /report/** = anon
+                /oc/** = anyRole["operator, admin, financial"]
+                /** = user
+            </value>
+        </property>
+        <property name="filters">
+            <map>
+                <entry key="anyRole" value-ref="anyRoleFilter"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="shiroEhcacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
+        <property name="cacheManagerConfigFile" value="classpath:ehcache-shiro.xml"/>
+    </bean>
+
+    <bean id="rememberMeCookie" class="org.apache.shiro.web.servlet.SimpleCookie">
+        <constructor-arg value="rememberMe"/>
+        <property name="httpOnly" value="true"/>
+        <property name="maxAge" value="604800"/>
+    </bean>
+
+    <bean id="rememberMeManager" class="org.apache.shiro.web.mgt.CookieRememberMeManager">
+        <property name="cookie" ref="rememberMeCookie"/>
+    </bean>
+
+    <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
+</beans>

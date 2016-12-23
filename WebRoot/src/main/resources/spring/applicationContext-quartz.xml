@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:task="http://www.springframework.org/schema/task"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd">
+
+    <bean id="tradeReportCleanTask" class="com.jiam365.flow.server.housework.UselessTradeReportCleaner"/>
+    <bean id="tradeReportCleanDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="group" value="workhouse"/>
+        <property name="name" value="report_clean"/>
+        <property name="concurrent" value="false"/>
+
+        <property name="targetObject" ref="tradeReportCleanTask"/>
+        <property name="targetMethod" value="execute"/>
+    </bean>
+
+    <bean id="tradeReportCleanTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="group" value="workhouse"/>
+        <property name="name" value="report_clean"/>
+
+        <property name="jobDetail" ref="tradeReportCleanDetail"/>
+        <property name="cronExpression" value="0 0 2 * * ?"/>
+    </bean>
+
+    <bean id="tradeLogArchiveTask" class="com.jiam365.flow.server.housework.OldTradeLogArchiver"/>
+
+    <bean id="tradeLogArchiveDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="group" value="workhouse"/>
+        <property name="name" value="tradelog_archive"/>
+        <property name="concurrent" value="false"/>
+
+        <property name="targetObject" ref="tradeLogArchiveTask"/>
+        <property name="targetMethod" value="execute"/>
+    </bean>
+
+    <bean id="tradeLogArchiveTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="group" value="workhouse"/>
+        <property name="name" value="tradelog_archive"/>
+        <property name="jobDetail" ref="tradeLogArchiveDetail"/>
+        <property name="cronExpression" value="0/10 * 3-4 * * ?"/>
+    </bean>
+
+    <bean id="billFileTransferTask" class="com.jiam365.flow.server.housework.BillFileTransfer"/>
+
+    <bean id="billFileTransferDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="group" value="workhouse"/>
+        <property name="name" value="billfile_transfer"/>
+        <property name="concurrent" value="false"/>
+
+        <property name="targetObject" ref="billFileTransferTask"/>
+        <property name="targetMethod" value="execute"/>
+    </bean>
+
+    <bean id="billFileTransferTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="group" value="workhouse"/>
+        <property name="name" value="billfile_transfer"/>
+        <property name="jobDetail" ref="billFileTransferDetail"/>
+        <property name="cronExpression" value="0 30 4 * * ?"/>
+    </bean>
+
+    <bean id="balanceChecker" class="com.jiam365.flow.server.housework.BalanceChecker"/>
+    <bean id="balanceCheckerDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="group" value="workhouse"/>
+        <property name="name" value="balance_checker"/>
+        <property name="concurrent" value="false"/>
+
+        <property name="targetObject" ref="balanceChecker"/>
+        <property name="targetMethod" value="execute"/>
+    </bean>
+    <bean id="balanceCheckerTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="group" value="workhouse"/>
+        <property name="name" value="balance_checker"/>
+        <property name="jobDetail" ref="balanceCheckerDetail"/>
+        <property name="cronExpression" value="0 0/3 * * * ?"/>
+    </bean>
+
+    <bean id="scheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="triggers">
+            <list>
+                <ref bean="tradeReportCleanTrigger"/>
+                <ref bean="tradeLogArchiveTrigger"/>
+                <ref bean="billFileTransferTrigger"/>
+                <ref bean="balanceCheckerTrigger"/>
+            </list>
+        </property>
+    </bean>
+</beans>
