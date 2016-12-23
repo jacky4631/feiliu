@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/feiliudec.iml" filepath="$PROJECT_DIR$/feiliudec.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/feiliudec.iml" filepath="$PROJECT_DIR$/.idea/feiliudec.iml" />
       <module fileurl="file://$PROJECT_DIR$/Core/flypig-core.iml" filepath="$PROJECT_DIR$/Core/flypig-core.iml" />
       <module fileurl="file://$PROJECT_DIR$/WebRoot/flypig-web.iml" filepath="$PROJECT_DIR$/WebRoot/flypig-web.iml" />
     </modules>

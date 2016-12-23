@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="war" name="feiliudec:war">
-    <output-path>$PROJECT_DIR$/target</output-path>
-    <root id="archive" name="z-parent-1.0-SNAPSHOT.war">
-      <element id="artifact" artifact-name="feiliudec:war exploded" />
-    </root>
-  </artifact>
-</component>

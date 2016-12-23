@@ -8,5 +8,33 @@
     <artifactId>flypig-parent</artifactId>
     <version>1.0-SNAPSHOT</version>
 
+    <modules>
+        <module>Core</module>
+        <module>WebRoot</module>
+    </modules>
 
+    <properties>
+        <spring.version>4.1.5.RELEASE</spring.version>
+    </properties>
+    <dependencyManagement>
+        <dependencies>
+            <!--<dependency>-->
+                <!--<groupId>org.fanlychie</groupId>-->
+                <!--<artifactId>proj-dao</artifactId>-->
+                <!--<version>${project.version}</version>-->
+            <!--</dependency>-->
+            <!---->
+        </dependencies>
+    </dependencyManagement>
+    <!--<build>-->
+        <!--<pluginManagement>-->
+            <!--<plugins>-->
+                <!--<plugin>-->
+                    <!--<groupId>org.eclipse.jetty</groupId>-->
+                    <!--<artifactId>jetty-maven-plugin</artifactId>-->
+                    <!--<version>9.2.8.v20150217</version>-->
+                <!--</plugin>-->
+            <!--</plugins>-->
+        <!--</pluginManagement>-->
+    <!--</build>-->
 </project>
