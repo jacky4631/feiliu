@@ -8,6 +8,6 @@
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}"/>
 <c:set var="cdn" value="${pageContext.request.contextPath}/v3"/>
-<c:set var="sysname" value="哼哈"/>
-<c:set var="shortname" value="哼哈"/>
+<c:set var="sysname" value="FlyPig"/>
+<c:set var="shortname" value="FlyPig"/>
 <c:set var="ver" value="3.7.12"/>
