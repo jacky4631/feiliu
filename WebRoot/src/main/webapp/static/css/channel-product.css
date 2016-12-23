@@ -1,0 +1,41 @@
+div.channel {
+    border: 1px solid #CCC;
+    background: #FFF;
+    padding: 5px;
+    width: 100%;
+    height: 200px;
+    overflow-y: auto;
+}
+
+div.channel span.tag {
+    border: 1px solid #1ab394;
+    background-color: #ffffff;
+    border-radius: 5px;
+    display: inline-block;
+    float: left;
+    padding: 5px 10px;
+    text-decoration: none;
+    margin-right: 6px;
+    margin-bottom: 12px;
+    font-size: 12px;
+    box-shadow: 0 0 0 #16987e inset, 0 4px 0 0 #16987e, 0 8px 4px #999999;
+}
+
+div.channel span.tag a {
+    font-weight: bold;
+    text-decoration: none;
+    color: gray;
+    font-size: 14px;
+}
+
+.list-group-item {
+    cursor: pointer !important;
+    padding: 10px 25px !important;
+}
+
+.list-group-item * {
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}

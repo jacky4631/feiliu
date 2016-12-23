@@ -1,0 +1,26 @@
+#frm_filter .col-sm-2 {
+    padding-left: 6px;
+    padding-right: 6px;
+}
+
+#frm_filter .row .col-first {
+    padding-left: 15px;
+}
+
+.input-group label {
+    font-weight: normal;
+    font-size: 12px;
+}
+
+.chosen-container {
+    width: 150px !important;
+}
+
+.ui-dialog-body .form-group {
+    margin-bottom: 10px;
+}
+
+.form-control[disabled], .form-control[readonly], fieldset[disabled] .form-control {
+    background-color: #fff !important;
+    font-size: 13px !important;
+}
