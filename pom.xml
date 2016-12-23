@@ -10,6 +10,7 @@
 
     <modules>
         <module>Core</module>
+        <module>SDK</module>
         <module>WebRoot</module>
     </modules>
 

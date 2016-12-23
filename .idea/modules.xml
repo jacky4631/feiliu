@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/feiliudec.iml" filepath="$PROJECT_DIR$/.idea/feiliudec.iml" />
       <module fileurl="file://$PROJECT_DIR$/Core/flypig-core.iml" filepath="$PROJECT_DIR$/Core/flypig-core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/SDK/flypig-sdk.iml" filepath="$PROJECT_DIR$/SDK/flypig-sdk.iml" />
       <module fileurl="file://$PROJECT_DIR$/WebRoot/flypig-web.iml" filepath="$PROJECT_DIR$/WebRoot/flypig-web.iml" />
     </modules>
   </component>
